@@ -23,7 +23,6 @@ This monorepo contains all microservices powering the Newsletter API.
 4. edit `.env`
 5. run: `docker compose up`
 
-
 ## Architecture
 
 ### Component Diagram
