@@ -1,0 +1,9 @@
+go 1.24.0
+
+use (
+	./services/newsletter-service
+	./services/subscription-service
+	./services/user-service
+	./libs/logger
+	./libs/utils
+)

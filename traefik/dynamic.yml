@@ -1,0 +1,50 @@
+http:
+  routers:
+    newsletter-service:
+      rule: "PathPrefix(`/api/newsletters`)"
+      service: newsletter-service
+      entryPoints:
+        - web
+      middlewares:
+        - strip-api
+        - ratelimiter
+    subscription-service:
+      rule: "PathPrefix(`/api/subscriptions`)"
+      service: subscription-service
+      entryPoints:
+        - web
+      middlewares:
+        - strip-api
+        - ratelimiter
+    user-service:
+      rule: "PathPrefix(`/api/users`)"
+      service: user-service
+      entryPoints:
+        - web
+      middlewares:
+        - strip-api
+        - ratelimiter
+
+  middlewares:
+    strip-api:
+      stripPrefix:
+        prefixes:
+          - "/api"
+    ratelimiter:
+      rateLimit:
+        average: 100
+        burst: 200
+
+  services:
+    newsletter-service:
+      loadBalancer:
+        servers:
+          - url: "http://newsletter-service:8081"
+    subscription-service:
+      loadBalancer:
+        servers:
+          - url: "http://subscription-service:8082"
+    user-service:
+      loadBalancer:
+        servers:
+          - url: "http://user-service:8083"

@@ -1,0 +1,92 @@
+name: newsletter-api
+
+services:
+  traefik:
+    image: traefik:v2.10
+    command:
+      - "--entrypoints.web.address=:80"
+      - "--api.insecure=true" # for dev only (TODO: secure auth for prod)
+      - "--api.dashboard=true"
+      - "--providers.file.filename=/etc/traefik/dynamic.yml"
+    ports:
+      - "80:80"
+      - "8080:8080"
+    volumes:
+      - ./traefik/dynamic.yml:/etc/traefik/dynamic.yml
+    networks:
+      - newsletter-api-net
+
+  db:
+    image: postgres:17.4
+    ports:
+      - "5432:5432"
+    networks:
+      - newsletter-api-net
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+
+  newsletter-service:
+    build:
+      context: .
+      dockerfile: services/newsletter-service/Dockerfile
+      target: dev
+    container_name: newsletter-service
+    ports:
+      - "8081:8081"
+    env_file:
+      - .env
+    volumes:
+      - ./services/newsletter-service:/app/services/newsletter-service
+      - ./libs:/app/libs
+    networks:
+      - newsletter-api-net
+    command: ["air", "-c", "services/newsletter-service/.air.toml"]
+    depends_on:
+      - db
+      - traefik
+
+  subscription-service:
+    build:
+      context: .
+      dockerfile: services/subscription-service/Dockerfile
+      target: dev
+    container_name: subscription-service
+    ports:
+      - "8082:8082"
+    env_file:
+      - .env
+    volumes:
+      - ./services/subscription-service:/app/services/subscription-service
+      - ./libs:/app/libs
+    networks:
+      - newsletter-api-net
+    command: ["air", "-c", "services/subscription-service/.air.toml"]
+    depends_on:
+      - db
+      - traefik
+
+  user-service:
+    build:
+      context: .
+      dockerfile: services/user-service/Dockerfile
+      target: dev
+    container_name: user-service
+    ports:
+      - "8083:8083"
+    env_file:
+      - .env
+    volumes:
+      - ./services/user-service:/app/services/user-service
+      - ./libs:/app/libs
+    networks:
+      - newsletter-api-net
+    command: ["air", "-c", "services/user-service/.air.toml"]
+    depends_on:
+      - db
+      - traefik
+
+networks:
+  newsletter-api-net:
+    driver: bridge

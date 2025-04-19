@@ -1,0 +1,29 @@
+openapi: 3.0.3
+info:
+  title: Newsletter Service
+  description: Newsletter service allowing to manage newsletters and posts.
+  version: 1.0.0
+servers:
+  - url: http://localhost:80/v1
+    description: API Gateway route
+
+paths:
+  "/ping":
+    get:
+      description: Health check
+      operationId: Ping
+      summary: Check the healthiness of the service
+      responses:
+        "204":
+          description: It's ALIVE (a.k.a. service is up and running)
+        "400":
+          description: Invalid request
+  "/newsletters": {
+    # TODO;
+
+  # /newsletters/{:id}
+  # /newsletters/{:id}/posts
+  # /newsletters/{:newsletter_id}/posts/{:post_id}
+  # ...
+  }
+components: {}

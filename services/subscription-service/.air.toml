@@ -1,0 +1,27 @@
+# Root of your project inside Docker container
+root = "/app"
+
+tmp_dir = "tmp"
+
+include_ext = ["go", "tpl", "tmpl", "html"]
+
+include_dir = [
+    "services/subscription-service",
+    "libs"
+]
+
+exclude_dir = [
+    "vendor",
+    "tmp",
+    "logs"
+]
+
+[build]
+cmd = "go build -o ./tmp/subscription-service ./services/subscription-service/cmd/api"
+bin = "subscription-service"
+full_bin = "./tmp/subscription-service"
+delay = 1000
+log = "build.log"
+
+[run]
+cmd = "./tmp/subscription-service"
