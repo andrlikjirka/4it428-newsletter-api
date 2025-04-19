@@ -32,7 +32,7 @@ func main() {
 }
 
 func basicHandler(w http.ResponseWriter, r *http.Request) {
-	_, err := w.Write([]byte("Hello World from Newsletter Service! "))
+	_, err := w.Write([]byte("Hello World from Newsletter Service!"))
 	if err != nil {
 		return
 	}
