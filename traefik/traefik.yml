@@ -1,0 +1,12 @@
+entryPoints:
+  web:
+    address: ":80"
+
+api:
+  insecure: true   # dev only (TODO: secure auth for prod)
+  dashboard: true
+
+providers:
+  file:
+    filename: /etc/traefik/dynamic.yml
+    watch: true

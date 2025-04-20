@@ -2,16 +2,12 @@ name: newsletter-api
 
 services:
   traefik:
-    image: traefik:v2.10
-    command:
-      - "--entrypoints.web.address=:80"
-      - "--api.insecure=true" # for dev only (TODO: secure auth for prod)
-      - "--api.dashboard=true"
-      - "--providers.file.filename=/etc/traefik/dynamic.yml"
+    image: traefik:v3.3
     ports:
       - "80:80"
       - "8080:8080"
     volumes:
+      - ./traefik/traefik.yml:/etc/traefik/traefik.yml
       - ./traefik/dynamic.yml:/etc/traefik/dynamic.yml
     networks:
       - newsletter-api-net

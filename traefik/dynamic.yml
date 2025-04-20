@@ -1,6 +1,6 @@
 http:
   routers:
-    newsletter-service:
+    to-newsletter-service:
       rule: "PathPrefix(`/api/newsletters`)"
       service: newsletter-service
       entryPoints:
@@ -8,7 +8,7 @@ http:
       middlewares:
         - strip-api
         - ratelimiter
-    subscription-service:
+    to-subscription-service:
       rule: "PathPrefix(`/api/subscriptions`)"
       service: subscription-service
       entryPoints:
@@ -16,7 +16,7 @@ http:
       middlewares:
         - strip-api
         - ratelimiter
-    user-service:
+    to-user-service:
       rule: "PathPrefix(`/api/users`)"
       service: user-service
       entryPoints:
