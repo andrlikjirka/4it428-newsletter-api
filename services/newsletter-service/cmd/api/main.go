@@ -9,6 +9,7 @@ import (
 )
 
 func main() {
+	logger.Init()
 	port := os.Getenv("NEWSLETTER_SERVICE_PORT")
 	if port == "" {
 		port = "8081"

@@ -9,6 +9,7 @@ import (
 )
 
 func main() {
+	logger.Init()
 	port := os.Getenv("USER_SERVICE_PORT")
 	if port == "" {
 		port = "8083"
