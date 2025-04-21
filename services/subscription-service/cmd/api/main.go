@@ -18,7 +18,7 @@ func main() {
 	router := chi.NewRouter()
 	router.Use(middleware.Logger)
 
-	router.Get("/subscriptions", basicHandler)
+	router.Get("/api/v1/subscriptions", basicHandler)
 
 	server := &http.Server{
 		Addr:    ":" + port,

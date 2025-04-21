@@ -18,7 +18,7 @@ func main() {
 	router := chi.NewRouter()
 	router.Use(middleware.Logger)
 
-	router.Get("/newsletters", basicHandler)
+	router.Get("/api/v1/newsletters", basicHandler)
 
 	server := &http.Server{
 		Addr:    ":" + port,

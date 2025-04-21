@@ -1,28 +1,35 @@
 http:
   routers:
     to-newsletter-service:
-      rule: "PathPrefix(`/api/newsletters`)"
+      rule: "PathRegexp(`^/api/v[0-9]+/newsletters`)"
       service: newsletter-service
       entryPoints:
         - web
       middlewares:
-        - strip-api
         - ratelimiter
+
     to-subscription-service:
-      rule: "PathPrefix(`/api/subscriptions`)"
+      rule: "PathRegexp(`^/api/v[0-9]+/subscriptions`)"
       service: subscription-service
       entryPoints:
         - web
       middlewares:
-        - strip-api
         - ratelimiter
-    to-user-service:
-      rule: "PathPrefix(`/api/users`)"
+
+    to-user-service-users:
+      rule: "PathRegexp(`^/api/v[0-9]+/users`)"
       service: user-service
       entryPoints:
         - web
       middlewares:
-        - strip-api
+        - ratelimiter
+
+    to-user-service-auth:
+      rule: "PathRegexp(`^/api/v[0-9]+/auth`)"
+      service: user-service
+      entryPoints:
+        - web
+      middlewares:
         - ratelimiter
 
   middlewares:
