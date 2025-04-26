@@ -1,15 +1,14 @@
-package impl
+package services
 
 import (
 	"4it428-newsletter-api/libs/logger"
-	"4it428-newsletter-api/services/user-service/internal/service/iface"
 	"context"
 )
 
 type authService struct {
 }
 
-func NewAuthService() iface.IAuthService {
+func NewAuthService() IAuthService {
 	return &authService{}
 }
 

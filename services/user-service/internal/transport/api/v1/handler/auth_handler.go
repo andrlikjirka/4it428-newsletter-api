@@ -2,15 +2,15 @@ package handler
 
 import (
 	"4it428-newsletter-api/libs/utils"
-	"4it428-newsletter-api/services/user-service/internal/service/iface"
+	"4it428-newsletter-api/services/user-service/internal/service/services"
 	"net/http"
 )
 
 type AuthHandler struct {
-	authService iface.IAuthService
+	authService services.IAuthService
 }
 
-func NewAuthHandler(s iface.IAuthService) *AuthHandler {
+func NewAuthHandler(s services.IAuthService) *AuthHandler {
 	return &AuthHandler{authService: s}
 }
 

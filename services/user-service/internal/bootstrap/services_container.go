@@ -1,18 +1,17 @@
 package bootstrap
 
 import (
-	"4it428-newsletter-api/services/user-service/internal/service/iface"
-	"4it428-newsletter-api/services/user-service/internal/service/impl"
+	"4it428-newsletter-api/services/user-service/internal/service/services"
 )
 
 type ServicesContainer struct {
-	UserService iface.IUserService
-	AuthService iface.IAuthService
+	UserService services.IUserService
+	AuthService services.IAuthService
 }
 
 func NewServicesContainer() *ServicesContainer {
 	return &ServicesContainer{
-		UserService: impl.NewUserService(),
-		AuthService: impl.NewAuthService(),
+		UserService: services.NewUserService(),
+		AuthService: services.NewAuthService(),
 	}
 }

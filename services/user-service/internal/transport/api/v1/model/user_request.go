@@ -5,17 +5,31 @@ import (
 	"github.com/google/uuid"
 )
 
-type UserRequest struct {
+type CreateUserRequest struct {
 	Email     string `json:"email" validate:"required,email"`
 	Password  string `json:"password" validate:"required"`
 	FirstName string `json:"first_name" validate:"required"`
 	LastName  string `json:"last_name" validate:"required"`
 }
 
-func (u *UserRequest) ToUser() model.User {
-	return model.User{
+type UpdateUserRequest struct {
+	Password  *string `json:"password,omitempty"`
+	FirstName *string `json:"first_name,omitempty"`
+	LastName  *string `json:"last_name,omitempty"`
+}
+
+func (u *CreateUserRequest) ToUser() *model.User {
+	return &model.User{
 		ID:        uuid.New(),
 		Email:     u.Email,
+		Password:  u.Password,
+		FirstName: u.FirstName,
+		LastName:  u.LastName,
+	}
+}
+
+func (u *UpdateUserRequest) ToUserUpdate() *model.UserUpdate {
+	return &model.UserUpdate{
 		Password:  u.Password,
 		FirstName: u.FirstName,
 		LastName:  u.LastName,
