@@ -3,9 +3,11 @@ package main
 import (
 	"4it428-newsletter-api/libs/logger"
 	"4it428-newsletter-api/services/user-service/internal/bootstrap"
+	"4it428-newsletter-api/services/user-service/internal/persistence/repositories"
 	"4it428-newsletter-api/services/user-service/internal/transport/api"
 	"context"
 	"errors"
+	"github.com/jackc/pgx/v5/pgxpool"
 	"net/http"
 	"os"
 	"os/signal"
@@ -16,6 +18,7 @@ import (
 var version = "v0.0.0"
 
 func main() {
+	ctx := context.Background()
 	logger.Init()
 
 	port := os.Getenv("USER_SERVICE_PORT")
@@ -23,7 +26,13 @@ func main() {
 		port = "8083"
 	}
 
-	services := bootstrap.NewServicesContainer()
+	db, err := setupDatabase(ctx)
+	if err != nil {
+		logger.Error("initializing database failed", "error", err)
+	}
+
+	userRepo := repositories.NewUserRepository(db)
+	services := bootstrap.NewServicesContainer(userRepo)
 	handlers := bootstrap.NewHandlersContainer(services)
 	router := api.NewApiRouter(handlers, version)
 	server := &http.Server{
@@ -59,4 +68,16 @@ func main() {
 	}
 
 	logger.Info("Server gracefully stopped")
+}
+
+func setupDatabase(ctx context.Context) (*pgxpool.Pool, error) {
+	// Initialize the database connection pool.
+	pool, err := pgxpool.New(
+		ctx,
+		os.Getenv("POSTGRES_DOCKER_URL"),
+	)
+	if err != nil {
+		return nil, err
+	}
+	return pool, nil
 }

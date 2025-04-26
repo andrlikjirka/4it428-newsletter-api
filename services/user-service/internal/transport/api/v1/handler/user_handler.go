@@ -50,7 +50,11 @@ func (h *UserHandler) CreateUser(w http.ResponseWriter, r *http.Request) {
 }
 
 func (h *UserHandler) ListUsers(w http.ResponseWriter, r *http.Request) {
-	userList := h.userService.ListUsers(r.Context())
+	userList, err := h.userService.ListUsers(r.Context())
+	if err != nil {
+		utils.WriteResponse(w, http.StatusBadRequest, err)
+		return
+	}
 	response := model.FromUserList(userList)
 	utils.WriteResponse(w, http.StatusOK, response)
 }
@@ -88,7 +92,8 @@ func (h *UserHandler) UpdateUser(w http.ResponseWriter, r *http.Request) {
 		utils.WriteResponse(w, http.StatusNotFound, err)
 		return
 	}
-	utils.WriteResponse(w, http.StatusOK, updatedUser)
+	response := model.FromUser(updatedUser)
+	utils.WriteResponse(w, http.StatusOK, response)
 }
 
 func (h *UserHandler) DeleteUser(w http.ResponseWriter, r *http.Request) {

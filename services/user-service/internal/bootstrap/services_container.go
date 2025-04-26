@@ -1,6 +1,7 @@
 package bootstrap
 
 import (
+	"4it428-newsletter-api/services/user-service/internal/persistence/repositories"
 	"4it428-newsletter-api/services/user-service/internal/service/services"
 )
 
@@ -9,9 +10,11 @@ type ServicesContainer struct {
 	AuthService services.IAuthService
 }
 
-func NewServicesContainer() *ServicesContainer {
+func NewServicesContainer(
+	userRepository *repositories.UserRepository,
+) *ServicesContainer {
 	return &ServicesContainer{
-		UserService: services.NewUserService(),
+		UserService: services.NewUserService(userRepository),
 		AuthService: services.NewAuthService(),
 	}
 }
