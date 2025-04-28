@@ -30,6 +30,7 @@ func main() {
 	if err != nil {
 		logger.Error("initializing database failed", "error", err)
 	}
+	defer db.Close()
 
 	userRepo := repositories.NewUserRepository(db)
 	services := bootstrap.NewServicesContainer(userRepo)
@@ -66,6 +67,9 @@ func main() {
 	if err := server.Shutdown(ctx); err != nil {
 		logger.Error("Error during server shutdown", err)
 	}
+
+	db.Close()
+	logger.Info("Database pool closed")
 
 	logger.Info("Server gracefully stopped")
 }
