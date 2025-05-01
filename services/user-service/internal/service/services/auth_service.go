@@ -2,20 +2,45 @@ package services
 
 import (
 	"4it428-newsletter-api/libs/logger"
+	"4it428-newsletter-api/services/user-service/internal/service/auth"
+	"4it428-newsletter-api/services/user-service/internal/service/model"
 	"context"
+	"github.com/google/uuid"
 )
 
 type authService struct {
+	authProvider auth.IAuthProvider
+	userService  IUserService
 }
 
-func NewAuthService() IAuthService {
-	return &authService{}
+func NewAuthService(authProvider auth.IAuthProvider, service IUserService) IAuthService {
+	return &authService{
+		authProvider: authProvider,
+		userService:  service,
+	}
 }
 
-//TODO: add request parameters
+func (a *authService) SignUp(ctx context.Context, input *model.SignUpInput) error {
+	providerResponse, err := a.authProvider.CreateUser(ctx, input.Email, input.Password)
+	if err != nil {
+		logger.Error("AuthProvider user signup failed", "error", err)
+		return err
+	}
+	logger.Info("User signed up with UID: " + providerResponse.LocalID)
 
-func (a *authService) SignUp(_ context.Context) {
-	logger.Info("Signing up user")
+	user := &model.User{
+		ID:          uuid.New(),
+		Email:       input.Email,
+		FirebaseUID: providerResponse.LocalID,
+		FirstName:   input.FirstName,
+		LastName:    input.LastName,
+	}
+	if err := a.userService.CreateUser(ctx, user); err != nil {
+		logger.Error("Failed to create user locally.", "error", err)
+		return err
+	}
+	logger.Info("Local user record created successfully for email: " + input.Email)
+	return nil
 }
 
 func (a *authService) SignIn(_ context.Context) {

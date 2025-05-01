@@ -3,7 +3,8 @@ package main
 import (
 	"4it428-newsletter-api/libs/logger"
 	"4it428-newsletter-api/services/user-service/internal/bootstrap"
-	"4it428-newsletter-api/services/user-service/internal/persistence/repositories"
+	"4it428-newsletter-api/services/user-service/internal/infrastructure/firebase"
+	"4it428-newsletter-api/services/user-service/internal/infrastructure/persistence/repositories"
 	"4it428-newsletter-api/services/user-service/internal/transport/api"
 	"context"
 	"errors"
@@ -32,8 +33,11 @@ func main() {
 	}
 	defer db.Close()
 
+	firebaseAPIKey := os.Getenv("FIREBASE_AUTH_API_KEY")
+	authProvider := firebase.NewFirebaseAuth(firebaseAPIKey)
+
 	userRepo := repositories.NewUserRepository(db)
-	services := bootstrap.NewServicesContainer(userRepo)
+	services := bootstrap.NewServicesContainer(userRepo, authProvider)
 	handlers := bootstrap.NewHandlersContainer(services)
 	router := api.NewApiRouter(handlers, version)
 	server := &http.Server{

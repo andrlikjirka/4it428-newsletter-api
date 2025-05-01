@@ -2,10 +2,10 @@ package services
 
 import (
 	"4it428-newsletter-api/libs/logger"
+	"4it428-newsletter-api/services/user-service/internal/service/errors"
 	"4it428-newsletter-api/services/user-service/internal/service/model"
 	"4it428-newsletter-api/services/user-service/internal/service/repositories"
 	"context"
-	"errors"
 )
 
 type userService struct {
@@ -41,7 +41,7 @@ func (u *userService) ListUsers(ctx context.Context) ([]*model.User, error) {
 func (u *userService) GetUserByEmail(ctx context.Context, email string) (*model.User, error) {
 	user, err := u.repo.GetByEmail(ctx, email)
 	if err != nil {
-		return &model.User{}, errors.New("user does not exist")
+		return &model.User{}, errors.ErrUserNotFound
 	}
 
 	logger.Info("Getting user by email: " + email)
@@ -54,7 +54,7 @@ func (u *userService) UpdateUser(ctx context.Context, email string, userToUpdate
 		return nil, err
 	}
 	if existingUser == nil {
-		return nil, errors.New("user not found")
+		return nil, errors.ErrUserNotFound
 	}
 
 	if userToUpdate.FirstName != nil {
@@ -62,9 +62,6 @@ func (u *userService) UpdateUser(ctx context.Context, email string, userToUpdate
 	}
 	if userToUpdate.LastName != nil {
 		existingUser.LastName = *userToUpdate.LastName
-	}
-	if userToUpdate.Password != nil {
-		// Do not save password here. Password is usually updated in Firebase, not local DB!
 	}
 
 	user, err := u.repo.Update(ctx, existingUser)

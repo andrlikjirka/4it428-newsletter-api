@@ -22,7 +22,6 @@ func (u *CreateUserRequest) ToUser() *model.User {
 	return &model.User{
 		ID:        uuid.New(),
 		Email:     u.Email,
-		Password:  u.Password,
 		FirstName: u.FirstName,
 		LastName:  u.LastName,
 	}
@@ -30,7 +29,6 @@ func (u *CreateUserRequest) ToUser() *model.User {
 
 func (u *UpdateUserRequest) ToUserUpdate() *model.UserUpdate {
 	return &model.UserUpdate{
-		Password:  u.Password,
 		FirstName: u.FirstName,
 		LastName:  u.LastName,
 	}

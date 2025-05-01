@@ -1,11 +1,11 @@
 package repositories
 
 import (
-	dbmodel "4it428-newsletter-api/services/user-service/internal/persistence/model"
-	"4it428-newsletter-api/services/user-service/internal/persistence/query"
+	dbmodel "4it428-newsletter-api/services/user-service/internal/infrastructure/persistence/model"
+	"4it428-newsletter-api/services/user-service/internal/infrastructure/persistence/query"
+	"4it428-newsletter-api/services/user-service/internal/service/errors"
 	"4it428-newsletter-api/services/user-service/internal/service/model"
 	"context"
-	"errors"
 	"github.com/georgysavva/scany/v2/pgxscan"
 	"github.com/jackc/pgx/v5/pgxpool"
 )
@@ -96,7 +96,7 @@ func (r *UserRepository) Delete(ctx context.Context, email string) error {
 	}
 
 	if commandTag.RowsAffected() == 0 {
-		return errors.New("user not found")
+		return errors.ErrUserNotFound
 	}
 	return err
 }

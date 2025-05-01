@@ -1,7 +1,8 @@
 package bootstrap
 
 import (
-	"4it428-newsletter-api/services/user-service/internal/persistence/repositories"
+	"4it428-newsletter-api/services/user-service/internal/infrastructure/persistence/repositories"
+	"4it428-newsletter-api/services/user-service/internal/service/auth"
 	"4it428-newsletter-api/services/user-service/internal/service/services"
 )
 
@@ -12,9 +13,14 @@ type ServicesContainer struct {
 
 func NewServicesContainer(
 	userRepository *repositories.UserRepository,
+	authProvider auth.IAuthProvider,
 ) *ServicesContainer {
+
+	userService := services.NewUserService(userRepository)
+	authService := services.NewAuthService(authProvider, userService)
+
 	return &ServicesContainer{
-		UserService: services.NewUserService(userRepository),
-		AuthService: services.NewAuthService(),
+		UserService: userService,
+		AuthService: authService,
 	}
 }

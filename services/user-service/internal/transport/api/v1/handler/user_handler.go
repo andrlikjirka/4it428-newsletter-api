@@ -52,7 +52,7 @@ func (h *UserHandler) CreateUser(w http.ResponseWriter, r *http.Request) {
 func (h *UserHandler) ListUsers(w http.ResponseWriter, r *http.Request) {
 	userList, err := h.userService.ListUsers(r.Context())
 	if err != nil {
-		utils.WriteResponse(w, http.StatusBadRequest, err)
+		utils.WriteErrResponse(w, http.StatusBadRequest, err)
 		return
 	}
 	response := model.FromUserList(userList)
@@ -63,7 +63,7 @@ func (h *UserHandler) GetUserByEmail(w http.ResponseWriter, r *http.Request) {
 	email := getEmailFromURL(r)
 	user, err := h.userService.GetUserByEmail(r.Context(), email)
 	if err != nil {
-		utils.WriteResponse(w, http.StatusNotFound, err)
+		utils.WriteErrResponse(w, http.StatusNotFound, err)
 		return
 	}
 	response := model.FromUser(user)
@@ -89,7 +89,7 @@ func (h *UserHandler) UpdateUser(w http.ResponseWriter, r *http.Request) {
 	email := getEmailFromURL(r)
 	updatedUser, err := h.userService.UpdateUser(r.Context(), email, userRequest.ToUserUpdate())
 	if err != nil {
-		utils.WriteResponse(w, http.StatusNotFound, err)
+		utils.WriteErrResponse(w, http.StatusNotFound, err)
 		return
 	}
 	response := model.FromUser(updatedUser)
