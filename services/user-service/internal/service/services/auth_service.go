@@ -21,17 +21,23 @@ func NewAuthService(authProvider auth.IAuthProvider, service IUserService) IAuth
 }
 
 func (a *authService) SignUp(ctx context.Context, input *model.SignUpInput) error {
-	providerResponse, err := a.authProvider.CreateUser(ctx, input.Email, input.Password)
+	response, err := a.authProvider.SignUp(ctx, input.Email, input.Password)
 	if err != nil {
 		logger.Error("AuthProvider user signup failed", "error", err)
 		return err
 	}
-	logger.Info("User signed up with UID: " + providerResponse.LocalID)
+	logger.Info("User signed up with UID: " + response.LocalID)
+
+	// Send email verification
+	logger.Info("Sending verification email to: " + input.Email)
+	if err := a.authProvider.SendVerificationEmail(ctx, response.IDToken); err != nil {
+		logger.Error("Failed to send verification email", "error", err)
+	}
 
 	user := &model.User{
 		ID:          uuid.New(),
 		Email:       input.Email,
-		FirebaseUID: providerResponse.LocalID,
+		FirebaseUID: response.LocalID,
 		FirstName:   input.FirstName,
 		LastName:    input.LastName,
 	}
@@ -43,22 +49,30 @@ func (a *authService) SignUp(ctx context.Context, input *model.SignUpInput) erro
 	return nil
 }
 
-func (a *authService) SignIn(_ context.Context) {
-	logger.Info("Signing in user")
+func (a *authService) SignIn(ctx context.Context, email string, password string) (*auth.AuthProviderSignInResponse, error) {
+	response, err := a.authProvider.SignIn(ctx, email, password)
+	if err != nil {
+		logger.Error("AuthProvider user sign in failed", "error", err)
+		return nil, err
+	}
+	logger.Info("User signed in with UID: " + response.LocalID)
+	return response, nil
 }
 
 func (a *authService) SocialSignIn(_ context.Context) {
 	logger.Info("Social sign-in via %s with token: %s\n")
 }
 
-func (a *authService) Logout(_ context.Context) {
-	logger.Info("Logging out user")
-}
-
 func (a *authService) Verify(_ context.Context) {
 	logger.Info("Verifying user")
 }
 
-func (a *authService) Refresh(_ context.Context) {
-	logger.Info("Refreshing token")
+func (a *authService) RefreshToken(ctx context.Context, refreshToken string) (*auth.AuthProviderRefreshResponse, error) {
+	response, err := a.authProvider.RefreshToken(ctx, refreshToken)
+	if err != nil {
+		logger.Error("AuthProvider token refresh failed", "error", err)
+		return nil, err
+	}
+	logger.Info("Token refreshed successfully")
+	return response, nil
 }

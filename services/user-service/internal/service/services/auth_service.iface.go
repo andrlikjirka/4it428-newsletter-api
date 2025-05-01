@@ -1,15 +1,15 @@
 package services
 
 import (
+	"4it428-newsletter-api/services/user-service/internal/service/auth"
 	"4it428-newsletter-api/services/user-service/internal/service/model"
 	"context"
 )
 
 type IAuthService interface {
 	SignUp(ctx context.Context, input *model.SignUpInput) error
-	SignIn(ctx context.Context)
+	SignIn(ctx context.Context, email, password string) (*auth.AuthProviderSignInResponse, error)
 	SocialSignIn(ctx context.Context)
-	Logout(ctx context.Context)
 	Verify(ctx context.Context)
-	Refresh(ctx context.Context)
+	RefreshToken(ctx context.Context, refreshToken string) (*auth.AuthProviderRefreshResponse, error)
 }

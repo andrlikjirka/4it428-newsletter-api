@@ -11,7 +11,6 @@ func NewAuthRouter(h *v1.AuthHandler) *chi.Mux {
 	r.Post("/signup", h.SignUp)
 	r.Post("/signin", h.SignIn)
 	r.Post("/social/signin", h.SocialSignIn) //optional: accepts provider (e.g. google/facebook) and idToken
-	r.Post("/logout", h.Logout)
 	r.Get("/verify", h.Verify)
 	r.Post("/refresh", h.Refresh)
 
