@@ -34,14 +34,14 @@ func SetupFirebaseAuth(ctx context.Context) (auth.IAuthProvider, error) {
 		firebaseSecretPath = "./secrets/firebase-adminsdk.json"
 	}
 	opt := option.WithCredentialsFile(firebaseSecretPath)
-	app, err := firebase.NewApp(context.Background(), nil, opt)
+	app, err := firebase.NewApp(ctx, nil, opt)
 	if err != nil {
 		log.Fatalf("error initializing app with firebase admin sdk")
 		return nil, err
 	}
 
 	firebaseAPIKey := os.Getenv("FIREBASE_AUTH_API_KEY")
-	authProvider, err := firebaseauth.NewFirebaseAuth(context.Background(), app, firebaseAPIKey)
+	authProvider, err := firebaseauth.NewFirebaseAuth(ctx, app, firebaseAPIKey)
 	if err != nil {
 		log.Fatalf("failed to initialize FirebaseAuthProvider: %v", err)
 		return nil, err
