@@ -13,7 +13,12 @@ This monorepo contains all microservices powering the Newsletter API.
 1. run `git clone <repository>`
 2. run `cd 4it428-newsletter-api`
 3. copy environment config `cp .env.sample .env`
-4. edit `.env` 
+4. edit `.env`
+   - Obtain your Firebase Admin SDK private key (JSON file) from the Firebase console 
+     - (Project settings -> Service accounts -> Generate new private key).
+   - Move the downloaded JSON file into `secrets` directory.
+   - Set `FIREBASE_CREDENTIALS=./secrets/your-key.json` in `.env` (adjust filename).
+   - Set remaining env variables.
 5. run: `docker compose -f docker-compose.dev.yml up --build`
 
 ### Production environment setup:
@@ -21,6 +26,11 @@ This monorepo contains all microservices powering the Newsletter API.
 2. run `cd 4it428-newsletter-api`
 3. copy environment config `cp .env.sample .env`
 4. edit `.env`
+    - Obtain your Firebase Admin SDK private key (JSON file) from the Firebase console
+      - (Project settings -> Service accounts -> Generate new private key).
+    - Move the downloaded JSON file into `secrets` directory.
+    - Set `FIREBASE_CREDENTIALS=./secrets/your-key.json` in `.env` (adjust filename).
+    - Set remaining env variables.
 5. run: `docker compose up`
 
 ## Architecture
