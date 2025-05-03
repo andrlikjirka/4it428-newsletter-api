@@ -28,7 +28,7 @@ func (a *authService) SignUp(ctx context.Context, input *model.SignUpInput) (*au
 	}
 	logger.Info("User signed up with UID: " + response.LocalID)
 
-	// Send email verification
+	// Send verification email
 	logger.Info("Sending verification email to: " + input.Email)
 	if err := a.authProvider.SendVerificationEmail(ctx, response.IDToken); err != nil {
 		logger.Error("Failed to send verification email", "error", err)
