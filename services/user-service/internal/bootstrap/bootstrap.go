@@ -17,21 +17,25 @@ import (
 // SETUP METHODS:
 
 func SetupDatabase(ctx context.Context) (*pgxpool.Pool, error) {
-	// Initialize the database connection pool.
-	pool, err := pgxpool.New(
-		ctx,
-		os.Getenv("POSTGRES_DOCKER_URL"),
-	)
+	dbURL := os.Getenv("POSTGRES_URL")
+	pool, err := pgxpool.New(ctx, dbURL)
 	if err != nil {
 		return nil, err
 	}
+
+	// force a connection to validate config and availability
+	if err := pool.Ping(ctx); err != nil {
+		pool.Close() // clean up if ping fails
+		return nil, err
+	}
+
 	return pool, nil
 }
 
 func SetupFirebaseAuth(ctx context.Context) (auth.IAuthProvider, error) {
 	firebaseSecretPath := os.Getenv("FIREBASE_CREDENTIALS")
 	if firebaseSecretPath == "" {
-		firebaseSecretPath = "./secrets/firebase-adminsdk.json"
+		firebaseSecretPath = "../../secrets/firebase-adminsdk.json"
 	}
 	opt := option.WithCredentialsFile(firebaseSecretPath)
 	app, err := firebase.NewApp(ctx, nil, opt)

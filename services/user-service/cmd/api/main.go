@@ -28,6 +28,7 @@ func main() {
 	db, err := bootstrap.SetupDatabase(ctx)
 	if err != nil {
 		logger.Error("initializing database failed", "error", err)
+		return
 	}
 	defer db.Close()
 
