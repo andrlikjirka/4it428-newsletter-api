@@ -3,15 +3,10 @@ package main
 import (
 	"4it428-newsletter-api/libs/logger"
 	"4it428-newsletter-api/services/user-service/internal/bootstrap"
-	"4it428-newsletter-api/services/user-service/internal/infrastructure/firebase_auth"
 	"4it428-newsletter-api/services/user-service/internal/infrastructure/persistence/repositories"
 	"4it428-newsletter-api/services/user-service/internal/transport/api"
 	"context"
 	"errors"
-	firebase "firebase.google.com/go/v4"
-	"github.com/jackc/pgx/v5/pgxpool"
-	"google.golang.org/api/option"
-	"log"
 	"net/http"
 	"os"
 	"os/signal"
@@ -30,26 +25,15 @@ func main() {
 		port = "8083"
 	}
 
-	db, err := setupDatabase(ctx)
+	db, err := bootstrap.SetupDatabase(ctx)
 	if err != nil {
 		logger.Error("initializing database failed", "error", err)
 	}
 	defer db.Close()
 
-	firebaseAPIKey := os.Getenv("FIREBASE_AUTH_API_KEY")
-	firebaseSecretPath := os.Getenv("FIREBASE_CREDENTIALS")
-	if firebaseSecretPath == "" {
-		firebaseSecretPath = "./secrets/firebase-adminsdk.json"
-	}
-	opt := option.WithCredentialsFile(firebaseSecretPath)
-	app, err := firebase.NewApp(context.Background(), nil, opt)
+	authProvider, err := bootstrap.SetupFirebaseAuth(ctx)
 	if err != nil {
-		log.Fatalf("error initializing app with firebase admin sdk")
-		return
-	}
-	authProvider, err := firebase_auth.NewFirebaseAuth(context.Background(), app, firebaseAPIKey)
-	if err != nil {
-		log.Fatalf("failed to initialize FirebaseAuthProvider: %v", err)
+		logger.Error("initializing firebase auth failed", "error", err)
 		return
 	}
 
@@ -93,16 +77,4 @@ func main() {
 	logger.Info("Database pool closed")
 
 	logger.Info("Server gracefully stopped")
-}
-
-func setupDatabase(ctx context.Context) (*pgxpool.Pool, error) {
-	// Initialize the database connection pool.
-	pool, err := pgxpool.New(
-		ctx,
-		os.Getenv("POSTGRES_DOCKER_URL"),
-	)
-	if err != nil {
-		return nil, err
-	}
-	return pool, nil
 }

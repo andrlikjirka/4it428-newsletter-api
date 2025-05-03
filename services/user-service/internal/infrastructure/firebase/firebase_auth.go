@@ -1,4 +1,4 @@
-package firebase_auth
+package firebase
 
 import (
 	"4it428-newsletter-api/libs/logger"
