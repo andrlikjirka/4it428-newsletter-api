@@ -11,6 +11,7 @@ type IAuthProvider interface {
 	SendVerificationEmail(ctx context.Context, idToken string) error
 	RefreshToken(ctx context.Context, refreshToken string) (*AuthProviderRefreshResponse, error)
 	VerifyToken(ctx context.Context, idToken string) (*auth.Token, error)
+	DeleteUser(ctx context.Context, uid string) error
 }
 
 type AuthProviderSignUpResponse struct {

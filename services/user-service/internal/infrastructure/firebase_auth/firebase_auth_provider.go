@@ -1,6 +1,7 @@
 package firebase_auth
 
 import (
+	"4it428-newsletter-api/libs/logger"
 	"4it428-newsletter-api/services/user-service/internal/service/auth"
 	"bytes"
 	"context"
@@ -13,9 +14,9 @@ import (
 )
 
 type FirebaseAuthProvider struct {
-	apiKey      string
-	client      *http.Client
-	adminClient *firebaseAuth.Client
+	apiKey string
+	client *http.Client
+	admin  *firebaseAuth.Client
 }
 
 func NewFirebaseAuth(ctx context.Context, app *firebase.App, apiKey string) (*FirebaseAuthProvider, error) {
@@ -25,9 +26,9 @@ func NewFirebaseAuth(ctx context.Context, app *firebase.App, apiKey string) (*Fi
 	}
 
 	return &FirebaseAuthProvider{
-		apiKey:      apiKey,
-		client:      &http.Client{},
-		adminClient: adminClient,
+		apiKey: apiKey,
+		client: &http.Client{},
+		admin:  adminClient,
 	}, nil
 }
 
@@ -152,9 +153,19 @@ func (f *FirebaseAuthProvider) RefreshToken(ctx context.Context, refreshToken st
 }
 
 func (f *FirebaseAuthProvider) VerifyToken(ctx context.Context, idToken string) (*firebaseAuth.Token, error) {
-	token, err := f.adminClient.VerifyIDToken(ctx, idToken)
+	token, err := f.admin.VerifyIDToken(ctx, idToken)
 	if err != nil {
 		return nil, fmt.Errorf("failed to verify ID token: %w", err)
 	}
 	return token, nil
+}
+
+func (f *FirebaseAuthProvider) DeleteUser(ctx context.Context, uid string) error {
+	err := f.admin.DeleteUser(ctx, uid)
+	if err != nil {
+		logger.Error("Error deleting user in firebase auth", "error", err)
+		return err
+	}
+	logger.Info("User deleted from firebase auth with uid: " + uid)
+	return nil
 }

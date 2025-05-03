@@ -2,6 +2,7 @@ package services
 
 import (
 	"4it428-newsletter-api/libs/logger"
+	"4it428-newsletter-api/services/user-service/internal/service/auth"
 	"4it428-newsletter-api/services/user-service/internal/service/errors"
 	"4it428-newsletter-api/services/user-service/internal/service/model"
 	"4it428-newsletter-api/services/user-service/internal/service/repositories"
@@ -9,12 +10,14 @@ import (
 )
 
 type userService struct {
-	repo repositories.IUserRepository
+	authProvider auth.IAuthProvider
+	repo         repositories.IUserRepository
 }
 
-func NewUserService(repo repositories.IUserRepository) IUserService {
+func NewUserService(authProvider auth.IAuthProvider, repo repositories.IUserRepository) IUserService {
 	return &userService{
-		repo: repo,
+		authProvider: authProvider,
+		repo:         repo,
 	}
 }
 
@@ -70,11 +73,20 @@ func (u *userService) UpdateUser(ctx context.Context, email string, userToUpdate
 }
 
 func (u *userService) DeleteUser(ctx context.Context, email string) error {
-	err := u.repo.Delete(ctx, email)
+	userRecord, err := u.repo.GetByEmail(ctx, email)
+	if err != nil {
+		return errors.ErrUserNotFound
+	}
+
+	err = u.repo.Delete(ctx, email)
 	if err != nil {
 		return err
 	}
+	logger.Info("Deleted user from DB with email: " + email)
 
-	logger.Info("Deleting user with email: " + email)
+	err = u.authProvider.DeleteUser(ctx, userRecord.FirebaseUID)
+	if err != nil {
+		logger.Error("Failed to delete user from Firebase: "+email, "error", err)
+	}
 	return nil
 }

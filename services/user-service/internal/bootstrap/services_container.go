@@ -16,7 +16,7 @@ func NewServicesContainer(
 	authProvider auth.IAuthProvider,
 ) *ServicesContainer {
 
-	userService := services.NewUserService(userRepository)
+	userService := services.NewUserService(authProvider, userRepository)
 	authService := services.NewAuthService(authProvider, userService)
 
 	return &ServicesContainer{
