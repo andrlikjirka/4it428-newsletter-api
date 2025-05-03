@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
   title: User Service
-  description: User service allowing to manage users (editors of newsletters).
+  description: User service for users management (editors of newsletters) and authentication.
   version: 1.0.0
 servers:
   - url: http://localhost:80/v1
@@ -18,10 +18,332 @@ paths:
           description: It's ALIVE (a.k.a. service is up and running)
         "400":
           description: Invalid request
-  "/users": {
-    # TODO;
 
-    # /users/{:id}
-    # ...
-  }
-components: {}
+  "/auth/signup":
+    post:
+      summary: Register a new user
+      operationId: SignUp
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SignUpRequest"
+      responses:
+        "201":
+          description: User successfully registered
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuthResponse"
+        "400":
+          $ref: '#/components/responses/BadRequest'
+
+  "/auth/signin":
+    post:
+      summary: Sign in a user
+      operationId: SignIn
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SignInRequest"
+      responses:
+        "200":
+          description: Successfully signed in
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuthResponse"
+        "400":
+          $ref: '#/components/responses/BadRequest'
+
+  "/auth/refresh":
+    post:
+      summary: Refresh access token
+      operationId: RefreshToken
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RefreshTokenRequest"
+      responses:
+        "200":
+          description: Token refreshed
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RefreshTokenResponse"
+        "400":
+          $ref: '#/components/responses/BadRequest'
+
+  "/auth/verify":
+    get:
+      summary: Verify ID token
+      operationId: VerifyToken
+      security:
+        - bearerAuth: [ ]
+      responses:
+        "200":
+          description: Token verified
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/VerifyTokenResponse"
+        "401":
+          $ref: '#/components/responses/Unauthorized'
+
+  "/users":
+    get:
+      summary: List users
+      operationId: ListUsers
+      description: List all users
+      responses:
+        "200":
+          description: Users fetched successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/User"
+        "400":
+          $ref: '#/components/responses/BadRequest'
+
+    post:
+      summary: Create user
+      operationId: CreateUser
+      description: Create a new user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateUserRequest"
+      responses:
+        "201":
+          description: User successfully created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CreateUserRequest"
+        "400":
+          $ref: '#/components/responses/BadRequest'
+
+  /users/{email}:
+    parameters:
+      - name: email
+        description: Unique user's email
+        in: path
+        required: true
+        schema:
+          type: string
+          format: email
+
+    get:
+      summary: Get a user by email
+      operationId: GetUserByEmail
+      description: Fetch user detail by a specified user identifier (email)
+      responses:
+        "200":
+          description: User with the given email fetched successfully.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+        "404":
+          $ref: '#/components/responses/NotFound'
+
+    put:
+      summary: Update a user
+      operationId: UpdateUser
+      requestBody:
+        description: Updated user data
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateUserRequest"
+      responses:
+        "200":
+          description: User with the given email was updated successfully.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+    delete:
+      summary: Delete a user
+      operationId: DeleteUser
+      description: Delete user specified by an unique identifier (email)
+      responses:
+        '204':
+          description: User with the given email deleted successfully.
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  schemas:
+    SignUpRequest:
+      type: object
+      required: [ email, password, first_name, last_name ]
+      properties:
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+        first_name:
+          type: string
+        last_name:
+          type: string
+
+    SignInRequest:
+      type: object
+      required: [ email, password ]
+      properties:
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+
+    RefreshTokenRequest:
+      type: object
+      required: [ refreshToken ]
+      properties:
+        refreshToken:
+          type: string
+
+    RefreshTokenResponse:
+      type: object
+      properties:
+        token_type:
+          type: string
+        expires_in:
+          type: string
+        id_token:
+          type: string
+
+    AuthResponse:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+        idToken:
+          type: string
+        refreshToken:
+          type: string
+        expiresIn:
+          type: string
+        localId:
+          type: string
+
+    VerifyTokenResponse:
+      type: object
+      properties:
+        auth_time:
+          type: integer
+        email:
+          type: string
+          format: email
+        email_verified:
+          type: boolean
+          example: false
+        firebase:
+          type: object
+          properties:
+            identities:
+              type: object
+              properties:
+                email:
+                  type: array
+                  items:
+                    type: string
+                    format: email
+            sign_in_provider:
+              type: string
+        user_id:
+          type: string
+
+    CreateUserRequest:
+      type: object
+      required: [ email, password, first_name, last_name ]
+      properties:
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+        first_name:
+          type: string
+        last_name:
+          type: string
+    UpdateUserRequest:
+      type: object
+      properties:
+        password:
+          type: string
+        first_name:
+          type: string
+        last_name:
+          type: string
+
+    User:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        email:
+          type: string
+          format: email
+        first_name:
+          type: string
+        last_name:
+          type: string
+
+    Error:
+      type: object
+      required:
+        - code
+        - message
+      properties:
+        error:
+          type: string
+          description: Error message
+
+  responses:
+    BadRequest:
+      description: Invalid request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFound:
+      description: User not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Unauthorized:
+      description: Unauthorized - Invalid or missing authentication token
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'

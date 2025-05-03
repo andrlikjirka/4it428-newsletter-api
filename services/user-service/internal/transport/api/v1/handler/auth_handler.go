@@ -109,5 +109,4 @@ func (h *AuthHandler) Verify(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	utils.WriteResponse(w, http.StatusOK, claims)
-
 }
