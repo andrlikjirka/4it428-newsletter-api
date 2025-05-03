@@ -8,6 +8,7 @@ import (
 	"4it428-newsletter-api/services/user-service/internal/transport/api/v1/handler"
 	"context"
 	firebase "firebase.google.com/go/v4"
+	"fmt"
 	"github.com/jackc/pgx/v5/pgxpool"
 	"google.golang.org/api/option"
 	"log"
@@ -18,6 +19,7 @@ import (
 
 func SetupDatabase(ctx context.Context) (*pgxpool.Pool, error) {
 	dbURL := os.Getenv("POSTGRES_URL")
+	fmt.Println(dbURL)
 	pool, err := pgxpool.New(ctx, dbURL)
 	if err != nil {
 		return nil, err

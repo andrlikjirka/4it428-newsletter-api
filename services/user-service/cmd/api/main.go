@@ -7,6 +7,7 @@ import (
 	"4it428-newsletter-api/services/user-service/internal/transport/api"
 	"context"
 	"errors"
+	"github.com/joho/godotenv"
 	"net/http"
 	"os"
 	"os/signal"
@@ -17,6 +18,7 @@ import (
 var version = "v0.0.0"
 
 func main() {
+	_ = godotenv.Load("../../.env")
 	ctx := context.Background()
 	logger.Init()
 
