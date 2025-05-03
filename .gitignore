@@ -31,3 +31,4 @@
 /services/subscription-service/tmp
 /services/user-service/tmp
 
+/secrets/firebase-adminsdk.json

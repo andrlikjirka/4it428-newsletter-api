@@ -1,25 +1,34 @@
-package firebase
+package firebase_auth
 
 import (
 	"4it428-newsletter-api/services/user-service/internal/service/auth"
 	"bytes"
 	"context"
 	"encoding/json"
+	firebase "firebase.google.com/go/v4"
+	firebaseAuth "firebase.google.com/go/v4/auth"
 	"fmt"
 	"io"
 	"net/http"
 )
 
 type FirebaseAuthProvider struct {
-	apiKey string
-	client *http.Client
+	apiKey      string
+	client      *http.Client
+	adminClient *firebaseAuth.Client
 }
 
-func NewFirebaseAuth(apiKey string) *FirebaseAuthProvider {
-	return &FirebaseAuthProvider{
-		apiKey: apiKey,
-		client: &http.Client{},
+func NewFirebaseAuth(ctx context.Context, app *firebase.App, apiKey string) (*FirebaseAuthProvider, error) {
+	adminClient, err := app.Auth(ctx)
+	if err != nil {
+		return nil, fmt.Errorf("failed to initialize firebase auth client: %w", err)
 	}
+
+	return &FirebaseAuthProvider{
+		apiKey:      apiKey,
+		client:      &http.Client{},
+		adminClient: adminClient,
+	}, nil
 }
 
 func (f *FirebaseAuthProvider) SignUp(ctx context.Context, email string, password string) (*auth.AuthProviderSignUpResponse, error) {
@@ -140,4 +149,12 @@ func (f *FirebaseAuthProvider) RefreshToken(ctx context.Context, refreshToken st
 		return nil, fmt.Errorf("failed to unmarshal response: %w", err)
 	}
 	return &result, nil
+}
+
+func (f *FirebaseAuthProvider) VerifyToken(ctx context.Context, idToken string) (*firebaseAuth.Token, error) {
+	token, err := f.adminClient.VerifyIDToken(ctx, idToken)
+	if err != nil {
+		return nil, fmt.Errorf("failed to verify ID token: %w", err)
+	}
+	return token, nil
 }

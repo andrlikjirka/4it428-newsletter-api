@@ -5,8 +5,10 @@ import (
 	"4it428-newsletter-api/services/user-service/internal/service/services"
 	"4it428-newsletter-api/services/user-service/internal/transport/api/v1/model"
 	"encoding/json"
+	"errors"
 	"io"
 	"net/http"
+	"strings"
 )
 
 type AuthHandler struct {
@@ -33,11 +35,12 @@ func (h *AuthHandler) SignUp(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if err := h.authService.SignUp(r.Context(), signUpRequest.ToServiceInput()); err != nil {
+	signUpInfo, err := h.authService.SignUp(r.Context(), signUpRequest.ToServiceInput())
+	if err != nil {
 		utils.WriteErrResponse(w, http.StatusBadRequest, err)
 		return
 	}
-	utils.WriteResponse(w, http.StatusCreated, nil)
+	utils.WriteResponse(w, http.StatusCreated, signUpInfo)
 }
 
 func (h *AuthHandler) SignIn(w http.ResponseWriter, r *http.Request) {
@@ -68,10 +71,6 @@ func (h *AuthHandler) SocialSignIn(w http.ResponseWriter, r *http.Request) {
 	utils.WriteResponse(w, http.StatusOK, "Social signin endpoint hit")
 }
 
-func (h *AuthHandler) Verify(w http.ResponseWriter, r *http.Request) {
-	utils.WriteResponse(w, http.StatusOK, "Verify  endpoint hit")
-}
-
 func (h *AuthHandler) Refresh(w http.ResponseWriter, r *http.Request) {
 	b, err := io.ReadAll(r.Body)
 	if err != nil {
@@ -94,4 +93,21 @@ func (h *AuthHandler) Refresh(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	utils.WriteResponse(w, http.StatusOK, result)
+}
+
+func (h *AuthHandler) Verify(w http.ResponseWriter, r *http.Request) {
+	authHeader := r.Header.Get("Authorization")
+	if authHeader == "" || !strings.HasPrefix(authHeader, "Bearer ") {
+		utils.WriteErrResponse(w, http.StatusUnauthorized, errors.New("missing or invalid Authorization header"))
+		return
+	}
+	idToken := strings.TrimPrefix(authHeader, "Bearer ")
+
+	claims, err := h.authService.Verify(r.Context(), idToken)
+	if err != nil {
+		utils.WriteErrResponse(w, http.StatusUnauthorized, err)
+		return
+	}
+	utils.WriteResponse(w, http.StatusOK, claims)
+
 }

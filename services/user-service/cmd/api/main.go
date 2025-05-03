@@ -3,12 +3,15 @@ package main
 import (
 	"4it428-newsletter-api/libs/logger"
 	"4it428-newsletter-api/services/user-service/internal/bootstrap"
-	"4it428-newsletter-api/services/user-service/internal/infrastructure/firebase"
+	"4it428-newsletter-api/services/user-service/internal/infrastructure/firebase_auth"
 	"4it428-newsletter-api/services/user-service/internal/infrastructure/persistence/repositories"
 	"4it428-newsletter-api/services/user-service/internal/transport/api"
 	"context"
 	"errors"
+	firebase "firebase.google.com/go/v4"
 	"github.com/jackc/pgx/v5/pgxpool"
+	"google.golang.org/api/option"
+	"log"
 	"net/http"
 	"os"
 	"os/signal"
@@ -34,7 +37,21 @@ func main() {
 	defer db.Close()
 
 	firebaseAPIKey := os.Getenv("FIREBASE_AUTH_API_KEY")
-	authProvider := firebase.NewFirebaseAuth(firebaseAPIKey)
+	firebaseSecretPath := os.Getenv("FIREBASE_CREDENTIALS")
+	if firebaseSecretPath == "" {
+		firebaseSecretPath = "./secrets/firebase-adminsdk.json"
+	}
+	opt := option.WithCredentialsFile(firebaseSecretPath)
+	app, err := firebase.NewApp(context.Background(), nil, opt)
+	if err != nil {
+		log.Fatalf("error initializing app with firebase admin sdk")
+		return
+	}
+	authProvider, err := firebase_auth.NewFirebaseAuth(context.Background(), app, firebaseAPIKey)
+	if err != nil {
+		log.Fatalf("failed to initialize FirebaseAuthProvider: %v", err)
+		return
+	}
 
 	userRepo := repositories.NewUserRepository(db)
 	services := bootstrap.NewServicesContainer(userRepo, authProvider)

@@ -20,11 +20,11 @@ func NewAuthService(authProvider auth.IAuthProvider, service IUserService) IAuth
 	}
 }
 
-func (a *authService) SignUp(ctx context.Context, input *model.SignUpInput) error {
+func (a *authService) SignUp(ctx context.Context, input *model.SignUpInput) (*auth.AuthProviderSignUpResponse, error) {
 	response, err := a.authProvider.SignUp(ctx, input.Email, input.Password)
 	if err != nil {
 		logger.Error("AuthProvider user signup failed", "error", err)
-		return err
+		return nil, err
 	}
 	logger.Info("User signed up with UID: " + response.LocalID)
 
@@ -43,10 +43,10 @@ func (a *authService) SignUp(ctx context.Context, input *model.SignUpInput) erro
 	}
 	if err := a.userService.CreateUser(ctx, user); err != nil {
 		logger.Error("Failed to create user locally.", "error", err)
-		return err
+		return nil, err
 	}
 	logger.Info("Local user record created successfully for email: " + input.Email)
-	return nil
+	return response, nil
 }
 
 func (a *authService) SignIn(ctx context.Context, email string, password string) (*auth.AuthProviderSignInResponse, error) {
@@ -63,10 +63,6 @@ func (a *authService) SocialSignIn(_ context.Context) {
 	logger.Info("Social sign-in via %s with token: %s\n")
 }
 
-func (a *authService) Verify(_ context.Context) {
-	logger.Info("Verifying user")
-}
-
 func (a *authService) RefreshToken(ctx context.Context, refreshToken string) (*auth.AuthProviderRefreshResponse, error) {
 	response, err := a.authProvider.RefreshToken(ctx, refreshToken)
 	if err != nil {
@@ -75,4 +71,14 @@ func (a *authService) RefreshToken(ctx context.Context, refreshToken string) (*a
 	}
 	logger.Info("Token refreshed successfully")
 	return response, nil
+}
+
+func (a *authService) Verify(ctx context.Context, idToken string) (map[string]interface{}, error) {
+	token, err := a.authProvider.VerifyToken(ctx, idToken)
+	if err != nil {
+		logger.Error("Token verification failed", "error", err)
+		return nil, err
+	}
+	logger.Info("Token successfully verified", "email", token.Claims["email"])
+	return token.Claims, nil
 }
