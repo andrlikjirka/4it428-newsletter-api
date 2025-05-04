@@ -5,10 +5,10 @@ import (
 	"4it428-newsletter-api/services/user-service/internal/infrastructure/persistence/repositories"
 	"4it428-newsletter-api/services/user-service/internal/service/auth"
 	"4it428-newsletter-api/services/user-service/internal/service/services"
+	"4it428-newsletter-api/services/user-service/internal/service/services/impl"
 	"4it428-newsletter-api/services/user-service/internal/transport/api/v1/handler"
 	"context"
 	firebase "firebase.google.com/go/v4"
-	"fmt"
 	"github.com/jackc/pgx/v5/pgxpool"
 	"google.golang.org/api/option"
 	"log"
@@ -19,7 +19,6 @@ import (
 
 func SetupDatabase(ctx context.Context) (*pgxpool.Pool, error) {
 	dbURL := os.Getenv("POSTGRES_URL")
-	fmt.Println(dbURL)
 	pool, err := pgxpool.New(ctx, dbURL)
 	if err != nil {
 		return nil, err
@@ -70,8 +69,8 @@ func NewHandlersContainer(s *ServicesContainer) *HandlersContainer {
 }
 
 type ServicesContainer struct {
-	UserService services.IUserService
-	AuthService services.IAuthService
+	UserService services.UserService
+	AuthService services.AuthService
 }
 
 func NewServicesContainer(
@@ -79,8 +78,8 @@ func NewServicesContainer(
 	authProvider auth.IAuthProvider,
 ) *ServicesContainer {
 
-	userService := services.NewUserService(authProvider, userRepository)
-	authService := services.NewAuthService(authProvider, userService)
+	userService := impl.NewUserService(authProvider, userRepository)
+	authService := impl.NewAuthService(authProvider, userService)
 
 	return &ServicesContainer{
 		UserService: userService,

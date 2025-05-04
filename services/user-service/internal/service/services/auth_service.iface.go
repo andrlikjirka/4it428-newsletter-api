@@ -6,7 +6,7 @@ import (
 	"context"
 )
 
-type IAuthService interface {
+type AuthService interface {
 	SignUp(ctx context.Context, input *model.SignUpInput) (*auth.AuthProviderSignUpResponse, error)
 	SignIn(ctx context.Context, email, password string) (*auth.AuthProviderSignInResponse, error)
 	SocialSignIn(ctx context.Context)

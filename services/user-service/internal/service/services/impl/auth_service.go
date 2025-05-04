@@ -1,19 +1,20 @@
-package services
+package impl
 
 import (
 	"4it428-newsletter-api/libs/logger"
 	"4it428-newsletter-api/services/user-service/internal/service/auth"
 	"4it428-newsletter-api/services/user-service/internal/service/model"
+	"4it428-newsletter-api/services/user-service/internal/service/services"
 	"context"
 	"github.com/google/uuid"
 )
 
 type authService struct {
 	authProvider auth.IAuthProvider
-	userService  IUserService
+	userService  services.UserService
 }
 
-func NewAuthService(authProvider auth.IAuthProvider, service IUserService) IAuthService {
+func NewAuthService(authProvider auth.IAuthProvider, service services.UserService) services.AuthService {
 	return &authService{
 		authProvider: authProvider,
 		userService:  service,

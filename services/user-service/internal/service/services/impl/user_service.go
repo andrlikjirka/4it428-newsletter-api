@@ -1,4 +1,4 @@
-package services
+package impl
 
 import (
 	"4it428-newsletter-api/libs/logger"
@@ -6,15 +6,16 @@ import (
 	"4it428-newsletter-api/services/user-service/internal/service/errors"
 	"4it428-newsletter-api/services/user-service/internal/service/model"
 	"4it428-newsletter-api/services/user-service/internal/service/repositories"
+	"4it428-newsletter-api/services/user-service/internal/service/services"
 	"context"
 )
 
 type userService struct {
 	authProvider auth.IAuthProvider
-	repo         repositories.IUserRepository
+	repo         repositories.UserRepository
 }
 
-func NewUserService(authProvider auth.IAuthProvider, repo repositories.IUserRepository) IUserService {
+func NewUserService(authProvider auth.IAuthProvider, repo repositories.UserRepository) services.UserService {
 	return &userService{
 		authProvider: authProvider,
 		repo:         repo,

@@ -19,10 +19,10 @@ func init() {
 }
 
 type UserHandler struct {
-	userService services.IUserService
+	userService services.UserService
 }
 
-func NewUserHandler(s services.IUserService) *UserHandler {
+func NewUserHandler(s services.UserService) *UserHandler {
 	return &UserHandler{userService: s}
 }
 
