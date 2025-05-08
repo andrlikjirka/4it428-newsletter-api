@@ -23,8 +23,9 @@ func NewUserService(authProvider auth.IAuthProvider, repo repositories.UserRepos
 }
 
 func (u *userService) CreateUser(ctx context.Context, user *model.User) error {
-	err := u.repo.Create(ctx, user)
+	err := u.repo.Add(ctx, user)
 	if err != nil {
+		logger.Error("Failed to create user", "error", err)
 		return err
 	}
 
@@ -45,7 +46,7 @@ func (u *userService) ListUsers(ctx context.Context) ([]*model.User, error) {
 func (u *userService) GetUserByEmail(ctx context.Context, email string) (*model.User, error) {
 	user, err := u.repo.GetByEmail(ctx, email)
 	if err != nil {
-		return &model.User{}, errors.ErrUserNotFound
+		return nil, errors.ErrUserNotFound
 	}
 
 	logger.Info("Getting user by email: " + email)
@@ -55,9 +56,6 @@ func (u *userService) GetUserByEmail(ctx context.Context, email string) (*model.
 func (u *userService) UpdateUser(ctx context.Context, email string, userToUpdate *model.UserUpdate) (*model.User, error) {
 	existingUser, err := u.repo.GetByEmail(ctx, email)
 	if err != nil {
-		return nil, err
-	}
-	if existingUser == nil {
 		return nil, errors.ErrUserNotFound
 	}
 
@@ -69,7 +67,12 @@ func (u *userService) UpdateUser(ctx context.Context, email string, userToUpdate
 	}
 
 	user, err := u.repo.Update(ctx, existingUser)
-	logger.Info("Updating user: %+v\n", user)
+	if err != nil {
+		logger.Error("Failed to update user", "id", user.ID, "error", err)
+		return nil, err
+	}
+
+	logger.Info("User updated successfully", "id", user.ID)
 	return user, nil
 }
 
@@ -81,6 +84,7 @@ func (u *userService) DeleteUser(ctx context.Context, email string) error {
 
 	err = u.repo.Delete(ctx, email)
 	if err != nil {
+		logger.Error("Failed to delete user", "id", userRecord, "error", err)
 		return err
 	}
 	logger.Info("Deleted user from DB with email: " + email)

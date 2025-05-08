@@ -38,7 +38,7 @@ func (r *UserRepository) List(ctx context.Context) ([]*model.User, error) {
 	return response, nil
 }
 
-func (r *UserRepository) Create(ctx context.Context, user *model.User) error {
+func (r *UserRepository) Add(ctx context.Context, user *model.User) error {
 	_, err := r.pool.Exec(ctx, query.InsertUser,
 		user.ID, user.Email, user.FirstName, user.LastName, user.FirebaseUID,
 	)
