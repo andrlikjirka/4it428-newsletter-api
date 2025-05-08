@@ -6,14 +6,12 @@ import (
 	"4it428-newsletter-api/services/newsletter-service/internal/service/services/impl"
 	"4it428-newsletter-api/services/newsletter-service/internal/transport/api/v1/handler"
 	"context"
-	"fmt"
 	"github.com/jackc/pgx/v5/pgxpool"
 	"os"
 )
 
 func SetupDatabase(ctx context.Context) (*pgxpool.Pool, error) {
 	dbURL := os.Getenv("POSTGRES_URL")
-	fmt.Println(dbURL)
 	pool, err := pgxpool.New(ctx, dbURL)
 	if err != nil {
 		return nil, err
