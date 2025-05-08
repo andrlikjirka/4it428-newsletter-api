@@ -5,7 +5,7 @@ import (
 	"github.com/go-chi/chi/v5"
 )
 
-func NewUserRouter(h *v1.NewsletterHandler) *chi.Mux {
+func NewNewsletterRouter(h *v1.NewsletterHandler) *chi.Mux {
 	r := chi.NewRouter()
 
 	// TODO: middleware

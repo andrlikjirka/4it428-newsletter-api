@@ -3,6 +3,7 @@ package bootstrap
 import (
 	"4it428-newsletter-api/services/newsletter-service/internal/infrastructure/persistence/repositories"
 	"4it428-newsletter-api/services/newsletter-service/internal/service/services"
+	"4it428-newsletter-api/services/newsletter-service/internal/service/services/impl"
 	"4it428-newsletter-api/services/newsletter-service/internal/transport/api/v1/handler"
 	"context"
 	"fmt"
@@ -40,13 +41,13 @@ func NewHandlersContainer(s *ServicesContainer) *HandlersContainer {
 }
 
 type ServicesContainer struct {
-	NewsletterService services.INewsletterService
+	NewsletterService services.NewsletterService
 }
 
 func NewServicesContainer(
 	newsletterRepository *repositories.NewsletterRepository,
 ) *ServicesContainer {
 	return &ServicesContainer{
-		NewsletterService: services.NewNewsletterService(newsletterRepository),
+		NewsletterService: impl.NewNewsletterService(newsletterRepository),
 	}
 }

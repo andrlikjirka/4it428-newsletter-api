@@ -13,10 +13,10 @@ func init() {
 }
 
 type NewsletterHandler struct {
-	newsletterService services.INewsletterService
+	newsletterService services.NewsletterService
 }
 
-func NewNewsletterHandler(s services.INewsletterService) *NewsletterHandler {
+func NewNewsletterHandler(s services.NewsletterService) *NewsletterHandler {
 	return &NewsletterHandler{newsletterService: s}
 }
 

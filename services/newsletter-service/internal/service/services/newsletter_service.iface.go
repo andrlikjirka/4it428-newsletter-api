@@ -1,4 +1,4 @@
 package services
 
-type INewsletterService interface {
+type NewsletterService interface {
 }

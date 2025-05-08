@@ -17,12 +17,10 @@ func NewApiRouter(
 
 	r.Use(middleware.Logger)
 
-	r.Group(func(r chi.Router) {
-		r.Route("/api", func(r chi.Router) {
-			r.Get("/openapi.yaml", OpenAPIHandler)
+	r.Route("/api", func(r chi.Router) {
+		r.Get("/openapi.yaml", OpenAPIHandler)
 
-			r.Mount("/v1", v1.NewV1Router(handlers))
-		})
+		r.Mount("/v1", v1.NewV1Router(handlers))
 	})
 
 	// Health check routes
