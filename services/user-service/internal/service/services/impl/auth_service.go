@@ -3,9 +3,11 @@ package impl
 import (
 	"4it428-newsletter-api/libs/logger"
 	"4it428-newsletter-api/services/user-service/internal/service/auth"
+	"4it428-newsletter-api/services/user-service/internal/service/errors"
 	"4it428-newsletter-api/services/user-service/internal/service/model"
 	"4it428-newsletter-api/services/user-service/internal/service/services"
 	"context"
+	"fmt"
 	"github.com/google/uuid"
 )
 
@@ -81,5 +83,25 @@ func (a *authService) Verify(ctx context.Context, idToken string) (map[string]in
 		return nil, err
 	}
 	logger.Info("Token successfully verified", "email", token.Claims["email"])
-	return token.Claims, nil
+
+	userEmail, ok := token.Claims["email"].(string)
+	if !ok {
+		return nil, fmt.Errorf("user_id not found in token claims")
+	}
+
+	// fetch user from DB
+	user, err := a.userService.GetUserByEmail(ctx, userEmail)
+	if err != nil {
+		return nil, errors.ErrUserNotFound
+	}
+
+	// Compose enriched claims
+	claims := map[string]interface{}{
+		"user_id":        user.ID,
+		"email":          user.Email,
+		"email_verified": token.Claims["email_verified"],
+		//"role":    user.Role, // e.g., "editor"
+	}
+
+	return claims, nil
 }

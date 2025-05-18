@@ -83,15 +83,12 @@ paths:
     get:
       summary: Verify ID token
       operationId: VerifyToken
+      description: Verify ID token (Traefik ForwardAuth)
       security:
-        - bearerAuth: [ ]
+        - bearerAuth: []
       responses:
         "200":
-          description: Token verified
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/VerifyTokenResponse"
+          description: Token verified (headers set, no body)
         "401":
           $ref: '#/components/responses/Unauthorized'
 

@@ -6,8 +6,11 @@ import (
 	"4it428-newsletter-api/services/user-service/internal/transport/api/v1/model"
 	"encoding/json"
 	"errors"
+	"fmt"
+	"github.com/google/uuid"
 	"io"
 	"net/http"
+	"strconv"
 	"strings"
 )
 
@@ -98,15 +101,30 @@ func (h *AuthHandler) Refresh(w http.ResponseWriter, r *http.Request) {
 func (h *AuthHandler) Verify(w http.ResponseWriter, r *http.Request) {
 	authHeader := r.Header.Get("Authorization")
 	if authHeader == "" || !strings.HasPrefix(authHeader, "Bearer ") {
-		utils.WriteErrResponse(w, http.StatusUnauthorized, errors.New("missing or invalid Authorization header"))
+		utils.WriteErrResponse(w, http.StatusUnauthorized, errors.New("missing or invalid authorization header"))
 		return
 	}
 	idToken := strings.TrimPrefix(authHeader, "Bearer ")
 
 	claims, err := h.authService.Verify(r.Context(), idToken)
 	if err != nil {
-		utils.WriteErrResponse(w, http.StatusUnauthorized, err)
+		w.WriteHeader(http.StatusUnauthorized)
 		return
 	}
-	utils.WriteResponse(w, http.StatusOK, claims)
+	fmt.Println(claims)
+	// Set headers from claims
+	if user_id, ok := claims["user_id"].(uuid.UUID); ok {
+		fmt.Println(user_id)
+		w.Header().Set("X-User-ID", user_id.String())
+	}
+	if email, ok := claims["email"].(string); ok {
+		w.Header().Set("X-User-Email", email)
+	}
+	if emailVerif, ok := claims["email_verified"].(bool); ok {
+		w.Header().Set("X-User-Email_Verified", strconv.FormatBool(emailVerif))
+	}
+	if role, ok := claims["role"].(string); ok { // if you use custom claims
+		w.Header().Set("X-User-Role", role)
+	}
+	w.WriteHeader(http.StatusOK) // return 200 OK and no body
 }

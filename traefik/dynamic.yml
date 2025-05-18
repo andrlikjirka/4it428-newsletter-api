@@ -1,12 +1,21 @@
 http:
   routers:
-    to-newsletter-service:
-      rule: "PathRegexp(`^/api/v[0-9]+/newsletters`)"
+    to-newsletter-service-public-get:
+      rule: "Method(`GET`) && PathRegexp(`^/api/v[0-9]+/newsletters(?:/[^/]+)?(?:/posts(?:/[^/]+)?)?$`)"
       service: newsletter-service
       entryPoints:
         - web
       middlewares:
         - ratelimiter
+
+    to-newsletter-service-private-post:
+      rule: "(Method(`POST`) || Method(`PUT`) || Method(`DELETE`)) && PathRegexp(`^/api/v[0-9]+/newsletters(?:/[^/]+)?(?:/posts)?$`)"
+      service: newsletter-service
+      entryPoints:
+        - web
+      middlewares:
+        - ratelimiter
+        - auth-forward
 
     to-subscription-service:
       rule: "PathRegexp(`^/api/v[0-9]+/subscriptions`)"
@@ -23,6 +32,7 @@ http:
         - web
       middlewares:
         - ratelimiter
+        - auth-forward
 
     to-user-service-auth:
       rule: "PathRegexp(`^/api/v[0-9]+/auth`)"
@@ -41,6 +51,14 @@ http:
       rateLimit:
         average: 100
         burst: 200
+    auth-forward:
+      forwardAuth:
+        address: http://user-service:8083/api/v1/auth/verify
+        trustForwardHeader: true
+        authResponseHeaders:
+          - "X-User-ID"
+          - "X-User-Email"
+          - "X-User-Email_Verified"
 
   services:
     newsletter-service:
