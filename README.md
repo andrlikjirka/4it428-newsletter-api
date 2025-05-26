@@ -20,6 +20,8 @@ This monorepo contains all microservices powering the Newsletter API.
    - Set `FIREBASE_CREDENTIALS=./secrets/your-key.json` in `.env` (adjust filename).
    - Set remaining env variables.
 5. run: `docker compose -f docker-compose.dev.yml up --build`
+6. install golang-migrate tool
+7. run database migrations: `migrate -path db/migrations -database <db_url> up` 
 
 ### Production environment setup:
 1. run `git clone <repository>`
@@ -32,6 +34,8 @@ This monorepo contains all microservices powering the Newsletter API.
     - Set `FIREBASE_CREDENTIALS=./secrets/your-key.json` in `.env` (adjust filename).
     - Set remaining env variables.
 5. run: `docker compose up`
+6. install golang-migrate tool
+7. run database migrations: `migrate -path db/migrations -database <db_url> up`
 
 ## Architecture
 
