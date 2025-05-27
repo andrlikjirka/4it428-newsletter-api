@@ -1,0 +1,785 @@
+{
+  "meta": {
+    "format": "httpie",
+    "version": "1.0.0",
+    "contentType": "collection",
+    "schema": "https://schema.httpie.io/1.0.0.json",
+    "docs": "https://httpie.io/r/help/export-from-httpie",
+    "source": "HTTPie Desktop 2025.2.0"
+  },
+  "entry": {
+    "name": "4IT428 newsletter-api",
+    "icon": {
+      "name": "default",
+      "color": "gray"
+    },
+    "auth": {
+      "type": "none"
+    },
+    "requests": [
+      {
+        "name": "U_List users",
+        "url": "http://localhost:80/api/v1/users",
+        "method": "GET",
+        "headers": [],
+        "queryParams": [],
+        "pathParams": [],
+        "auth": {
+          "type": "bearer",
+          "credentials": {
+            "username": "",
+            "password": "eyJhbGciOiJSUzI1NiIsImtpZCI6IjU5MWYxNWRlZTg0OTUzNjZjOTgyZTA1MTMzYmNhOGYyNDg5ZWFjNzIiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vc3Rydi12c2UtZ28tbmV3c2xldHRlciIsImF1ZCI6InN0cnYtdnNlLWdvLW5ld3NsZXR0ZXIiLCJhdXRoX3RpbWUiOjE3NDY5MDU1MDMsInVzZXJfaWQiOiJEWFc4RkVIckE2ZmNKaTNHQVlwY0QxenVDMDYzIiwic3ViIjoiRFhXOEZFSHJBNmZjSmkzR0FZcGNEMXp1QzA2MyIsImlhdCI6MTc0NjkwNTUwMywiZXhwIjoxNzQ2OTA5MTAzLCJlbWFpbCI6InpianhuZWZiZXZyemxxY2FraUBwb3Bsay5jb20iLCJlbWFpbF92ZXJpZmllZCI6ZmFsc2UsImZpcmViYXNlIjp7ImlkZW50aXRpZXMiOnsiZW1haWwiOlsiemJqeG5lZmJldnJ6bHFjYWtpQHBvcGxrLmNvbSJdfSwic2lnbl9pbl9wcm92aWRlciI6InBhc3N3b3JkIn19.mj0_tK5GPOAct2LMRGcAWu-2ulQHBQ3_ZdkObctDdynwYF19trmGgUBWnOIwk-eiJJ4plZbKmBBHa7RreE8QNCACCdNau7Yn6ywGrgGaLtQVuqT0IC2XYkmKbJRMbacmKbmgwfPuLdCWxUIyAJo-MKmqV3xPm2-Vnv0N0fisaT-OzaY21lVs-fTOslPE8ZSfxP82O61NWAEYBcMR6Mpr5HcrfqCCtlM8vf-yg7_IbJWPjwwI7j6c5Spmnh9ERH-qvpbFAw6Vh9pFuIS0CULOBMWnAyGCbbR3t6smq3sIaW8-rICeA3IXRQ4G8JnpXATmZzFaChtdBm6rTHwSSPvt6g"
+          },
+          "target": "headers"
+        },
+        "body": {
+          "type": "text",
+          "file": {
+            "name": ""
+          },
+          "text": {
+            "value": "",
+            "format": "application/json"
+          },
+          "form": {
+            "isMultipart": false,
+            "fields": []
+          },
+          "graphql": {
+            "query": "",
+            "variables": ""
+          }
+        }
+      },
+      {
+        "name": "U_Get user by email",
+        "url": "http://localhost:80/api/v1/users/ziyvnmeqqztzbrmsjb@poplk.com",
+        "method": "GET",
+        "headers": [],
+        "queryParams": [],
+        "pathParams": [],
+        "auth": {
+          "type": "inherited"
+        },
+        "body": {
+          "type": "text",
+          "file": {
+            "name": ""
+          },
+          "text": {
+            "value": "",
+            "format": "application/json"
+          },
+          "form": {
+            "isMultipart": false,
+            "fields": []
+          },
+          "graphql": {
+            "query": "",
+            "variables": ""
+          }
+        }
+      },
+      {
+        "name": "U_Create user",
+        "url": "http://localhost:80/api/v1/users",
+        "method": "POST",
+        "headers": [],
+        "queryParams": [],
+        "pathParams": [],
+        "auth": {
+          "type": "inherited"
+        },
+        "body": {
+          "type": "text",
+          "file": {
+            "name": ""
+          },
+          "text": {
+            "value": "{\n  \"email\": \"b@email.cz\",\n  \"password\": \"test\",\n  \"first_name\": \"Bob\",\n  \"last_name\": \"B\"\n}",
+            "format": "application/json"
+          },
+          "form": {
+            "isMultipart": false,
+            "fields": []
+          },
+          "graphql": {
+            "query": "",
+            "variables": ""
+          }
+        }
+      },
+      {
+        "name": "U_Update user",
+        "url": "http://localhost:8083/api/v1/users/ziyvnmeqqztzbrmsjb@poplk.com",
+        "method": "PUT",
+        "headers": [],
+        "queryParams": [],
+        "pathParams": [],
+        "auth": {
+          "type": "inherited"
+        },
+        "body": {
+          "type": "text",
+          "file": {
+            "name": ""
+          },
+          "text": {
+            "value": "{\n  \"first_name\": \"Test2\"\n}",
+            "format": "application/json"
+          },
+          "form": {
+            "isMultipart": false,
+            "fields": []
+          },
+          "graphql": {
+            "query": "",
+            "variables": ""
+          }
+        }
+      },
+      {
+        "name": "U_Delete user",
+        "url": "http://localhost:8083/api/v1/users/rmsjb@poplk.com",
+        "method": "DELETE",
+        "headers": [],
+        "queryParams": [],
+        "pathParams": [],
+        "auth": {
+          "type": "inherited"
+        },
+        "body": {
+          "type": "text",
+          "file": {
+            "name": ""
+          },
+          "text": {
+            "value": "",
+            "format": "application/json"
+          },
+          "form": {
+            "isMultipart": false,
+            "fields": []
+          },
+          "graphql": {
+            "query": "",
+            "variables": ""
+          }
+        }
+      },
+      {
+        "name": "U_Sign up",
+        "url": "http://localhost:80/api/v1/auth/signup",
+        "method": "POST",
+        "headers": [],
+        "queryParams": [],
+        "pathParams": [],
+        "auth": {
+          "type": "inherited"
+        },
+        "body": {
+          "type": "text",
+          "file": {
+            "name": ""
+          },
+          "text": {
+            "value": "{\n    \"email\": \"adelka.rybickova@poplk.com\",\n    \"password\": \"testtest\",\n    \"first_name\": \"Adélka\",\n    \"last_name\": \"Rybičková\"\n  }",
+            "format": "application/json"
+          },
+          "form": {
+            "isMultipart": false,
+            "fields": []
+          },
+          "graphql": {
+            "query": "",
+            "variables": ""
+          }
+        }
+      },
+      {
+        "name": "U_Sign in",
+        "url": "http://localhost:80/api/v1/auth/signin",
+        "method": "POST",
+        "headers": [],
+        "queryParams": [],
+        "pathParams": [],
+        "auth": {
+          "type": "inherited"
+        },
+        "body": {
+          "type": "text",
+          "file": {
+            "name": ""
+          },
+          "text": {
+            "value": "{\n  \"email\": \"adelka.rybickova@poplk.com\",\n  \"password\": \"testtest\"\n}",
+            "format": "application/json"
+          },
+          "form": {
+            "isMultipart": false,
+            "fields": []
+          },
+          "graphql": {
+            "query": "",
+            "variables": ""
+          }
+        }
+      },
+      {
+        "name": "U_Refresh",
+        "url": "http://localhost:80/api/v1/auth/refresh",
+        "method": "POST",
+        "headers": [],
+        "queryParams": [],
+        "pathParams": [],
+        "auth": {
+          "type": "inherited"
+        },
+        "body": {
+          "type": "text",
+          "file": {
+            "name": ""
+          },
+          "text": {
+            "value": "{\n  \"refreshToken\": \"AMf-vBwbMsErDjtg2IyM9IYH-XbwOEWvCAzKUWOtluzIh8AnR6DrX271WsB9cTVObUfxPwV4ds28MPYm53zsfDxUVGwP-4gWDHcgHgW74uimKnFR0FvYJioM4zZWpR_RA7i1dWKBaMHMAJcYNVR98DEGxasLi7MIFpf_82z8WLywm_UbMWEhY1c-3l1Lo1klCG1v9p1dQbdPoRAOBTySwKP3p0yb9Rv6uhPRVTWbicfhfulVI3vTtjg\"\n}",
+            "format": "application/json"
+          },
+          "form": {
+            "isMultipart": false,
+            "fields": []
+          },
+          "graphql": {
+            "query": "",
+            "variables": ""
+          }
+        }
+      },
+      {
+        "name": "U_VerifyToken",
+        "url": "http://localhost:80/api/v1/auth/verify",
+        "method": "GET",
+        "headers": [],
+        "queryParams": [],
+        "pathParams": [],
+        "auth": {
+          "type": "bearer",
+          "credentials": {
+            "username": "",
+            "password": "eyJhbGciOiJSUzI1NiIsImtpZCI6IjU5MWYxNWRlZTg0OTUzNjZjOTgyZTA1MTMzYmNhOGYyNDg5ZWFjNzIiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vc3Rydi12c2UtZ28tbmV3c2xldHRlciIsImF1ZCI6InN0cnYtdnNlLWdvLW5ld3NsZXR0ZXIiLCJhdXRoX3RpbWUiOjE3NDY5MDU1MDMsInVzZXJfaWQiOiJEWFc4RkVIckE2ZmNKaTNHQVlwY0QxenVDMDYzIiwic3ViIjoiRFhXOEZFSHJBNmZjSmkzR0FZcGNEMXp1QzA2MyIsImlhdCI6MTc0NjkwNTUwMywiZXhwIjoxNzQ2OTA5MTAzLCJlbWFpbCI6InpianhuZWZiZXZyemxxY2FraUBwb3Bsay5jb20iLCJlbWFpbF92ZXJpZmllZCI6ZmFsc2UsImZpcmViYXNlIjp7ImlkZW50aXRpZXMiOnsiZW1haWwiOlsiemJqeG5lZmJldnJ6bHFjYWtpQHBvcGxrLmNvbSJdfSwic2lnbl9pbl9wcm92aWRlciI6InBhc3N3b3JkIn19.mj0_tK5GPOAct2LMRGcAWu-2ulQHBQ3_ZdkObctDdynwYF19trmGgUBWnOIwk-eiJJ4plZbKmBBHa7RreE8QNCACCdNau7Yn6ywGrgGaLtQVuqT0IC2XYkmKbJRMbacmKbmgwfPuLdCWxUIyAJo-MKmqV3xPm2-Vnv0N0fisaT-OzaY21lVs-fTOslPE8ZSfxP82O61NWAEYBcMR6Mpr5HcrfqCCtlM8vf-yg7_IbJWPjwwI7j6c5Spmnh9ERH-qvpbFAw6Vh9pFuIS0CULOBMWnAyGCbbR3t6smq3sIaW8-rICeA3IXRQ4G8JnpXATmZzFaChtdBm6rTHwSSPvt6g"
+          },
+          "target": "headers"
+        },
+        "body": {
+          "type": "text",
+          "file": {
+            "name": ""
+          },
+          "text": {
+            "value": "",
+            "format": "application/json"
+          },
+          "form": {
+            "isMultipart": false,
+            "fields": []
+          },
+          "graphql": {
+            "query": "",
+            "variables": ""
+          }
+        }
+      },
+      {
+        "name": "N_List newsletters",
+        "url": "http://localhost:80/api/v1/newsletters",
+        "method": "GET",
+        "headers": [],
+        "queryParams": [],
+        "pathParams": [],
+        "auth": {
+          "type": "none"
+        },
+        "body": {
+          "type": "none",
+          "file": {
+            "name": ""
+          },
+          "text": {
+            "value": "",
+            "format": "application/json"
+          },
+          "form": {
+            "isMultipart": false,
+            "fields": []
+          },
+          "graphql": {
+            "query": "",
+            "variables": ""
+          }
+        }
+      },
+      {
+        "name": "N_List posts",
+        "url": "http://localhost:80/api/v1/newsletters/e5b5c2c4-5c6d-5f0f-cff5-eee555555eee/posts",
+        "method": "GET",
+        "headers": [],
+        "queryParams": [],
+        "pathParams": [],
+        "auth": {
+          "type": "none"
+        },
+        "body": {
+          "type": "none",
+          "file": {
+            "name": ""
+          },
+          "text": {
+            "value": "",
+            "format": "application/json"
+          },
+          "form": {
+            "isMultipart": false,
+            "fields": []
+          },
+          "graphql": {
+            "query": "",
+            "variables": ""
+          }
+        }
+      },
+      {
+        "name": "N_Get newsletter by ID",
+        "url": "http://localhost:80/api/v1/newsletters/a1c1e8e0-1e2f-4b6b-8b8f-aaa111111aaa",
+        "method": "GET",
+        "headers": [],
+        "queryParams": [],
+        "pathParams": [],
+        "auth": {
+          "type": "none"
+        },
+        "body": {
+          "type": "none",
+          "file": {
+            "name": ""
+          },
+          "text": {
+            "value": "",
+            "format": "application/json"
+          },
+          "form": {
+            "isMultipart": false,
+            "fields": []
+          },
+          "graphql": {
+            "query": "",
+            "variables": ""
+          }
+        }
+      },
+      {
+        "name": "N_Get post by ID",
+        "url": "http://localhost:80/api/v1/newsletters/e5b5c2c4-5c6d-5f0f-cff5-eee555555eee/posts/c9ecc345-7c27-4aba-9c53-e4b78d3a97d3",
+        "method": "GET",
+        "headers": [],
+        "queryParams": [],
+        "pathParams": [],
+        "auth": {
+          "type": "none"
+        },
+        "body": {
+          "type": "none",
+          "file": {
+            "name": ""
+          },
+          "text": {
+            "value": "",
+            "format": "application/json"
+          },
+          "form": {
+            "isMultipart": false,
+            "fields": []
+          },
+          "graphql": {
+            "query": "",
+            "variables": ""
+          }
+        }
+      },
+      {
+        "name": "N_Publish post",
+        "url": "http://localhost:80/api/v1/newsletters/e5b5c2c4-5c6d-5f0f-cff5-eee555555eee/posts/a59dd1e3-9e86-4f3e-b7ce-b91f3f8dc11b/_publish",
+        "method": "GET",
+        "headers": [],
+        "queryParams": [],
+        "pathParams": [],
+        "auth": {
+          "type": "bearer",
+          "credentials": {
+            "username": "",
+            "password": "eyJhbGciOiJSUzI1NiIsImtpZCI6ImZlNjVjY2I4ZWFkMGJhZWY1ZmQzNjE5NWQ2NTI4YTA1NGZiYjc2ZjMiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vc3Rydi12c2UtZ28tbmV3c2xldHRlciIsImF1ZCI6InN0cnYtdnNlLWdvLW5ld3NsZXR0ZXIiLCJhdXRoX3RpbWUiOjE3NDgzNDUwNjgsInVzZXJfaWQiOiJtNEUyUFdVMkNqTkxPaExtdzA3N2hQakhOb2IyIiwic3ViIjoibTRFMlBXVTJDak5MT2hMbXcwNzdoUGpITm9iMiIsImlhdCI6MTc0ODM0OTA0NywiZXhwIjoxNzQ4MzUyNjQ3LCJlbWFpbCI6ImFkZWxrYS5yeWJpY2tvdmFAcG9wbGsuY29tIiwiZW1haWxfdmVyaWZpZWQiOmZhbHNlLCJmaXJlYmFzZSI6eyJpZGVudGl0aWVzIjp7ImVtYWlsIjpbImFkZWxrYS5yeWJpY2tvdmFAcG9wbGsuY29tIl19LCJzaWduX2luX3Byb3ZpZGVyIjoicGFzc3dvcmQifX0.rrRe5YFAJsCTevOxUBP4eLlGVV1kAo4SKkhmL-nT4haecxq11iUWEJGAyk17cn22jAXqufNwUxj89gsxmxfOD6C9UCx0DGdnDnCviwnZOVfUr2aODxQpI1dsyAxa9IgOE6FOa8g5qkmGvTs2eouSwfPe5RsodtceSZFWbAc4B6sLz5hUNHQqHDjLjpHPw5t7LnD1I3g7sVNDGI_zedO_nq7Pr9UrBRvFtqW7D-aiU8HLWHZGil7uoOmT7Li7TTWS8xPj6I4TgV5J2tun_1fVFRKt99fwZ0X3SdnTs8-pslhMUEszLbTkH49XHbBqwTQzsOmwsqQX_jUDalmbwUU7mg"
+          },
+          "target": "headers"
+        },
+        "body": {
+          "type": "none",
+          "file": {
+            "name": ""
+          },
+          "text": {
+            "value": "",
+            "format": "application/json"
+          },
+          "form": {
+            "isMultipart": false,
+            "fields": []
+          },
+          "graphql": {
+            "query": "",
+            "variables": ""
+          }
+        }
+      },
+      {
+        "name": "S_Unsubscribe",
+        "url": "http://localhost:80/api/v1/subscriptions/e5b5c2c4-5c6d-5f0f-cff5-eee555555eee/_unsubscribe",
+        "method": "GET",
+        "headers": [],
+        "queryParams": [],
+        "pathParams": [],
+        "auth": {
+          "type": "none"
+        },
+        "body": {
+          "type": "none",
+          "file": {
+            "name": ""
+          },
+          "text": {
+            "value": "",
+            "format": "application/json"
+          },
+          "form": {
+            "isMultipart": false,
+            "fields": []
+          },
+          "graphql": {
+            "query": "",
+            "variables": ""
+          }
+        }
+      },
+      {
+        "name": "S_Subscribe",
+        "url": "http://localhost:80/api/v1/subscriptions/",
+        "method": "POST",
+        "headers": [],
+        "queryParams": [],
+        "pathParams": [],
+        "auth": {
+          "type": "none"
+        },
+        "body": {
+          "type": "text",
+          "file": {
+            "name": ""
+          },
+          "text": {
+            "value": "{\n  \"email\": \"test@test.cz\",\n  \"newsletter_id\": \"a1c1e8e0-1e2f-4b6b-8b8f-aaa111111aaa\"\n}",
+            "format": "application/json"
+          },
+          "form": {
+            "isMultipart": false,
+            "fields": []
+          },
+          "graphql": {
+            "query": "",
+            "variables": ""
+          }
+        }
+      },
+      {
+        "name": "S_List subscriptions",
+        "url": "http://localhost:80/api/v1/subscriptions",
+        "method": "GET",
+        "headers": [],
+        "queryParams": [
+          {
+            "name": "newsletter_id",
+            "value": "a1c1e8e0-1e2f-4b6b-8b8f-aaa111111aaa",
+            "enabled": true
+          }
+        ],
+        "pathParams": [],
+        "auth": {
+          "type": "bearer",
+          "credentials": {
+            "username": "",
+            "password": "eyJhbGciOiJSUzI1NiIsImtpZCI6ImZlNjVjY2I4ZWFkMGJhZWY1ZmQzNjE5NWQ2NTI4YTA1NGZiYjc2ZjMiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vc3Rydi12c2UtZ28tbmV3c2xldHRlciIsImF1ZCI6InN0cnYtdnNlLWdvLW5ld3NsZXR0ZXIiLCJhdXRoX3RpbWUiOjE3NDgzNDUwNjgsInVzZXJfaWQiOiJtNEUyUFdVMkNqTkxPaExtdzA3N2hQakhOb2IyIiwic3ViIjoibTRFMlBXVTJDak5MT2hMbXcwNzdoUGpITm9iMiIsImlhdCI6MTc0ODM1NzYyMywiZXhwIjoxNzQ4MzYxMjIzLCJlbWFpbCI6ImFkZWxrYS5yeWJpY2tvdmFAcG9wbGsuY29tIiwiZW1haWxfdmVyaWZpZWQiOmZhbHNlLCJmaXJlYmFzZSI6eyJpZGVudGl0aWVzIjp7ImVtYWlsIjpbImFkZWxrYS5yeWJpY2tvdmFAcG9wbGsuY29tIl19LCJzaWduX2luX3Byb3ZpZGVyIjoicGFzc3dvcmQifX0.XiTPD-FfWj9vulPWJ8hxAp9vmLYrWESaAwb9plEF0DSJQd675Lk5ph7kbmehB4rKbm806zgnpd0bUdOucWMDaRkEshy17Y6Uc9WnyZfucOqJ21kXdyxW8ItxGrI22gUlW8R7PfRJ6WklYyAZp13Hm4RnX6j-ZwfOiFv09TMxGF6j4tW6Pn-6PUezARasNavkTdbpD5jC-kGOyxXlpPN_7cDgLotb5ET8qGC_vXh8_B4LnVH54gEu915TH0nEnaWYZJ810VMlnCh9a2J3u-pA868Ndgu5bmRufDCXqO095VopLW7hv5OgJyOJW5ojo3xWx9v0qhrEeZ-c4qEjClp1fw"
+          },
+          "target": "headers"
+        },
+        "body": {
+          "type": "text",
+          "file": {
+            "name": ""
+          },
+          "text": {
+            "value": "",
+            "format": "application/json"
+          },
+          "form": {
+            "isMultipart": false,
+            "fields": []
+          },
+          "graphql": {
+            "query": "",
+            "variables": ""
+          }
+        }
+      },
+      {
+        "name": "S_Notify",
+        "url": "http://localhost:80/api/v1/subscriptions/_notify",
+        "method": "POST",
+        "headers": [],
+        "queryParams": [
+          {
+            "name": "newsletter_id",
+            "value": "a1c1e8e0-1e2f-4b6b-8b8f-aaa111111aaa",
+            "enabled": true
+          }
+        ],
+        "pathParams": [],
+        "auth": {
+          "type": "bearer",
+          "credentials": {
+            "username": "",
+            "password": "eyJhbGciOiJSUzI1NiIsImtpZCI6ImZlNjVjY2I4ZWFkMGJhZWY1ZmQzNjE5NWQ2NTI4YTA1NGZiYjc2ZjMiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vc3Rydi12c2UtZ28tbmV3c2xldHRlciIsImF1ZCI6InN0cnYtdnNlLWdvLW5ld3NsZXR0ZXIiLCJhdXRoX3RpbWUiOjE3NDgzNDUwNjgsInVzZXJfaWQiOiJtNEUyUFdVMkNqTkxPaExtdzA3N2hQakhOb2IyIiwic3ViIjoibTRFMlBXVTJDak5MT2hMbXcwNzdoUGpITm9iMiIsImlhdCI6MTc0ODM1NzYyMywiZXhwIjoxNzQ4MzYxMjIzLCJlbWFpbCI6ImFkZWxrYS5yeWJpY2tvdmFAcG9wbGsuY29tIiwiZW1haWxfdmVyaWZpZWQiOmZhbHNlLCJmaXJlYmFzZSI6eyJpZGVudGl0aWVzIjp7ImVtYWlsIjpbImFkZWxrYS5yeWJpY2tvdmFAcG9wbGsuY29tIl19LCJzaWduX2luX3Byb3ZpZGVyIjoicGFzc3dvcmQifX0.XiTPD-FfWj9vulPWJ8hxAp9vmLYrWESaAwb9plEF0DSJQd675Lk5ph7kbmehB4rKbm806zgnpd0bUdOucWMDaRkEshy17Y6Uc9WnyZfucOqJ21kXdyxW8ItxGrI22gUlW8R7PfRJ6WklYyAZp13Hm4RnX6j-ZwfOiFv09TMxGF6j4tW6Pn-6PUezARasNavkTdbpD5jC-kGOyxXlpPN_7cDgLotb5ET8qGC_vXh8_B4LnVH54gEu915TH0nEnaWYZJ810VMlnCh9a2J3u-pA868Ndgu5bmRufDCXqO095VopLW7hv5OgJyOJW5ojo3xWx9v0qhrEeZ-c4qEjClp1fw"
+          },
+          "target": "headers"
+        },
+        "body": {
+          "type": "text",
+          "file": {
+            "name": ""
+          },
+          "text": {
+            "value": "{\n  \"title\": \"Lorem ipsum dolor\",\n  \"content\": \"This is a content of post\",\n  \"html_content\": \"<h1>this is a html</h1>\"\n}",
+            "format": "application/json"
+          },
+          "form": {
+            "isMultipart": false,
+            "fields": []
+          },
+          "graphql": {
+            "query": "",
+            "variables": ""
+          }
+        }
+      },
+      {
+        "name": "N_Create newsletter",
+        "url": "http://localhost:80/api/v1/newsletters",
+        "method": "POST",
+        "headers": [],
+        "queryParams": [],
+        "pathParams": [],
+        "auth": {
+          "type": "bearer",
+          "credentials": {
+            "username": "",
+            "password": "eyJhbGciOiJSUzI1NiIsImtpZCI6ImZlNjVjY2I4ZWFkMGJhZWY1ZmQzNjE5NWQ2NTI4YTA1NGZiYjc2ZjMiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vc3Rydi12c2UtZ28tbmV3c2xldHRlciIsImF1ZCI6InN0cnYtdnNlLWdvLW5ld3NsZXR0ZXIiLCJhdXRoX3RpbWUiOjE3NDgzNDUwNjgsInVzZXJfaWQiOiJtNEUyUFdVMkNqTkxPaExtdzA3N2hQakhOb2IyIiwic3ViIjoibTRFMlBXVTJDak5MT2hMbXcwNzdoUGpITm9iMiIsImlhdCI6MTc0ODM0OTA0NywiZXhwIjoxNzQ4MzUyNjQ3LCJlbWFpbCI6ImFkZWxrYS5yeWJpY2tvdmFAcG9wbGsuY29tIiwiZW1haWxfdmVyaWZpZWQiOmZhbHNlLCJmaXJlYmFzZSI6eyJpZGVudGl0aWVzIjp7ImVtYWlsIjpbImFkZWxrYS5yeWJpY2tvdmFAcG9wbGsuY29tIl19LCJzaWduX2luX3Byb3ZpZGVyIjoicGFzc3dvcmQifX0.rrRe5YFAJsCTevOxUBP4eLlGVV1kAo4SKkhmL-nT4haecxq11iUWEJGAyk17cn22jAXqufNwUxj89gsxmxfOD6C9UCx0DGdnDnCviwnZOVfUr2aODxQpI1dsyAxa9IgOE6FOa8g5qkmGvTs2eouSwfPe5RsodtceSZFWbAc4B6sLz5hUNHQqHDjLjpHPw5t7LnD1I3g7sVNDGI_zedO_nq7Pr9UrBRvFtqW7D-aiU8HLWHZGil7uoOmT7Li7TTWS8xPj6I4TgV5J2tun_1fVFRKt99fwZ0X3SdnTs8-pslhMUEszLbTkH49XHbBqwTQzsOmwsqQX_jUDalmbwUU7mg"
+          },
+          "target": "headers"
+        },
+        "body": {
+          "type": "text",
+          "file": {
+            "name": ""
+          },
+          "text": {
+            "value": "{\n  \"title\": \"Newsletter C123\",\n  \"description\": \"Third best newsletter ever.\"\n}",
+            "format": "application/json"
+          },
+          "form": {
+            "isMultipart": false,
+            "fields": []
+          },
+          "graphql": {
+            "query": "",
+            "variables": ""
+          }
+        }
+      },
+      {
+        "name": "N_Create post",
+        "url": "http://localhost:80/api/v1/newsletters/21d43a6b-70b7-4be7-aa26-88e41305b7ce/posts",
+        "method": "POST",
+        "headers": [],
+        "queryParams": [],
+        "pathParams": [],
+        "auth": {
+          "type": "bearer",
+          "credentials": {
+            "username": "",
+            "password": "eyJhbGciOiJSUzI1NiIsImtpZCI6ImZlNjVjY2I4ZWFkMGJhZWY1ZmQzNjE5NWQ2NTI4YTA1NGZiYjc2ZjMiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vc3Rydi12c2UtZ28tbmV3c2xldHRlciIsImF1ZCI6InN0cnYtdnNlLWdvLW5ld3NsZXR0ZXIiLCJhdXRoX3RpbWUiOjE3NDgzNDUwNjgsInVzZXJfaWQiOiJtNEUyUFdVMkNqTkxPaExtdzA3N2hQakhOb2IyIiwic3ViIjoibTRFMlBXVTJDak5MT2hMbXcwNzdoUGpITm9iMiIsImlhdCI6MTc0ODM0OTA0NywiZXhwIjoxNzQ4MzUyNjQ3LCJlbWFpbCI6ImFkZWxrYS5yeWJpY2tvdmFAcG9wbGsuY29tIiwiZW1haWxfdmVyaWZpZWQiOmZhbHNlLCJmaXJlYmFzZSI6eyJpZGVudGl0aWVzIjp7ImVtYWlsIjpbImFkZWxrYS5yeWJpY2tvdmFAcG9wbGsuY29tIl19LCJzaWduX2luX3Byb3ZpZGVyIjoicGFzc3dvcmQifX0.rrRe5YFAJsCTevOxUBP4eLlGVV1kAo4SKkhmL-nT4haecxq11iUWEJGAyk17cn22jAXqufNwUxj89gsxmxfOD6C9UCx0DGdnDnCviwnZOVfUr2aODxQpI1dsyAxa9IgOE6FOa8g5qkmGvTs2eouSwfPe5RsodtceSZFWbAc4B6sLz5hUNHQqHDjLjpHPw5t7LnD1I3g7sVNDGI_zedO_nq7Pr9UrBRvFtqW7D-aiU8HLWHZGil7uoOmT7Li7TTWS8xPj6I4TgV5J2tun_1fVFRKt99fwZ0X3SdnTs8-pslhMUEszLbTkH49XHbBqwTQzsOmwsqQX_jUDalmbwUU7mg"
+          },
+          "target": "headers"
+        },
+        "body": {
+          "type": "text",
+          "file": {
+            "name": ""
+          },
+          "text": {
+            "value": "{\n  \"title\": \"Post 2\",\n  \"content\": \"Lorem ipsum doloereeeeee\",\n  \"html_content\": \"<h1>Lorem ipsum dolor</h1>\"\n}",
+            "format": "application/json"
+          },
+          "form": {
+            "isMultipart": false,
+            "fields": []
+          },
+          "graphql": {
+            "query": "",
+            "variables": ""
+          }
+        }
+      },
+      {
+        "name": "N_Update newsletter",
+        "url": "http://localhost:80/api/v1/newsletters/40ff0456-02df-4389-9d7a-b11faa446ea5",
+        "method": "PUT",
+        "headers": [],
+        "queryParams": [],
+        "pathParams": [],
+        "auth": {
+          "type": "bearer",
+          "credentials": {
+            "username": "",
+            "password": "eyJhbGciOiJSUzI1NiIsImtpZCI6ImZlNjVjY2I4ZWFkMGJhZWY1ZmQzNjE5NWQ2NTI4YTA1NGZiYjc2ZjMiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vc3Rydi12c2UtZ28tbmV3c2xldHRlciIsImF1ZCI6InN0cnYtdnNlLWdvLW5ld3NsZXR0ZXIiLCJhdXRoX3RpbWUiOjE3NDgzNDUwNjgsInVzZXJfaWQiOiJtNEUyUFdVMkNqTkxPaExtdzA3N2hQakhOb2IyIiwic3ViIjoibTRFMlBXVTJDak5MT2hMbXcwNzdoUGpITm9iMiIsImlhdCI6MTc0ODM0OTA0NywiZXhwIjoxNzQ4MzUyNjQ3LCJlbWFpbCI6ImFkZWxrYS5yeWJpY2tvdmFAcG9wbGsuY29tIiwiZW1haWxfdmVyaWZpZWQiOmZhbHNlLCJmaXJlYmFzZSI6eyJpZGVudGl0aWVzIjp7ImVtYWlsIjpbImFkZWxrYS5yeWJpY2tvdmFAcG9wbGsuY29tIl19LCJzaWduX2luX3Byb3ZpZGVyIjoicGFzc3dvcmQifX0.rrRe5YFAJsCTevOxUBP4eLlGVV1kAo4SKkhmL-nT4haecxq11iUWEJGAyk17cn22jAXqufNwUxj89gsxmxfOD6C9UCx0DGdnDnCviwnZOVfUr2aODxQpI1dsyAxa9IgOE6FOa8g5qkmGvTs2eouSwfPe5RsodtceSZFWbAc4B6sLz5hUNHQqHDjLjpHPw5t7LnD1I3g7sVNDGI_zedO_nq7Pr9UrBRvFtqW7D-aiU8HLWHZGil7uoOmT7Li7TTWS8xPj6I4TgV5J2tun_1fVFRKt99fwZ0X3SdnTs8-pslhMUEszLbTkH49XHbBqwTQzsOmwsqQX_jUDalmbwUU7mg"
+          },
+          "target": "headers"
+        },
+        "body": {
+          "type": "text",
+          "file": {
+            "name": ""
+          },
+          "text": {
+            "value": "{\n  \"title\": \"Newsletter CCCC\"\n}",
+            "format": "application/json"
+          },
+          "form": {
+            "isMultipart": false,
+            "fields": []
+          },
+          "graphql": {
+            "query": "",
+            "variables": ""
+          }
+        }
+      },
+      {
+        "name": "N_Update post",
+        "url": "http://localhost:80/api/v1/newsletters/e5b5c2c4-5c6d-5f0f-cff5-eee555555eee/posts/f28c7846-0556-4f3c-b35a-112ec282b41e",
+        "method": "PUT",
+        "headers": [],
+        "queryParams": [],
+        "pathParams": [],
+        "auth": {
+          "type": "bearer",
+          "credentials": {
+            "username": "",
+            "password": "eyJhbGciOiJSUzI1NiIsImtpZCI6ImZlNjVjY2I4ZWFkMGJhZWY1ZmQzNjE5NWQ2NTI4YTA1NGZiYjc2ZjMiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vc3Rydi12c2UtZ28tbmV3c2xldHRlciIsImF1ZCI6InN0cnYtdnNlLWdvLW5ld3NsZXR0ZXIiLCJhdXRoX3RpbWUiOjE3NDgzNDUwNjgsInVzZXJfaWQiOiJtNEUyUFdVMkNqTkxPaExtdzA3N2hQakhOb2IyIiwic3ViIjoibTRFMlBXVTJDak5MT2hMbXcwNzdoUGpITm9iMiIsImlhdCI6MTc0ODM0OTA0NywiZXhwIjoxNzQ4MzUyNjQ3LCJlbWFpbCI6ImFkZWxrYS5yeWJpY2tvdmFAcG9wbGsuY29tIiwiZW1haWxfdmVyaWZpZWQiOmZhbHNlLCJmaXJlYmFzZSI6eyJpZGVudGl0aWVzIjp7ImVtYWlsIjpbImFkZWxrYS5yeWJpY2tvdmFAcG9wbGsuY29tIl19LCJzaWduX2luX3Byb3ZpZGVyIjoicGFzc3dvcmQifX0.rrRe5YFAJsCTevOxUBP4eLlGVV1kAo4SKkhmL-nT4haecxq11iUWEJGAyk17cn22jAXqufNwUxj89gsxmxfOD6C9UCx0DGdnDnCviwnZOVfUr2aODxQpI1dsyAxa9IgOE6FOa8g5qkmGvTs2eouSwfPe5RsodtceSZFWbAc4B6sLz5hUNHQqHDjLjpHPw5t7LnD1I3g7sVNDGI_zedO_nq7Pr9UrBRvFtqW7D-aiU8HLWHZGil7uoOmT7Li7TTWS8xPj6I4TgV5J2tun_1fVFRKt99fwZ0X3SdnTs8-pslhMUEszLbTkH49XHbBqwTQzsOmwsqQX_jUDalmbwUU7mg"
+          },
+          "target": "headers"
+        },
+        "body": {
+          "type": "text",
+          "file": {
+            "name": ""
+          },
+          "text": {
+            "value": "{\n  \"title\": \"Newsletter CCCC\"\n}",
+            "format": "application/json"
+          },
+          "form": {
+            "isMultipart": false,
+            "fields": []
+          },
+          "graphql": {
+            "query": "",
+            "variables": ""
+          }
+        }
+      },
+      {
+        "name": "N_Delete newsletter",
+        "url": "http://localhost:80/api/v1/newsletters/40ff0456-02df-4389-9d7a-b11faa446ea5",
+        "method": "DELETE",
+        "headers": [],
+        "queryParams": [],
+        "pathParams": [],
+        "auth": {
+          "type": "bearer",
+          "credentials": {
+            "username": "",
+            "password": "eyJhbGciOiJSUzI1NiIsImtpZCI6ImZlNjVjY2I4ZWFkMGJhZWY1ZmQzNjE5NWQ2NTI4YTA1NGZiYjc2ZjMiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vc3Rydi12c2UtZ28tbmV3c2xldHRlciIsImF1ZCI6InN0cnYtdnNlLWdvLW5ld3NsZXR0ZXIiLCJhdXRoX3RpbWUiOjE3NDgzNDUwNjgsInVzZXJfaWQiOiJtNEUyUFdVMkNqTkxPaExtdzA3N2hQakhOb2IyIiwic3ViIjoibTRFMlBXVTJDak5MT2hMbXcwNzdoUGpITm9iMiIsImlhdCI6MTc0ODM0OTA0NywiZXhwIjoxNzQ4MzUyNjQ3LCJlbWFpbCI6ImFkZWxrYS5yeWJpY2tvdmFAcG9wbGsuY29tIiwiZW1haWxfdmVyaWZpZWQiOmZhbHNlLCJmaXJlYmFzZSI6eyJpZGVudGl0aWVzIjp7ImVtYWlsIjpbImFkZWxrYS5yeWJpY2tvdmFAcG9wbGsuY29tIl19LCJzaWduX2luX3Byb3ZpZGVyIjoicGFzc3dvcmQifX0.rrRe5YFAJsCTevOxUBP4eLlGVV1kAo4SKkhmL-nT4haecxq11iUWEJGAyk17cn22jAXqufNwUxj89gsxmxfOD6C9UCx0DGdnDnCviwnZOVfUr2aODxQpI1dsyAxa9IgOE6FOa8g5qkmGvTs2eouSwfPe5RsodtceSZFWbAc4B6sLz5hUNHQqHDjLjpHPw5t7LnD1I3g7sVNDGI_zedO_nq7Pr9UrBRvFtqW7D-aiU8HLWHZGil7uoOmT7Li7TTWS8xPj6I4TgV5J2tun_1fVFRKt99fwZ0X3SdnTs8-pslhMUEszLbTkH49XHbBqwTQzsOmwsqQX_jUDalmbwUU7mg"
+          },
+          "target": "headers"
+        },
+        "body": {
+          "type": "text",
+          "file": {
+            "name": ""
+          },
+          "text": {
+            "value": "",
+            "format": "application/json"
+          },
+          "form": {
+            "isMultipart": false,
+            "fields": []
+          },
+          "graphql": {
+            "query": "",
+            "variables": ""
+          }
+        }
+      },
+      {
+        "name": "N_Delete post",
+        "url": "http://localhost:80/api/v1/newsletters/e5b5c2c4-5c6d-5f0f-cff5-eee555555eee/posts/f28c7846-0556-4f3c-b35a-112ec282b41e",
+        "method": "DELETE",
+        "headers": [],
+        "queryParams": [],
+        "pathParams": [],
+        "auth": {
+          "type": "bearer",
+          "credentials": {
+            "username": "",
+            "password": "eyJhbGciOiJSUzI1NiIsImtpZCI6ImZlNjVjY2I4ZWFkMGJhZWY1ZmQzNjE5NWQ2NTI4YTA1NGZiYjc2ZjMiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vc3Rydi12c2UtZ28tbmV3c2xldHRlciIsImF1ZCI6InN0cnYtdnNlLWdvLW5ld3NsZXR0ZXIiLCJhdXRoX3RpbWUiOjE3NDgzNDUwNjgsInVzZXJfaWQiOiJtNEUyUFdVMkNqTkxPaExtdzA3N2hQakhOb2IyIiwic3ViIjoibTRFMlBXVTJDak5MT2hMbXcwNzdoUGpITm9iMiIsImlhdCI6MTc0ODM0OTA0NywiZXhwIjoxNzQ4MzUyNjQ3LCJlbWFpbCI6ImFkZWxrYS5yeWJpY2tvdmFAcG9wbGsuY29tIiwiZW1haWxfdmVyaWZpZWQiOmZhbHNlLCJmaXJlYmFzZSI6eyJpZGVudGl0aWVzIjp7ImVtYWlsIjpbImFkZWxrYS5yeWJpY2tvdmFAcG9wbGsuY29tIl19LCJzaWduX2luX3Byb3ZpZGVyIjoicGFzc3dvcmQifX0.rrRe5YFAJsCTevOxUBP4eLlGVV1kAo4SKkhmL-nT4haecxq11iUWEJGAyk17cn22jAXqufNwUxj89gsxmxfOD6C9UCx0DGdnDnCviwnZOVfUr2aODxQpI1dsyAxa9IgOE6FOa8g5qkmGvTs2eouSwfPe5RsodtceSZFWbAc4B6sLz5hUNHQqHDjLjpHPw5t7LnD1I3g7sVNDGI_zedO_nq7Pr9UrBRvFtqW7D-aiU8HLWHZGil7uoOmT7Li7TTWS8xPj6I4TgV5J2tun_1fVFRKt99fwZ0X3SdnTs8-pslhMUEszLbTkH49XHbBqwTQzsOmwsqQX_jUDalmbwUU7mg"
+          },
+          "target": "headers"
+        },
+        "body": {
+          "type": "text",
+          "file": {
+            "name": ""
+          },
+          "text": {
+            "value": "",
+            "format": "application/json"
+          },
+          "form": {
+            "isMultipart": false,
+            "fields": []
+          },
+          "graphql": {
+            "query": "",
+            "variables": ""
+          }
+        }
+      }
+    ]
+  }
+}

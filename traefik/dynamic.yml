@@ -27,7 +27,7 @@ http:
         - auth-forward
 
     to-newsletter-service-publish-private-get:
-        rule: "Method(`GET`) && PathRegexp(`^/api/v[0-9]+/newsletters/[^/]+/posts/[^/]+/_publish$`)"
+        rule: "Method(`GET`) && PathRegexp(`^/api/v[0-9]+/newsletters/[^/]+/posts/[^/]+/_publish/?$`)"
         service: newsletter-service
         entryPoints:
             - web
@@ -35,8 +35,27 @@ http:
             - ratelimiter
             - auth-forward
 
-    to-subscription-service:
-      rule: "PathRegexp(`^/api/v[0-9]+/subscriptions`)"
+    to-subscription-service-private-list:
+      rule: "Method(`GET`) && PathRegexp(`^/api/v[0-9]+/subscriptions/?$`)"
+      service: subscription-service
+      entryPoints:
+        - web
+      middlewares:
+        - ratelimiter
+        - auth-forward
+
+    to-subscription-service-public:
+      rule: "(Method(`GET`) && PathRegexp(`^/api/v[0-9]+/subscriptions/[^/]+/_unsubscribe/?$`)) ||
+        (Method(`POST`) && PathRegexp(`^/api/v[0-9]+/subscriptions/?$`))"
+      service: subscription-service
+      entryPoints:
+        - web
+      middlewares:
+        - ratelimiter
+
+    # TODO: remove this before deployment to production
+    to-subscription-service-temp-notify:
+      rule: "Method(`POST`) && PathRegexp(`^/api/v[0-9]+/subscriptions/_notify$`)"
       service: subscription-service
       entryPoints:
         - web
