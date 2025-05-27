@@ -4,6 +4,6 @@ use (
 	./services/newsletter-service
 	./services/subscription-service
 	./services/user-service
-	./libs/logger
-	./libs/utils
+	./pkg/logger
+	./pkg/utils
 )
