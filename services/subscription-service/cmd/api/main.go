@@ -27,7 +27,14 @@ func main() {
 		port = "8082"
 	}
 
-	subscriptionRepo := repositories.NewSubscriptionRepository()
+	firestoreClient, err := bootstrap.SetupFirestore(ctx)
+	if err != nil {
+		logger.Error("initializing firestore client failed", "error", err)
+		return
+	}
+	defer firestoreClient.Close()
+
+	subscriptionRepo := repositories.NewSubscriptionRepository(firestoreClient)
 	services := bootstrap.NewServicesContainer(subscriptionRepo)
 	handlers := bootstrap.NewHandlersContainer(services)
 	router := api.NewApiRouter(handlers, version)
