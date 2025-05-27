@@ -57,8 +57,6 @@ func (s subscriptionService) Subscribe(ctx context.Context, subscription *model.
 		return nil, err
 	}
 
-	//TODO send confirmation email to the user
-
 	logger.Info("Subscribing to newsletter", "email", subscription.Email, "newsletterID", subscription.NewsletterID)
 	return createdSubscription, nil
 }
@@ -95,7 +93,15 @@ func (s subscriptionService) NotifySubscribers(ctx context.Context, newsletterID
 
 	logger.Info("Found subscriptions for newsletter", "newsletterID", newsletterID, "count", len(subscriptions))
 
-	//TODO send notification to all subscribers via email including unsubscribe link
+	for _, sub := range subscriptions {
+		htmlContent := notification.HtmlContent + utils.GenerateUnsubscribeLink(sub.ID)
+		err = s.ses.SendEmail(ctx, sub.Email, notification.Title, notification.Content, htmlContent)
+		if err != nil {
+			logger.Error("Failed to send notification email", "email", sub.Email, "error", err)
+			return err
+		}
+		logger.Info("Sent notification email", "email", sub.Email, "newsletterID", newsletterID)
+	}
 
 	logger.Info("Notifying subscribers for newsletter", "newsletterID", newsletterID, "notificationTitle", notification.Title)
 	return nil
