@@ -51,8 +51,9 @@ type ServicesContainer struct {
 func NewServicesContainer(
 	subscriptionRepository *repositories.SubscriptionRepository,
 	awsSesClient *aws.SESClient,
+	newsletterServiceClient services.INewsletterServiceClient,
 ) *ServicesContainer {
 	return &ServicesContainer{
-		SubscriptionService: impl.NewSubscriptionService(subscriptionRepository, awsSesClient),
+		SubscriptionService: impl.NewSubscriptionService(subscriptionRepository, awsSesClient, newsletterServiceClient),
 	}
 }

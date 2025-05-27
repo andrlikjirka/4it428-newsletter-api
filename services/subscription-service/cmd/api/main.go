@@ -3,6 +3,7 @@ package main
 import (
 	"4it428-newsletter-api/libs/logger"
 	"4it428-newsletter-api/services/subscription-service/internal/bootstrap"
+	"4it428-newsletter-api/services/subscription-service/internal/infrastructure/clients"
 	"4it428-newsletter-api/services/subscription-service/internal/infrastructure/persistence/repositories"
 	"4it428-newsletter-api/services/subscription-service/internal/transport/api"
 	"context"
@@ -41,7 +42,8 @@ func main() {
 	}
 
 	subscriptionRepo := repositories.NewSubscriptionRepository(firestoreClient)
-	services := bootstrap.NewServicesContainer(subscriptionRepo, awsSesClient)
+	newsletterServiceClient := clients.NewNewsletterServiceClient()
+	services := bootstrap.NewServicesContainer(subscriptionRepo, awsSesClient, newsletterServiceClient)
 	handlers := bootstrap.NewHandlersContainer(services)
 	router := api.NewApiRouter(handlers, version)
 	server := &http.Server{

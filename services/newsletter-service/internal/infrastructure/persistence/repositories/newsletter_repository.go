@@ -43,6 +43,7 @@ func (r *NewsletterRepository) List(ctx context.Context) ([]*model.Newsletter, e
 			Description: newsletter.Description,
 			CreatedAt:   newsletter.CreatedAt.Time,
 			UpdatedAt:   newsletter.UpdatedAt.Time,
+			UserID:      newsletter.UserID,
 		}
 	}
 	return response, nil
@@ -61,6 +62,7 @@ func (r *NewsletterRepository) GetById(ctx context.Context, id uuid.UUID) (*mode
 		Description: newsletter.Description,
 		CreatedAt:   newsletter.CreatedAt.Time,
 		UpdatedAt:   newsletter.UpdatedAt.Time,
+		UserID:      newsletter.UserID,
 	}, nil
 }
 

@@ -12,15 +12,17 @@ import (
 )
 
 type subscriptionService struct {
-	repo repositories.ISubscriptionRepository
-	ses  *aws.SESClient
+	repo                    repositories.ISubscriptionRepository
+	ses                     *aws.SESClient
+	newsletterServiceClient services.INewsletterServiceClient
 }
 
 func NewSubscriptionService(
 	repo repositories.ISubscriptionRepository,
 	ses *aws.SESClient,
+	newsletterServiceClient services.INewsletterServiceClient,
 ) services.SubscriptionService {
-	return &subscriptionService{repo: repo, ses: ses}
+	return &subscriptionService{repo: repo, ses: ses, newsletterServiceClient: newsletterServiceClient}
 }
 
 func (s subscriptionService) Unsubscribe(ctx context.Context, subscriptionID string) error {
@@ -39,8 +41,12 @@ func (s subscriptionService) Unsubscribe(ctx context.Context, subscriptionID str
 }
 
 func (s subscriptionService) Subscribe(ctx context.Context, subscription *model.Subscription) (*model.Subscription, error) {
+	_, err := s.newsletterServiceClient.GetNewsletter(ctx, subscription.NewsletterID)
+	if err != nil {
+		logger.Error("Failed to get newsletter", "newsletterID", subscription.NewsletterID, "error", err)
+		return nil, errors2.ErrNewsletterNotFound
+	}
 
-	//TODO validate newsletter ID and email format
 	logger.Info("Subscribing to newsletter", "subscriptionID", subscription.ID)
 
 	createdSubscription, err := s.repo.Add(ctx, subscription)
@@ -68,7 +74,17 @@ func (s subscriptionService) ListSubscriptions(ctx context.Context, newsletterID
 		return nil, errors2.ErrInvalidUUID
 	}
 
-	//TODO check user ID is owner of the subscription
+	newsletter, err := s.newsletterServiceClient.GetNewsletter(ctx, newsletterID)
+	if err != nil {
+		logger.Error("Failed to get newsletter", "newsletterID", newsletterID, "error", err)
+		return nil, errors2.ErrNewsletterNotFound
+	}
+	logger.Info("Got newsletter for listing subscriptions", "newsletter", newsletter)
+	logger.Info("Listing newsletters", "newsletterUserID", newsletter.UserID, "userID", userID)
+	if newsletter.UserID != userID {
+		logger.Error("User is not authorized to list subscriptions for this newsletter", "newsletterID", newsletterID, "userID", userID)
+		return nil, errors2.ErrUnauthorized
+	}
 
 	subscriptions, err := s.repo.ListByNewsletterId(ctx, parsedNewsletterID)
 	if err != nil {

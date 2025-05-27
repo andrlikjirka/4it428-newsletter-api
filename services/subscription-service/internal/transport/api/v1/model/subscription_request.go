@@ -6,7 +6,7 @@ import (
 )
 
 type SubscriptionRequest struct {
-	Email        string    `json:"email" validate:"required,min=3,max=50"`
+	Email        string    `json:"email" validate:"required,email,min=3,max=50"`
 	NewsletterID uuid.UUID `json:"newsletter_id" validate:"required"`
 }
 
