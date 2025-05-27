@@ -11,6 +11,7 @@ type Newsletter struct {
 	Description string
 	CreatedAt   time.Time
 	UpdatedAt   time.Time
+	UserID      uuid.UUID
 }
 
 type NewsletterUpdate struct {

@@ -7,5 +7,6 @@ CREATE TABLE IF NOT EXISTS newsletter_service.newsletters (
     title VARCHAR(255) NOT NULL,
     description TEXT NOT NULL,
     created_at TIMESTAMPTZ DEFAULT NOW(),
-    updated_at TIMESTAMPTZ NULL
+    updated_at TIMESTAMPTZ NULL,
+    user_id UUID NOT NULL
 );

@@ -18,7 +18,14 @@ func NewNewsletterService(repo repositories.INewsletterRepository) services.News
 	return &newsletterService{repo: repo}
 }
 
-func (n newsletterService) CreateNewsletter(ctx context.Context, newsletter *model.Newsletter) (*model.Newsletter, error) {
+func (n newsletterService) CreateNewsletter(ctx context.Context, newsletter *model.Newsletter, userID string) (*model.Newsletter, error) {
+	parsedUserID, err := utils.ParseUUID(userID)
+	if err != nil {
+		logger.Error("Failed to parse UUID", "userID", userID, "error", err)
+		return nil, errors2.ErrInvalidUUID
+	}
+	newsletter.UserID = parsedUserID
+
 	createdNewsletter, err := n.repo.Add(ctx, newsletter)
 	if err != nil {
 		logger.Error("Failed to create newsletter", "error", err)
@@ -52,14 +59,20 @@ func (n newsletterService) GetNewsletterById(ctx context.Context, id string) (*m
 	return newsletter, nil
 }
 
-func (n newsletterService) UpdateNewsletter(ctx context.Context, id string, newsletterUpdate *model.NewsletterUpdate) (*model.Newsletter, error) {
+func (n newsletterService) UpdateNewsletter(ctx context.Context, id string, userID string, newsletterUpdate *model.NewsletterUpdate) (*model.Newsletter, error) {
 	parsedID, err := utils.ParseUUID(id)
 	if err != nil {
 		logger.Error("Failed to parse UUID", "id", id, "error", err)
 		return nil, err
 	}
 
-	newsletter, err := n.repo.GetById(ctx, parsedID)
+	parsedUserID, err := utils.ParseUUID(userID)
+	if err != nil {
+		logger.Error("Failed to parse UUID", "userID", userID, "error", err)
+		return nil, errors2.ErrInvalidUUID
+	}
+
+	newsletter, err := n.repo.GetByIdAndUserId(ctx, parsedID, parsedUserID)
 	if err != nil {
 		return nil, errors2.ErrNotFound
 	}
@@ -81,19 +94,25 @@ func (n newsletterService) UpdateNewsletter(ctx context.Context, id string, news
 	return updatedNewsletter, nil
 }
 
-func (n newsletterService) DeleteNewsletter(ctx context.Context, id string) error {
+func (n newsletterService) DeleteNewsletter(ctx context.Context, id string, userID string) error {
 	parsedID, err := utils.ParseUUID(id)
 	if err != nil {
 		logger.Error("Failed to parse UUID", "id", id, "error", err)
 		return errors2.ErrInvalidUUID
 	}
 
-	_, err = n.repo.GetById(ctx, parsedID)
+	parsedUserID, err := utils.ParseUUID(userID)
+	if err != nil {
+		logger.Error("Failed to parse UUID", "userID", userID, "error", err)
+		return errors2.ErrInvalidUUID
+	}
+
+	_, err = n.repo.GetByIdAndUserId(ctx, parsedID, parsedUserID)
 	if err != nil {
 		return errors2.ErrNotFound
 	}
 
-	err = n.repo.Delete(ctx, parsedID)
+	err = n.repo.Delete(ctx, parsedID, parsedUserID)
 	if err != nil {
 		logger.Error("Failed to delete newsletter", "id", id, "error", err)
 		return err

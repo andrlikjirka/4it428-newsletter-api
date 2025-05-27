@@ -8,14 +8,32 @@ http:
       middlewares:
         - ratelimiter
 
-    to-newsletter-service-private-post:
-      rule: "(Method(`POST`) || Method(`PUT`) || Method(`DELETE`)) && PathRegexp(`^/api/v[0-9]+/newsletters(?:/[^/]+)?(?:/posts)?$`)"
+    to-newsletter-service-newsletter-private-post:
+      rule: "(Method(`POST`) || Method(`PUT`) || Method(`DELETE`)) && PathRegexp(`^/api/v[0-9]+/newsletters(?:/[^/]+)?$`)"
       service: newsletter-service
       entryPoints:
         - web
       middlewares:
         - ratelimiter
         - auth-forward
+
+    to-newsletter-service-post-private-post:
+      rule: "(Method(`POST`) || Method(`PUT`) || Method(`DELETE`)) && PathRegexp(`^/api/v[0-9]+/newsletters/[^/]+/posts(?:/[^/]+)?$`)"
+      service: newsletter-service
+      entryPoints:
+        - web
+      middlewares:
+        - ratelimiter
+        - auth-forward
+
+    to-newsletter-service-publish-private-get:
+        rule: "Method(`GET`) && PathRegexp(`^/api/v[0-9]+/newsletters/[^/]+/posts/[^/]+/_publish$`)"
+        service: newsletter-service
+        entryPoints:
+            - web
+        middlewares:
+            - ratelimiter
+            - auth-forward
 
     to-subscription-service:
       rule: "PathRegexp(`^/api/v[0-9]+/subscriptions`)"

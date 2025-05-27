@@ -18,12 +18,335 @@ paths:
           description: It's ALIVE (a.k.a. service is up and running)
         "400":
           description: Invalid request
-  "/newsletters": {
-    # TODO;
+  /newsletters:
+    get:
+      summary: List newsletters
+      operationId: ListNewsletters
+      responses:
+        "200":
+          description: List of newsletters
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/NewsletterResponse"
+    post:
+      summary: Create newsletter
+      operationId: CreateNewsletter
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateNewsletterRequest"
+      responses:
+        "201":
+          description: Newsletter created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NewsletterResponse"
 
-  # /newsletters/{:id}
-  # /newsletters/{:id}/posts
-  # /newsletters/{:newsletter_id}/posts/{:post_id}
-  # ...
-  }
-components: {}
+  /newsletters/{id}:
+    get:
+      summary: Get newsletter by ID
+      operationId: GetNewsletter
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        "200":
+          description: Newsletter detail
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NewsletterResponse"
+        "404":
+          description: Newsletter not found
+    put:
+      summary: Update newsletter
+      operationId: UpdateNewsletter
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateNewsletterRequest"
+      responses:
+        "200":
+          description: Newsletter updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NewsletterResponse"
+        "404":
+          description: Newsletter not found
+    delete:
+      summary: Delete newsletter
+      operationId: DeleteNewsletter
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        "204":
+          description: Newsletter deleted
+        "404":
+          description: Newsletter not found
+
+  /newsletters/{newsletterID}/posts:
+    get:
+      summary: List posts for newsletter
+      operationId: ListPosts
+      parameters:
+        - name: newsletterID
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        "200":
+          description: List of posts
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/PostResponse"
+    post:
+      summary: Create post
+      operationId: CreatePost
+      parameters:
+        - name: newsletterID
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreatePostRequest"
+      responses:
+        "201":
+          description: Post created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PostResponse"
+
+  /newsletters/{newsletterID}/posts/{postID}:
+    get:
+      summary: Get post by ID
+      operationId: GetPost
+      parameters:
+        - name: newsletterID
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: postID
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        "200":
+          description: Post detail
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PostResponse"
+        "404":
+          description: Post not found
+    put:
+      summary: Update post
+      operationId: UpdatePost
+      parameters:
+        - name: newsletterID
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: postID
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdatePostRequest"
+      responses:
+        "200":
+          description: Post updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PostResponse"
+        "404":
+          description: Post not found
+    delete:
+      summary: Delete post
+      operationId: DeletePost
+      parameters:
+        - name: newsletterID
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: postID
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        "204":
+          description: Post deleted
+        "404":
+          description: Post not found
+
+  /newsletters/{newsletterID}/posts/{postID}/_publish:
+    get:
+      summary: Publish post
+      operationId: PublishPost
+      parameters:
+        - name: newsletterID
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: postID
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        "204":
+          description: Post published
+        "404":
+          description: Post not found
+
+components:
+  schemas:
+    NewsletterResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        title:
+          type: string
+        description:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+
+    CreateNewsletterRequest:
+      type: object
+      required:
+        - title
+        - description
+      properties:
+        title:
+          type: string
+          minLength: 3
+          maxLength: 50
+        description:
+          type: string
+          maxLength: 500
+
+    UpdateNewsletterRequest:
+      type: object
+      properties:
+        title:
+          type: string
+          minLength: 3
+          maxLength: 50
+        description:
+          type: string
+          maxLength: 500
+
+    PostResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        newsletter_id:
+          type: string
+          format: uuid
+        title:
+          type: string
+        content:
+          type: string
+        html_content:
+          type: string
+        published:
+          type: boolean
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+
+    CreatePostRequest:
+      type: object
+      required:
+        - title
+        - content
+        - html_content
+      properties:
+        title:
+          type: string
+          minLength: 3
+          maxLength: 255
+        content:
+          type: string
+        html_content:
+          type: string
+
+    UpdatePostRequest:
+      type: object
+      properties:
+        title:
+          type: string
+          minLength: 3
+          maxLength: 255
+        content:
+          type: string
+        html_content:
+          type: string

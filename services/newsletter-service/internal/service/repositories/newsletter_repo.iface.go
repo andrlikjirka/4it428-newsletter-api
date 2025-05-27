@@ -10,6 +10,7 @@ type INewsletterRepository interface {
 	Add(ctx context.Context, newsletter *model.Newsletter) (*model.Newsletter, error)
 	List(ctx context.Context) ([]*model.Newsletter, error)
 	GetById(ctx context.Context, id uuid.UUID) (*model.Newsletter, error)
+	GetByIdAndUserId(ctx context.Context, id uuid.UUID, userID uuid.UUID) (*model.Newsletter, error)
 	Update(ctx context.Context, newsletter *model.Newsletter) (*model.Newsletter, error)
-	Delete(ctx context.Context, id uuid.UUID) error
+	Delete(ctx context.Context, id uuid.UUID, userID uuid.UUID) error
 }

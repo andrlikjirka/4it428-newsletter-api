@@ -30,22 +30,27 @@ func SetupDatabase(ctx context.Context) (*pgxpool.Pool, error) {
 
 type HandlersContainer struct {
 	NewsletterHandler *handler.NewsletterHandler
+	PostHandler       *handler.PostHandler
 }
 
 func NewHandlersContainer(s *ServicesContainer) *HandlersContainer {
 	return &HandlersContainer{
 		NewsletterHandler: handler.NewNewsletterHandler(s.NewsletterService),
+		PostHandler:       handler.NewPostHandler(s.PostService),
 	}
 }
 
 type ServicesContainer struct {
 	NewsletterService services.NewsletterService
+	PostService       services.PostService
 }
 
 func NewServicesContainer(
 	newsletterRepository *repositories.NewsletterRepository,
+	postRepository *repositories.PostRepository,
 ) *ServicesContainer {
 	return &ServicesContainer{
 		NewsletterService: impl.NewNewsletterService(newsletterRepository),
+		PostService:       impl.NewPostService(postRepository, newsletterRepository),
 	}
 }

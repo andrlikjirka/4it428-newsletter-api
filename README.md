@@ -40,3 +40,13 @@ This monorepo contains all microservices powering the Newsletter API.
 
 ### Deployment Diagram
 <img src="docs/deployment-diagram.png" width="589" alt="deployment diagram">
+
+## Migrations
+### Mac
+`migrate create -ext sql -dir db/migrations -seq <name_of_migration>`
+
+`migrate -path db/migrations -database "postgres://postgres:admin@localhost:5432/newsletter-db?sslmode=disable" up `
+### Windows
+`.\go-migrate\migrate.exe create -ext sql -dir db/migrations -seq <name_of_migration>`
+
+`.\go-migrate\migrate.exe -path db/migrations -database "postgres://postgres:admin@localhost:5432/newsletter-db?sslmode=disable" up`

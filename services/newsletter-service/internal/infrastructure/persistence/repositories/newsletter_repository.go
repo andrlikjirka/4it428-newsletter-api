@@ -21,7 +21,7 @@ func NewNewsletterRepository(pool *pgxpool.Pool) *NewsletterRepository {
 }
 
 func (r *NewsletterRepository) Add(ctx context.Context, newsletter *model.Newsletter) (*model.Newsletter, error) {
-	_, err := r.pool.Exec(ctx, query.InsertNewsletter, newsletter.ID, newsletter.Title, newsletter.Description)
+	_, err := r.pool.Exec(ctx, query.InsertNewsletter, newsletter.ID, newsletter.Title, newsletter.Description, newsletter.UserID)
 	if err != nil {
 		return nil, fmt.Errorf("failed to insert newsletter: %w", err)
 	}
@@ -64,6 +64,22 @@ func (r *NewsletterRepository) GetById(ctx context.Context, id uuid.UUID) (*mode
 	}, nil
 }
 
+func (r *NewsletterRepository) GetByIdAndUserId(ctx context.Context, id uuid.UUID, userID uuid.UUID) (*model.Newsletter, error) {
+	var newsletter dbmodel.NewsletterEntity
+	err := pgxscan.Get(ctx, r.pool, &newsletter, query.SelectNewsletterByIdAndUserId, id, userID)
+	if err != nil {
+		return nil, err
+	}
+
+	return &model.Newsletter{
+		ID:          newsletter.ID,
+		Title:       newsletter.Title,
+		Description: newsletter.Description,
+		CreatedAt:   newsletter.CreatedAt.Time,
+		UpdatedAt:   newsletter.UpdatedAt.Time,
+	}, nil
+}
+
 func (r *NewsletterRepository) Update(ctx context.Context, newsletter *model.Newsletter) (*model.Newsletter, error) {
 	now := time.Now().UTC()
 
@@ -75,8 +91,8 @@ func (r *NewsletterRepository) Update(ctx context.Context, newsletter *model.New
 	return r.GetById(ctx, newsletter.ID)
 }
 
-func (r *NewsletterRepository) Delete(ctx context.Context, id uuid.UUID) error {
-	commandTag, err := r.pool.Exec(ctx, query.DeleteNewsletter, id)
+func (r *NewsletterRepository) Delete(ctx context.Context, id uuid.UUID, userID uuid.UUID) error {
+	commandTag, err := r.pool.Exec(ctx, query.DeleteNewsletter, id, userID)
 	if err != nil {
 		return err
 	}

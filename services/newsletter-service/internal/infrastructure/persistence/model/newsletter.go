@@ -11,5 +11,6 @@ type NewsletterEntity struct {
 	Description string             `db:"description"`
 	CreatedAt   pgtype.Timestamptz `db:"created_at"`
 	UpdatedAt   pgtype.Timestamptz `db:"updated_at"`
-	// TODO: Posts []Post `db:posts`
+	Posts       []PostEntity       `db:"-" json:"posts,omitempty"`
+	UserID      uuid.UUID          `db:"user_id"`
 }

@@ -8,8 +8,6 @@ import (
 func NewNewsletterRouter(h *v1.NewsletterHandler) *chi.Mux {
 	r := chi.NewRouter()
 
-	// TODO: middleware
-
 	r.Get("/", h.ListNewsletters)
 	r.Post("/", h.CreateNewsletter)
 	r.Get("/{id}", h.GetNewsletter)

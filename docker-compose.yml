@@ -14,8 +14,6 @@ services:
 
   db:
     image: postgres:17.4
-    ports:
-      - "5432:5432"
     networks:
       - newsletter-api-net
     environment:
