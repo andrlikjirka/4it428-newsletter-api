@@ -51,7 +51,7 @@ func (s *SESClient) SendEmail(ctx context.Context, to string, subject string, te
 	if err != nil {
 		return fmt.Errorf("failed to send email: %w", err)
 	}
-	logger.Info("Email sent to %s", to)
+	logger.Info("Email sent", "to", to)
 	logger.Debug("SES SendEmail result: %v", result)
 	return nil
 }

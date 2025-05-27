@@ -80,7 +80,6 @@ func (s subscriptionService) ListSubscriptions(ctx context.Context, newsletterID
 		return nil, errors2.ErrNewsletterNotFound
 	}
 	logger.Info("Got newsletter for listing subscriptions", "newsletter", newsletter)
-	logger.Info("Listing newsletters", "newsletterUserID", newsletter.UserID, "userID", userID)
 	if newsletter.UserID != userID {
 		logger.Error("User is not authorized to list subscriptions for this newsletter", "newsletterID", newsletterID, "userID", userID)
 		return nil, errors2.ErrUnauthorized
