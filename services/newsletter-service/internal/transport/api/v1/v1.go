@@ -10,6 +10,7 @@ func NewV1Router(h *bootstrap.HandlersContainer) chi.Router {
 	r := chi.NewRouter()
 
 	r.Mount("/newsletters", router.NewNewsletterRouter(h.NewsletterHandler))
+	r.Mount("/newsletters/{newsletterID}/posts", router.NewPostRouter(h.PostHandler))
 
 	return r
 }

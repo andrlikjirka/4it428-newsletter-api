@@ -32,3 +32,4 @@
 /services/user-service/tmp
 
 /secrets/firebase-adminsdk.json
+/go-migrate/

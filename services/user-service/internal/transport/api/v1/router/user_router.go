@@ -8,8 +8,6 @@ import (
 func NewUserRouter(h *v1.UserHandler) *chi.Mux {
 	r := chi.NewRouter()
 
-	// TODO: middleware
-
 	r.Get("/", h.ListUsers)
 	r.Post("/", h.CreateUser)
 	r.Get("/{email}", h.GetUserByEmail)

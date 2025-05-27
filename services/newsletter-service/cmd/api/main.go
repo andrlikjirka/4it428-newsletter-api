@@ -35,7 +35,8 @@ func main() {
 	defer db.Close()
 
 	newsletterRepo := repositories.NewNewsletterRepository(db)
-	services := bootstrap.NewServicesContainer(newsletterRepo)
+	postRepo := repositories.NewPostRepository(db)
+	services := bootstrap.NewServicesContainer(newsletterRepo, postRepo)
 	handlers := bootstrap.NewHandlersContainer(services)
 	router := api.NewApiRouter(handlers, version)
 	server := &http.Server{
