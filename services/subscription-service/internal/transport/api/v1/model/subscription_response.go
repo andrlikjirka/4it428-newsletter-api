@@ -12,10 +12,18 @@ type SubscriptionResponse struct {
 }
 
 func FromSubscription(u *model.Subscription) *SubscriptionResponse {
+	id, err := uuid.Parse(u.ID)
+	if err != nil {
+		id = uuid.Nil
+	}
+	newsletterID, err := uuid.Parse(u.NewsletterID)
+	if err != nil {
+		newsletterID = uuid.Nil
+	}
 	return &SubscriptionResponse{
-		ID:           u.ID,
+		ID:           id,
 		Email:        u.Email,
-		NewsletterID: u.NewsletterID,
+		NewsletterID: newsletterID,
 	}
 }
 

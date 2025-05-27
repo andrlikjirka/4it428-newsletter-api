@@ -34,15 +34,19 @@ func (s subscriptionService) Unsubscribe(ctx context.Context, subscriptionID str
 }
 
 func (s subscriptionService) Subscribe(ctx context.Context, subscription *model.Subscription) (*model.Subscription, error) {
+
+	//TODO validate newsletter ID and email format
+	logger.Info("Subscribing to newsletter", "subscriptionID", subscription.ID)
+
 	createdSubscription, err := s.repo.Add(ctx, subscription)
 	if err != nil {
-		logger.Error("Failed to subscribe to newsletter", "email", subscription.Email, "newsletterID", subscription.NewsletterID.String(), "error", err)
+		logger.Error("Failed to subscribe to newsletter", "email", subscription.Email, "newsletterID", subscription.NewsletterID, "error", err)
 		return nil, err
 	}
 
 	//TODO send confirmation email to the user
 
-	logger.Info("Subscribing to newsletter", "email", subscription.Email, "newsletterID", subscription.NewsletterID.String())
+	logger.Info("Subscribing to newsletter", "email", subscription.Email, "newsletterID", subscription.NewsletterID)
 	return createdSubscription, nil
 }
 
