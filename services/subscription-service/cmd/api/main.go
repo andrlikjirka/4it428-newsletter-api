@@ -34,8 +34,14 @@ func main() {
 	}
 	defer firestoreClient.Close()
 
+	awsSesClient, err := bootstrap.SetupAwsSes(ctx)
+	if err != nil {
+		logger.Error("initializing AWS SES client failed", "error", err)
+		return
+	}
+
 	subscriptionRepo := repositories.NewSubscriptionRepository(firestoreClient)
-	services := bootstrap.NewServicesContainer(subscriptionRepo)
+	services := bootstrap.NewServicesContainer(subscriptionRepo, awsSesClient)
 	handlers := bootstrap.NewHandlersContainer(services)
 	router := api.NewApiRouter(handlers, version)
 	server := &http.Server{

@@ -3,6 +3,7 @@ package impl
 import (
 	"4it428-newsletter-api/libs/logger"
 	"4it428-newsletter-api/libs/utils"
+	"4it428-newsletter-api/services/subscription-service/internal/infrastructure/aws"
 	errors2 "4it428-newsletter-api/services/subscription-service/internal/service/errors"
 	"4it428-newsletter-api/services/subscription-service/internal/service/model"
 	"4it428-newsletter-api/services/subscription-service/internal/service/repositories"
@@ -12,10 +13,14 @@ import (
 
 type subscriptionService struct {
 	repo repositories.ISubscriptionRepository
+	ses  *aws.SESClient
 }
 
-func NewSubscriptionService(repo repositories.ISubscriptionRepository) services.SubscriptionService {
-	return &subscriptionService{repo: repo}
+func NewSubscriptionService(
+	repo repositories.ISubscriptionRepository,
+	ses *aws.SESClient,
+) services.SubscriptionService {
+	return &subscriptionService{repo: repo, ses: ses}
 }
 
 func (s subscriptionService) Unsubscribe(ctx context.Context, subscriptionID string) error {
@@ -41,6 +46,14 @@ func (s subscriptionService) Subscribe(ctx context.Context, subscription *model.
 	createdSubscription, err := s.repo.Add(ctx, subscription)
 	if err != nil {
 		logger.Error("Failed to subscribe to newsletter", "email", subscription.Email, "newsletterID", subscription.NewsletterID, "error", err)
+		return nil, err
+	}
+
+	err = s.ses.SendEmail(ctx, subscription.Email, "Subscription Confirmation",
+		"Thank you for subscribing to our newsletter!",
+		"<h1>Thank you for subscribing to our newsletter!</h1>")
+	if err != nil {
+		logger.Error("Failed to send confirmation email", "email", subscription.Email, "error", err)
 		return nil, err
 	}
 
