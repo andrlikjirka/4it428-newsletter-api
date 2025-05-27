@@ -9,7 +9,6 @@ func NewUserRouter(h *v1.UserHandler) *chi.Mux {
 	r := chi.NewRouter()
 
 	r.Get("/", h.ListUsers)
-	r.Post("/", h.CreateUser)
 	r.Get("/{email}", h.GetUserByEmail)
 	r.Put("/{email}", h.UpdateUser)
 	r.Delete("/{email}", h.DeleteUser)
