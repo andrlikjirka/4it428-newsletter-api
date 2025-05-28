@@ -109,26 +109,6 @@ paths:
         "400":
           $ref: '#/components/responses/BadRequest'
 
-    post:
-      summary: Create user
-      operationId: CreateUser
-      description: Create a new user
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/CreateUserRequest"
-      responses:
-        "201":
-          description: User successfully created
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/CreateUserRequest"
-        "400":
-          $ref: '#/components/responses/BadRequest'
-
   /users/{email}:
     parameters:
       - name: email
@@ -140,7 +120,7 @@ paths:
           format: email
 
     get:
-      summary: Get a user by email
+      summary: Get user by email
       operationId: GetUserByEmail
       description: Fetch user detail by a specified user identifier (email)
       responses:
@@ -154,7 +134,7 @@ paths:
           $ref: '#/components/responses/NotFound'
 
     put:
-      summary: Update a user
+      summary: Update user
       operationId: UpdateUser
       requestBody:
         description: Updated user data
@@ -176,7 +156,7 @@ paths:
           $ref: '#/components/responses/NotFound'
 
     delete:
-      summary: Delete a user
+      summary: Delete user
       operationId: DeleteUser
       description: Delete user specified by an unique identifier (email)
       responses:
