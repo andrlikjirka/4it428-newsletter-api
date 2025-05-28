@@ -3,23 +3,32 @@ name: newsletter-api
 services:
   traefik:
     image: traefik:v3.3
+    restart: unless-stopped
     ports:
       - "80:80"
+      - "443:443"
       - "8080:8080"
     volumes:
-      - ./traefik/traefik.yml:/etc/traefik/traefik.yml
-      - ./traefik/dynamic.yml:/etc/traefik/dynamic.yml
+      - ./traefik/traefik-prod.yml:/etc/traefik/traefik.yml
+      - ./traefik/dynamic-prod.yml:/etc/traefik/dynamic.yml
+      - ./acme.json:/acme.json
     networks:
       - newsletter-api-net
 
   db:
     image: postgres:17.4
+    container_name: postgres_db
+    restart: unless-stopped
+    ports:
+      - "5432:5432"
     networks:
       - newsletter-api-net
     environment:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_DB: ${POSTGRES_DB}
+    volumes:
+      - db_data:/var/lib/postgresql/data
 
   newsletter-service:
     build:
@@ -27,6 +36,7 @@ services:
       dockerfile: services/newsletter-service/Dockerfile
       target: prod
     container_name: newsletter-service
+    restart: unless-stopped
     env_file:
       - .env
     networks:
@@ -41,8 +51,11 @@ services:
       dockerfile: services/subscription-service/Dockerfile
       target: prod
     container_name: subscription-service
+    restart: unless-stopped
     env_file:
       - .env
+    volumes:
+        - ./secrets/firebase-adminsdk.json:/app/secrets/firebase-adminsdk.json:ro
     networks:
       - newsletter-api-net
     depends_on:
@@ -55,8 +68,11 @@ services:
       dockerfile: services/user-service/Dockerfile
       target: prod
     container_name: user-service
+    restart: unless-stopped
     env_file:
       - .env
+    volumes:
+      - ./secrets/firebase-adminsdk.json:/app/secrets/firebase-adminsdk.json:ro
     networks:
       - newsletter-api-net
     depends_on:
@@ -66,3 +82,7 @@ services:
 networks:
   newsletter-api-net:
     driver: bridge
+
+volumes:
+  db_data:
+    driver: local

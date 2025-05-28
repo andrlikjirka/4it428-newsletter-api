@@ -1,5 +1,5 @@
 # -------- Stage 1: Dev & Build --------
-FROM golang:1.24-alpine as dev
+FROM golang:1.24-alpine AS dev
 
 # Install Air for dev hot reload
 RUN go install github.com/air-verse/air@latest

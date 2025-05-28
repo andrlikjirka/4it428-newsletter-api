@@ -53,15 +53,6 @@ http:
       middlewares:
         - ratelimiter
 
-    # only for testing purposes, should not be used in production
-    #to-subscription-service-temp-notify:
-    #  rule: "Method(`POST`) && PathRegexp(`^/api/v[0-9]+/subscriptions/_notify$`)"
-    #  service: subscription-service
-    #  entryPoints:
-    #    - web
-    #  middlewares:
-    #    - ratelimiter
-
     to-user-service-users:
       rule: "PathRegexp(`^/api/v[0-9]+/users`)"
       service: user-service

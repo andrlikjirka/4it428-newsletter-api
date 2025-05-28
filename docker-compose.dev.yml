@@ -7,8 +7,8 @@ services:
       - "80:80"
       - "8080:8080"
     volumes:
-      - ./traefik/traefik.yml:/etc/traefik/traefik.yml
-      - ./traefik/dynamic.yml:/etc/traefik/dynamic.yml
+      - ./traefik/traefik-dev.yml:/etc/traefik/traefik.yml
+      - ./traefik/dynamic-dev.yml:/etc/traefik/dynamic.yml
     networks:
       - newsletter-api-net
 
