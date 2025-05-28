@@ -32,17 +32,15 @@ services:
     build:
       context: .
       dockerfile: services/newsletter-service/Dockerfile
-      target: dev
+      target: prod
     container_name: newsletter-service
+    ports:
+      - "8081:8081"
     restart: unless-stopped
     env_file:
       - .env
-    volumes:
-      - ./services/newsletter-service:/app/services/newsletter-service
-      - ./pkg:/app/pkg
     networks:
       - newsletter-api-net
-    command: [ "air", "-c", "services/newsletter-service/.air.toml" ]
     depends_on:
       - db
       - traefik
@@ -51,8 +49,10 @@ services:
     build:
       context: .
       dockerfile: services/subscription-service/Dockerfile
-      target: dev
+      target: prod
     container_name: subscription-service
+    ports:
+      - "8082:8082"
     restart: unless-stopped
     env_file:
       - .env
@@ -62,7 +62,6 @@ services:
         - ./secrets/firebase-adminsdk.json:/app/secrets/firebase-adminsdk.json:ro
     networks:
       - newsletter-api-net
-    command: [ "air", "-c", "services/subscription-service/.air.toml" ]
     depends_on:
       - db
       - traefik
