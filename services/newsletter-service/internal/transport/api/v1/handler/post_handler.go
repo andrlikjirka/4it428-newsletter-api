@@ -24,7 +24,17 @@ func (h *PostHandler) ListPosts(w http.ResponseWriter, r *http.Request) {
 	newsletterID := chi.URLParam(r, "newsletterID")
 	posts, err := h.postService.ListPosts(r.Context(), newsletterID)
 	if err != nil {
-		utils.WriteErrResponse(w, http.StatusBadRequest, err)
+		if errors.Is(err, errorsdef.ErrInvalidUUID) {
+			utils.WriteErrResponse(w, http.StatusBadRequest, err)
+			return
+		} else if errors.Is(err, errorsdef.ErrNotFound) {
+			utils.WriteErrResponse(w, http.StatusNotFound, err)
+			return
+		} else if errors.Is(err, errorsdef.ErrUserNotAuthor) {
+			utils.WriteErrResponse(w, http.StatusForbidden, err)
+			return
+		}
+		utils.WriteErrResponse(w, http.StatusInternalServerError, err)
 		return
 	}
 	utils.WriteResponse(w, http.StatusOK, model.FromPostList(posts))
@@ -50,7 +60,17 @@ func (h *PostHandler) CreatePost(w http.ResponseWriter, r *http.Request) {
 
 	p, err := h.postService.CreatePost(r.Context(), postRequest.ToPost(), newsletterID, utils.GetXUserId(r))
 	if err != nil {
-		utils.WriteErrResponse(w, http.StatusBadRequest, err)
+		if errors.Is(err, errorsdef.ErrInvalidUUID) {
+			utils.WriteErrResponse(w, http.StatusBadRequest, err)
+			return
+		} else if errors.Is(err, errorsdef.ErrNotFound) {
+			utils.WriteErrResponse(w, http.StatusNotFound, err)
+			return
+		} else if errors.Is(err, errorsdef.ErrUserNotAuthor) {
+			utils.WriteErrResponse(w, http.StatusForbidden, err)
+			return
+		}
+		utils.WriteErrResponse(w, http.StatusInternalServerError, err)
 		return
 	}
 	utils.WriteResponse(w, http.StatusCreated, model.FromPost(p))
@@ -97,6 +117,12 @@ func (h *PostHandler) UpdatePost(w http.ResponseWriter, r *http.Request) {
 		if errors.Is(err, errorsdef.ErrPostNotFound) {
 			utils.WriteErrResponse(w, http.StatusNotFound, err)
 			return
+		} else if errors.Is(err, errorsdef.ErrInvalidUUID) {
+			utils.WriteErrResponse(w, http.StatusBadRequest, err)
+			return
+		} else if errors.Is(err, errorsdef.ErrUserNotAuthor) {
+			utils.WriteErrResponse(w, http.StatusForbidden, err)
+			return
 		}
 		utils.WriteErrResponse(w, http.StatusInternalServerError, err)
 		return
@@ -114,6 +140,9 @@ func (h *PostHandler) DeletePost(w http.ResponseWriter, r *http.Request) {
 			return
 		} else if errors.Is(err, errorsdef.ErrPostNotFound) {
 			utils.WriteErrResponse(w, http.StatusNotFound, err)
+			return
+		} else if errors.Is(err, errorsdef.ErrUserNotAuthor) {
+			utils.WriteErrResponse(w, http.StatusForbidden, err)
 			return
 		}
 		utils.WriteErrResponse(w, http.StatusInternalServerError, err)
@@ -133,6 +162,12 @@ func (h *PostHandler) PublishPost(w http.ResponseWriter, r *http.Request) {
 			return
 		} else if errors.Is(err, errorsdef.ErrPostNotFound) {
 			utils.WriteErrResponse(w, http.StatusNotFound, err)
+			return
+		} else if errors.Is(err, errorsdef.ErrNotFound) {
+			utils.WriteErrResponse(w, http.StatusNotFound, err)
+			return
+		} else if errors.Is(err, errorsdef.ErrUserNotAuthor) {
+			utils.WriteErrResponse(w, http.StatusForbidden, err)
 			return
 		}
 		utils.WriteErrResponse(w, http.StatusInternalServerError, err)

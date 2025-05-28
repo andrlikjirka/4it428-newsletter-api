@@ -99,6 +99,12 @@ func (h *NewsletterHandler) UpdateNewsletter(w http.ResponseWriter, r *http.Requ
 		if errors.Is(err, errorsdef.ErrNotFound) {
 			utils.WriteErrResponse(w, http.StatusNotFound, err)
 			return
+		} else if errors.Is(err, errorsdef.ErrUserNotAuthor) {
+			utils.WriteErrResponse(w, http.StatusForbidden, err)
+			return
+		} else if errors.Is(err, errorsdef.ErrInvalidUUID) {
+			utils.WriteErrResponse(w, http.StatusBadRequest, err)
+			return
 		}
 		utils.WriteErrResponse(w, http.StatusInternalServerError, err)
 		return
@@ -116,6 +122,9 @@ func (h *NewsletterHandler) DeleteNewsletter(w http.ResponseWriter, r *http.Requ
 			return
 		} else if errors.Is(err, errorsdef.ErrNotFound) {
 			utils.WriteErrResponse(w, http.StatusNotFound, err)
+			return
+		} else if errors.Is(err, errorsdef.ErrUserNotAuthor) {
+			utils.WriteErrResponse(w, http.StatusForbidden, err)
 			return
 		}
 		utils.WriteErrResponse(w, http.StatusInternalServerError, err)
