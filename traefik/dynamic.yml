@@ -5,44 +5,59 @@ http:
       service: newsletter-service
       entryPoints:
         - web
+        - websecure
       middlewares:
         - ratelimiter
+      tls:
+        certResolver: letsencrypt
 
     to-newsletter-service-newsletter-private-post:
       rule: "(Method(`POST`) || Method(`PUT`) || Method(`DELETE`)) && PathRegexp(`^/api/v[0-9]+/newsletters(?:/[^/]+)?$`)"
       service: newsletter-service
       entryPoints:
         - web
+        - websecure
       middlewares:
         - ratelimiter
         - auth-forward
+      tls:
+        certResolver: letsencrypt
 
     to-newsletter-service-post-private-post:
       rule: "(Method(`POST`) || Method(`PUT`) || Method(`DELETE`)) && PathRegexp(`^/api/v[0-9]+/newsletters/[^/]+/posts(?:/[^/]+)?$`)"
       service: newsletter-service
       entryPoints:
         - web
+        - websecure
       middlewares:
         - ratelimiter
         - auth-forward
+      tls:
+        certResolver: letsencrypt
 
     to-newsletter-service-publish-private-get:
         rule: "Method(`GET`) && PathRegexp(`^/api/v[0-9]+/newsletters/[^/]+/posts/[^/]+/_publish/?$`)"
         service: newsletter-service
         entryPoints:
             - web
+            - websecure
         middlewares:
             - ratelimiter
             - auth-forward
+        tls:
+          certResolver: letsencrypt
 
     to-subscription-service-private-list:
       rule: "Method(`GET`) && PathRegexp(`^/api/v[0-9]+/subscriptions/?$`)"
       service: subscription-service
       entryPoints:
         - web
+        - websecure
       middlewares:
         - ratelimiter
         - auth-forward
+      tls:
+        certResolver: letsencrypt
 
     to-subscription-service-public:
       rule: "(Method(`GET`) && PathRegexp(`^/api/v[0-9]+/subscriptions/[^/]+/_unsubscribe/?$`)) ||
@@ -50,34 +65,34 @@ http:
       service: subscription-service
       entryPoints:
         - web
+        - websecure
       middlewares:
         - ratelimiter
-
-    # only for testing purposes, should not be used in production
-    #to-subscription-service-temp-notify:
-    #  rule: "Method(`POST`) && PathRegexp(`^/api/v[0-9]+/subscriptions/_notify$`)"
-    #  service: subscription-service
-    #  entryPoints:
-    #    - web
-    #  middlewares:
-    #    - ratelimiter
+      tls:
+        certResolver: letsencrypt
 
     to-user-service-users:
       rule: "PathRegexp(`^/api/v[0-9]+/users`)"
       service: user-service
       entryPoints:
         - web
+        - websecure
       middlewares:
         - ratelimiter
         - auth-forward
+      tls:
+        certResolver: letsencrypt
 
     to-user-service-auth:
       rule: "PathRegexp(`^/api/v[0-9]+/auth`)"
       service: user-service
       entryPoints:
         - web
+        - websecure
       middlewares:
         - ratelimiter
+      tls:
+        certResolver: letsencrypt
 
   middlewares:
     strip-api:
