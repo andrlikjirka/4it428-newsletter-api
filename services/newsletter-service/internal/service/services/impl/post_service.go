@@ -11,14 +11,20 @@ import (
 )
 
 type postService struct {
-	postRepo       repositories.IPostRepository
-	newsletterRepo repositories.INewsletterRepository
+	postRepo                  repositories.IPostRepository
+	newsletterRepo            repositories.INewsletterRepository
+	subscriptionServiceClient services.ISubscriptionServiceClient
 }
 
-func NewPostService(postRepo repositories.IPostRepository, newsletterRepo repositories.INewsletterRepository) services.PostService {
+func NewPostService(
+	postRepo repositories.IPostRepository,
+	newsletterRepo repositories.INewsletterRepository,
+	subscriptionServiceClient services.ISubscriptionServiceClient,
+) services.PostService {
 	return &postService{
-		postRepo:       postRepo,
-		newsletterRepo: newsletterRepo,
+		postRepo:                  postRepo,
+		newsletterRepo:            newsletterRepo,
+		subscriptionServiceClient: subscriptionServiceClient,
 	}
 }
 
@@ -196,7 +202,17 @@ func (p postService) PublishPost(ctx context.Context, postID string, newsletterI
 		return errors2.ErrAlreadyPublished
 	}
 
-	//TODO: call subscription service to notify subscribers
+	notification := &services.Notification{
+		Title:       post.Title,
+		Content:     post.Content,
+		HtmlContent: post.HtmlContent,
+	}
+
+	err = p.subscriptionServiceClient.NotifySubscribers(ctx, newsletterID, notification)
+	if err != nil {
+		logger.Error("Failed to notify subscribers", "newsletterID", newsletterID, "error", err)
+		return err
+	}
 
 	post.Published = true
 	_, err = p.postRepo.Update(ctx, post)

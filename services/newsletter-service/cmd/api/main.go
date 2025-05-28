@@ -3,6 +3,7 @@ package main
 import (
 	"4it428-newsletter-api/libs/logger"
 	"4it428-newsletter-api/services/newsletter-service/internal/bootstrap"
+	"4it428-newsletter-api/services/newsletter-service/internal/infrastructure/clients"
 	"4it428-newsletter-api/services/newsletter-service/internal/infrastructure/persistence/repositories"
 	"4it428-newsletter-api/services/newsletter-service/internal/transport/api"
 	"context"
@@ -36,7 +37,8 @@ func main() {
 
 	newsletterRepo := repositories.NewNewsletterRepository(db)
 	postRepo := repositories.NewPostRepository(db)
-	services := bootstrap.NewServicesContainer(newsletterRepo, postRepo)
+	subscriptionServiceClient := clients.NewSubscriptionServiceClient()
+	services := bootstrap.NewServicesContainer(newsletterRepo, postRepo, subscriptionServiceClient)
 	handlers := bootstrap.NewHandlersContainer(services)
 	router := api.NewApiRouter(handlers, version)
 	server := &http.Server{
