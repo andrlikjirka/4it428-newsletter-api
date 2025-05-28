@@ -1,12 +1,33 @@
 entryPoints:
   web:
-    address: ":80"
+    address: :80
+    http:
+      redirections:
+        entryPoint:
+          to: webSecure
+          scheme: https
+  webSecure:
+    address: :443
 
 api:
-  insecure: true   # dev only (TODO: secure auth for prod)
+  insecure: true
   dashboard: true
 
 providers:
   file:
     filename: /etc/traefik/dynamic.yml
     watch: true
+
+global:
+  checkNewVersion: false
+  sendAnonymousUsage: false
+log:
+  level: DEBUG
+
+certificatesResolvers:
+  letsencrypt:
+    acme:
+      email: kovm24@vse.cz
+      storage: acme.json
+      httpChallenge:
+        entryPoint: web

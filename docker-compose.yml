@@ -3,23 +3,33 @@ name: newsletter-api
 services:
   traefik:
     image: traefik:v3.3
+    restart: unless-stopped
     ports:
       - "80:80"
+      - "443:443"
       - "8080:8080"
     volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
       - ./traefik/traefik.yml:/etc/traefik/traefik.yml
       - ./traefik/dynamic.yml:/etc/traefik/dynamic.yml
+      - ./data/certs/:/var/traefik/certs/:rw
     networks:
       - newsletter-api-net
 
   db:
     image: postgres:17.4
+    container_name: postgres_db
+    restart: unless-stopped
+    ports:
+      - "5432:5432"
     networks:
       - newsletter-api-net
     environment:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_DB: ${POSTGRES_DB}
+    volumes:
+      - db_data:/var/lib/postgresql/data
 
   newsletter-service:
     build:
@@ -27,6 +37,7 @@ services:
       dockerfile: services/newsletter-service/Dockerfile
       target: prod
     container_name: newsletter-service
+    restart: unless-stopped
     env_file:
       - .env
     networks:
@@ -41,6 +52,7 @@ services:
       dockerfile: services/subscription-service/Dockerfile
       target: prod
     container_name: subscription-service
+    restart: unless-stopped
     env_file:
       - .env
     networks:
@@ -55,6 +67,7 @@ services:
       dockerfile: services/user-service/Dockerfile
       target: prod
     container_name: user-service
+    restart: unless-stopped
     env_file:
       - .env
     networks:
@@ -66,3 +79,7 @@ services:
 networks:
   newsletter-api-net:
     driver: bridge
+
+volumes:
+  db_data:
+    driver: local
