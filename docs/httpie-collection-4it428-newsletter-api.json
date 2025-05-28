@@ -17,14 +17,14 @@
       "type": "bearer",
       "credentials": {
         "username": "",
-        "password": "eyJhbGciOiJSUzI1NiIsImtpZCI6ImZlNjVjY2I4ZWFkMGJhZWY1ZmQzNjE5NWQ2NTI4YTA1NGZiYjc2ZjMiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vc3Rydi12c2UtZ28tbmV3c2xldHRlciIsImF1ZCI6InN0cnYtdnNlLWdvLW5ld3NsZXR0ZXIiLCJhdXRoX3RpbWUiOjE3NDgzNDUwNjgsInVzZXJfaWQiOiJtNEUyUFdVMkNqTkxPaExtdzA3N2hQakhOb2IyIiwic3ViIjoibTRFMlBXVTJDak5MT2hMbXcwNzdoUGpITm9iMiIsImlhdCI6MTc0ODQyMDQ2MywiZXhwIjoxNzQ4NDI0MDYzLCJlbWFpbCI6ImFkZWxrYS5yeWJpY2tvdmFAcG9wbGsuY29tIiwiZW1haWxfdmVyaWZpZWQiOmZhbHNlLCJmaXJlYmFzZSI6eyJpZGVudGl0aWVzIjp7ImVtYWlsIjpbImFkZWxrYS5yeWJpY2tvdmFAcG9wbGsuY29tIl19LCJzaWduX2luX3Byb3ZpZGVyIjoicGFzc3dvcmQifX0.i4_HLnSFgiPsvO76VqIb6Tq5QikBDXK4XtSzLwTnEmLq7aT1xwEbV1mVJzZ9Xx-A2qYZ0oYuWi4ZF_sL2il5UU9l5gXy9_ocHwaTBT3XUa_7wttgybUjTE0PMpg6XyKzoFMna-oXNMWfPhO71ggOhm3qZexzmRDLAJJ5bmAbIpOANZrQq7MEuTz6jetSaPp-fGnATYqbL6fLJPD2GgwjCUD_XUzwWANzeSEu1xTCUmvtJcTLXEfDpVaeCP-STxL2wK2EKBIQVLvfXeJKniWu3Q5uq9wfJhMsV5aZvpy5-1VVK_g-FTzNzgdS9Wq13mUgpm1XnX2RGzivF-wTpa-soQ"
+        "password": "eyJhbGciOiJSUzI1NiIsImtpZCI6ImZlNjVjY2I4ZWFkMGJhZWY1ZmQzNjE5NWQ2NTI4YTA1NGZiYjc2ZjMiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vc3Rydi12c2UtZ28tbmV3c2xldHRlciIsImF1ZCI6InN0cnYtdnNlLWdvLW5ld3NsZXR0ZXIiLCJhdXRoX3RpbWUiOjE3NDgzNDUwNjgsInVzZXJfaWQiOiJtNEUyUFdVMkNqTkxPaExtdzA3N2hQakhOb2IyIiwic3ViIjoibTRFMlBXVTJDak5MT2hMbXcwNzdoUGpITm9iMiIsImlhdCI6MTc0ODQzNzMxNiwiZXhwIjoxNzQ4NDQwOTE2LCJlbWFpbCI6ImFkZWxrYS5yeWJpY2tvdmFAcG9wbGsuY29tIiwiZW1haWxfdmVyaWZpZWQiOmZhbHNlLCJmaXJlYmFzZSI6eyJpZGVudGl0aWVzIjp7ImVtYWlsIjpbImFkZWxrYS5yeWJpY2tvdmFAcG9wbGsuY29tIl19LCJzaWduX2luX3Byb3ZpZGVyIjoicGFzc3dvcmQifX0.X0-ec_n-1edek0WltXHk-I5daq6nNHPsbIm7mCDE7CVTaUJq_MZRct9ZH96VYVS1OkjCw2Ny2sv5AfTH1LqoNO2HbZvAUMIdNGam7Tx_pQI93M46RXUeri2qGNRVpAAiy6ET7GdigxmUIbgQyqn6zTOG718RGl4owVDy54PP139OC-4kyD-81_SgcWo6SCu1bB03Ttc2SPZ1qJe2V71KrcBhu6PDAAYOxRu_kDkPYosT3nhzDvlQACvtVK_pCing7XKgjdtgnTTo--M6VSnLGHR0OmV-vY5IQjRDPq136Lq-o5V5BYQWvaFNIyNc0BNM6I9h9USCWvCx0M1oO6Kqfg"
       },
       "target": "headers"
     },
     "requests": [
       {
         "name": "U_List users",
-        "url": "http://{{url}}/api/v1/users",
+        "url": "{{url}}/api/v1/users",
         "method": "GET",
         "headers": [],
         "queryParams": [],
@@ -53,7 +53,7 @@
       },
       {
         "name": "U_Get user by email",
-        "url": "http://{{url}}/api/v1/users/ziyvnmeqqztzbrmsjb@poplk.com",
+        "url": "{{url}}/api/v1/users/ziyvnmeqqztzbrmsjb@poplk.com",
         "method": "GET",
         "headers": [],
         "queryParams": [],
@@ -82,7 +82,7 @@
       },
       {
         "name": "U_Create user",
-        "url": "http://{{url}}/api/v1/users",
+        "url": "{{url}}/api/v1/users",
         "method": "POST",
         "headers": [],
         "queryParams": [],
@@ -111,7 +111,7 @@
       },
       {
         "name": "U_Update user",
-        "url": "http://{{url}}/api/v1/users/ziyvnmeqqztzbrmsjb@poplk.com",
+        "url": "{{url}}/api/v1/users/ziyvnmeqqztzbrmsjb@poplk.com",
         "method": "PUT",
         "headers": [],
         "queryParams": [],
@@ -140,7 +140,7 @@
       },
       {
         "name": "U_Delete user",
-        "url": "http://{{url}}/api/v1/users/rmsjb@poplk.com",
+        "url": "{{url}}/api/v1/users/rmsjb@poplk.com",
         "method": "DELETE",
         "headers": [],
         "queryParams": [],
@@ -169,7 +169,7 @@
       },
       {
         "name": "U_Sign up",
-        "url": "http://{{url}}/api/v1/auth/signup",
+        "url": "{{url}}/api/v1/auth/signup",
         "method": "POST",
         "headers": [],
         "queryParams": [],
@@ -198,7 +198,7 @@
       },
       {
         "name": "U_Sign in",
-        "url": "http://{{url}}/api/v1/auth/signin",
+        "url": "{{url}}/api/v1/auth/signin",
         "method": "POST",
         "headers": [],
         "queryParams": [],
@@ -227,7 +227,7 @@
       },
       {
         "name": "U_Refresh",
-        "url": "http://{{url}}/api/v1/auth/refresh",
+        "url": "{{url}}/api/v1/auth/refresh",
         "method": "POST",
         "headers": [],
         "queryParams": [],
@@ -256,7 +256,7 @@
       },
       {
         "name": "U_VerifyToken",
-        "url": "http://{{url}}/api/v1/auth/verify",
+        "url": "{{url}}/api/v1/auth/verify",
         "method": "GET",
         "headers": [],
         "queryParams": [],
@@ -314,7 +314,7 @@
       },
       {
         "name": "N_List posts",
-        "url": "http://{{url}}/api/v1/newsletters/64e252e3-395c-4600-891f-409b6b8f6a41/posts",
+        "url": "{{url}}/api/v1/newsletters/e5b5c2c4-5c6d-5f0f-cff5-eee555555eee/posts",
         "method": "GET",
         "headers": [],
         "queryParams": [],
@@ -343,7 +343,7 @@
       },
       {
         "name": "N_Get newsletter by ID",
-        "url": "http://{{url}}/api/v1/newsletters/a1c1e8e0-1e2f-4b6b-8b8f-aaa111111aaa",
+        "url": "{{url}}/api/v1/newsletters/a1c1e8e0-1e2f-4b6b-8b8f-aaa111111aaa",
         "method": "GET",
         "headers": [],
         "queryParams": [],
@@ -372,7 +372,7 @@
       },
       {
         "name": "N_Get post by ID",
-        "url": "http://{{url}}/api/v1/newsletters/e5b5c2c4-5c6d-5f0f-cff5-eee555555eee/posts/c9ecc345-7c27-4aba-9c53-e4b78d3a97d3",
+        "url": "{{url}}/api/v1/newsletters/e5b5c2c4-5c6d-5f0f-cff5-eee555555eee/posts/c9ecc345-7c27-4aba-9c53-e4b78d3a97d3",
         "method": "GET",
         "headers": [],
         "queryParams": [],
@@ -401,7 +401,7 @@
       },
       {
         "name": "N_Publish post",
-        "url": "http://{{url}}/api/v1/newsletters/64e252e3-395c-4600-891f-409b6b8f6a41/posts/6cfb625b-6604-4d78-a0d2-0ee04cdb283a/_publish",
+        "url": "{{url}}/api/v1/newsletters/e5b5c2c4-5c6d-5f0f-cff5-eee555555eee/posts/a59dd1e3-9e86-4f3e-b7ce-b91f3f8dc11b/_publish",
         "method": "GET",
         "headers": [],
         "queryParams": [],
@@ -430,7 +430,7 @@
       },
       {
         "name": "S_Unsubscribe",
-        "url": "http://{{url}}/api/v1/subscriptions/5cff5c23-54fa-419c-94b2-20c1a82789dd/_unsubscribe",
+        "url": "{{url}}/api/v1/subscriptions/5cff5c23-54fa-419c-94b2-20c1a82789dd/_unsubscribe",
         "method": "GET",
         "headers": [],
         "queryParams": [],
@@ -459,7 +459,7 @@
       },
       {
         "name": "S_Subscribe",
-        "url": "http://{{url}}/api/v1/subscriptions",
+        "url": "{{url}}/api/v1/subscriptions",
         "method": "POST",
         "headers": [],
         "queryParams": [],
@@ -473,7 +473,7 @@
             "name": ""
           },
           "text": {
-            "value": "{\n  \"email\": \"kovm24@vse.cz\",\n  \"newsletter_id\": \"a1c1e8e0-1e2f-4b6b-8b8f-aaa111111aaa\"\n}",
+            "value": "{\n  \"email\": \"kovm24@vse.cz\",\n  \"newsletter_id\": \"e5b5c2c4-5c6d-5f0f-cff5-eee555555eee\"\n}",
             "format": "application/json"
           },
           "form": {
@@ -488,13 +488,13 @@
       },
       {
         "name": "S_List subscriptions",
-        "url": "http://{{url}}/api/v1/subscriptions",
+        "url": "{{url}}/api/v1/subscriptions",
         "method": "GET",
         "headers": [],
         "queryParams": [
           {
             "name": "newsletter_id",
-            "value": "64e252e3-395c-4600-891f-409b6b8f6a41",
+            "value": "e5b5c2c4-5c6d-5f0f-cff5-eee555555eee",
             "enabled": true
           }
         ],
@@ -558,7 +558,7 @@
       },
       {
         "name": "N_Create newsletter",
-        "url": "http://{{url}}/api/v1/newsletters",
+        "url": "{{url}}/api/v1/newsletters",
         "method": "POST",
         "headers": [],
         "queryParams": [],
@@ -587,7 +587,7 @@
       },
       {
         "name": "N_Create post",
-        "url": "http://{{url}}/api/v1/newsletters/a1c1e8e0-1e2f-4b6b-8b8f-aaa111111aaa/posts",
+        "url": "{{url}}/api/v1/newsletters/a1c1e8e0-1e2f-4b6b-8b8f-aaa111111aaa/posts",
         "method": "POST",
         "headers": [],
         "queryParams": [],
@@ -616,7 +616,7 @@
       },
       {
         "name": "N_Update newsletter",
-        "url": "http://{{url}}/api/v1/newsletters/a1c1e8e0-1e2f-4b6b-8b8f-aaa111111aaa",
+        "url": "{{url}}/api/v1/newsletters/a1c1e8e0-1e2f-4b6b-8b8f-aaa111111aaa",
         "method": "PUT",
         "headers": [],
         "queryParams": [],
@@ -645,7 +645,7 @@
       },
       {
         "name": "N_Update post",
-        "url": "http://{{url}}/api/v1/newsletters/64e252e3-395c-4600-891f-409b6b8f6a41/posts/6cfb625b-6604-4d78-a0d2-0ee04cdb283a",
+        "url": "{{url}}/api/v1/newsletters/64e252e3-395c-4600-891f-409b6b8f6a41/posts/6cfb625b-6604-4d78-a0d2-0ee04cdb283a",
         "method": "PUT",
         "headers": [],
         "queryParams": [],
@@ -674,7 +674,7 @@
       },
       {
         "name": "N_Delete newsletter",
-        "url": "http://{{url}}/api/v1/newsletters/e5b5c2c4-5c6d-5f0f-cff5-eee555555eee",
+        "url": "{{url}}/api/v1/newsletters/e5b5c2c4-5c6d-5f0f-cff5-eee555555eee",
         "method": "DELETE",
         "headers": [],
         "queryParams": [],
@@ -703,7 +703,7 @@
       },
       {
         "name": "N_Delete post",
-        "url": "http://{{url}}/api/v1/newsletters/64e252e3-395c-4600-891f-409b6b8f6a41/posts/0ce83467-a703-4259-b5c7-fbae115a112b",
+        "url": "{{url}}/api/v1/newsletters/64e252e3-395c-4600-891f-409b6b8f6a41/posts/0ce83467-a703-4259-b5c7-fbae115a112b",
         "method": "DELETE",
         "headers": [],
         "queryParams": [],
