@@ -72,9 +72,13 @@ func (n newsletterService) UpdateNewsletter(ctx context.Context, id string, user
 		return nil, errors2.ErrInvalidUUID
 	}
 
-	newsletter, err := n.repo.GetByIdAndUserId(ctx, parsedID, parsedUserID)
+	newsletter, err := n.repo.GetById(ctx, parsedID)
 	if err != nil {
 		return nil, errors2.ErrNotFound
+	}
+	if newsletter.UserID != parsedUserID {
+		logger.Error("Unauthorized access to update newsletter", "id", id, "userID", userID)
+		return nil, errors2.ErrUserNotAuthor
 	}
 
 	if newsletterUpdate.Title != nil {
@@ -107,9 +111,14 @@ func (n newsletterService) DeleteNewsletter(ctx context.Context, id string, user
 		return errors2.ErrInvalidUUID
 	}
 
-	_, err = n.repo.GetByIdAndUserId(ctx, parsedID, parsedUserID)
+	newsletter, err := n.repo.GetById(ctx, parsedID)
 	if err != nil {
 		return errors2.ErrNotFound
+	}
+
+	if newsletter.UserID != parsedUserID {
+		logger.Error("Unauthorized access to delete newsletter", "id", id, "userID", userID)
+		return errors2.ErrUserNotAuthor
 	}
 
 	err = n.repo.Delete(ctx, parsedID, parsedUserID)

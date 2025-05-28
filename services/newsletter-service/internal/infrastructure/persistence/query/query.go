@@ -9,9 +9,6 @@ var (
 	//go:embed scripts/newsletters/SelectNewsletterById.sql
 	SelectNewsletterById string
 
-	//go:embed scripts/newsletters/SelectNewsletterByIdAndUserId.sql
-	SelectNewsletterByIdAndUserId string
-
 	//go:embed scripts/newsletters/InsertNewsletter.sql
 	InsertNewsletter string
 
@@ -26,9 +23,6 @@ var (
 
 	//go:embed scripts/posts/SelectPostById.sql
 	SelectPostById string
-
-	//go:embed scripts/posts/SelectPostByIdAndUserId.sql
-	SelectPostByIdAndUserId string
 
 	//go:embed scripts/posts/InsertPost.sql
 	InsertPost string

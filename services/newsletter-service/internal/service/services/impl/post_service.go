@@ -41,10 +41,15 @@ func (p postService) CreatePost(ctx context.Context, post *model.Post, newslette
 		return nil, errors2.ErrInvalidUUID
 	}
 
-	_, err = p.newsletterRepo.GetByIdAndUserId(ctx, parsedNewsletterID, parsedUserID)
+	newsletter, err := p.newsletterRepo.GetById(ctx, parsedNewsletterID)
 	if err != nil {
 		logger.Error("Failed to get newsletter by ID", "newsletterID", newsletterID, "error", err)
 		return nil, errors2.ErrNotFound
+	}
+
+	if newsletter.UserID != parsedUserID {
+		logger.Error("Unauthorized access to create post", "newsletterID", newsletterID, "userID", userID)
+		return nil, errors2.ErrUserNotAuthor
 	}
 
 	post.NewsletterID = parsedNewsletterID
@@ -117,10 +122,21 @@ func (p postService) UpdatePost(ctx context.Context, postID string, newsletterID
 		return nil, errors2.ErrInvalidUUID
 	}
 
-	post, err := p.postRepo.GetByIdAndUserId(ctx, parsedPostID, parsedNewsletterID, parsedUserID)
+	post, err := p.postRepo.GetById(ctx, parsedPostID, parsedNewsletterID)
 	if err != nil {
 		logger.Error("Failed to get post by ID", "postID", postID, "error", err)
 		return nil, errors2.ErrPostNotFound
+	}
+
+	newsletter, err := p.newsletterRepo.GetById(ctx, parsedNewsletterID)
+	if err != nil {
+		logger.Error("Failed to get newsletter by ID", "newsletterID", newsletterID, "error", err)
+		return nil, errors2.ErrNotFound
+	}
+
+	if newsletter.UserID != parsedUserID {
+		logger.Error("Unauthorized access to update post", "postID", postID, "userID", userID)
+		return nil, errors2.ErrUserNotAuthor
 	}
 
 	if postUpdate.Title != nil {
@@ -160,9 +176,20 @@ func (p postService) DeletePost(ctx context.Context, postID string, newsletterID
 		return errors2.ErrInvalidUUID
 	}
 
-	_, err = p.postRepo.GetByIdAndUserId(ctx, parsedPostID, parsedNewsletterID, parsedUserID)
+	_, err = p.postRepo.GetById(ctx, parsedPostID, parsedNewsletterID)
 	if err != nil {
 		return errors2.ErrPostNotFound
+	}
+
+	newsletter, err := p.newsletterRepo.GetById(ctx, parsedNewsletterID)
+	if err != nil {
+		logger.Error("Failed to get newsletter by ID", "newsletterID", newsletterID, "error", err)
+		return errors2.ErrNotFound
+	}
+
+	if newsletter.UserID != parsedUserID {
+		logger.Error("Unauthorized access to delete post", "postID", postID, "userID", userID)
+		return errors2.ErrUserNotAuthor
 	}
 
 	err = p.postRepo.Delete(ctx, parsedPostID, parsedNewsletterID)
@@ -191,10 +218,21 @@ func (p postService) PublishPost(ctx context.Context, postID string, newsletterI
 		return errors2.ErrInvalidUUID
 	}
 
-	post, err := p.postRepo.GetByIdAndUserId(ctx, parsedPostID, parsedNewsletterID, parsedUserID)
+	post, err := p.postRepo.GetById(ctx, parsedPostID, parsedNewsletterID)
 	if err != nil {
 		logger.Error("Failed to get post by ID", "postID", postID, "error", err)
 		return errors2.ErrPostNotFound
+	}
+
+	newsletter, err := p.newsletterRepo.GetById(ctx, parsedNewsletterID)
+	if err != nil {
+		logger.Error("Failed to get newsletter by ID", "newsletterID", newsletterID, "error", err)
+		return errors2.ErrNotFound
+	}
+
+	if newsletter.UserID != parsedUserID {
+		logger.Error("Unauthorized access to publish post", "postID", postID, "userID", userID)
+		return errors2.ErrUserNotAuthor
 	}
 
 	if post.Published {

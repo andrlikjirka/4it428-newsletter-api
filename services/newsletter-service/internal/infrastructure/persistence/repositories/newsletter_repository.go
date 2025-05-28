@@ -66,22 +66,6 @@ func (r *NewsletterRepository) GetById(ctx context.Context, id uuid.UUID) (*mode
 	}, nil
 }
 
-func (r *NewsletterRepository) GetByIdAndUserId(ctx context.Context, id uuid.UUID, userID uuid.UUID) (*model.Newsletter, error) {
-	var newsletter dbmodel.NewsletterEntity
-	err := pgxscan.Get(ctx, r.pool, &newsletter, query.SelectNewsletterByIdAndUserId, id, userID)
-	if err != nil {
-		return nil, err
-	}
-
-	return &model.Newsletter{
-		ID:          newsletter.ID,
-		Title:       newsletter.Title,
-		Description: newsletter.Description,
-		CreatedAt:   newsletter.CreatedAt.Time,
-		UpdatedAt:   newsletter.UpdatedAt.Time,
-	}, nil
-}
-
 func (r *NewsletterRepository) Update(ctx context.Context, newsletter *model.Newsletter) (*model.Newsletter, error) {
 	now := time.Now().UTC()
 
