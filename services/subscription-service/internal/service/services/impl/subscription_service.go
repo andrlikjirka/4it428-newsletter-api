@@ -74,7 +74,7 @@ func (s subscriptionService) ListSubscriptions(ctx context.Context, newsletterID
 		return nil, errors2.ErrInvalidUUID
 	}
 
-	newsletter, err := s.newsletterServiceClient.GetNewsletter(ctx, newsletterID)
+	newsletter, err := s.newsletterServiceClient.GetNewsletter(ctx, parsedNewsletterID)
 	if err != nil {
 		logger.Error("Failed to get newsletter", "newsletterID", newsletterID, "error", err)
 		return nil, errors2.ErrNewsletterNotFound

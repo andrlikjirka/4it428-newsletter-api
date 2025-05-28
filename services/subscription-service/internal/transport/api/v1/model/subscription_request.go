@@ -12,9 +12,9 @@ type SubscriptionRequest struct {
 
 func (n *SubscriptionRequest) ToSubscription() *model.Subscription {
 	return &model.Subscription{
-		ID:           uuid.New().String(),
+		ID:           uuid.New(),
 		Email:        n.Email,
-		NewsletterID: n.NewsletterID.String(),
+		NewsletterID: n.NewsletterID,
 	}
 }
 

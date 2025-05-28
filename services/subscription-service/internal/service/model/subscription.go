@@ -1,7 +1,9 @@
 package model
 
+import "github.com/google/uuid"
+
 type Subscription struct {
-	ID           string
+	ID           uuid.UUID
 	Email        string
-	NewsletterID string
+	NewsletterID uuid.UUID
 }

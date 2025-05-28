@@ -2,6 +2,7 @@ package services
 
 import (
 	"context"
+	"github.com/google/uuid"
 )
 
 type Newsletter struct {
@@ -14,5 +15,5 @@ type Newsletter struct {
 }
 
 type INewsletterServiceClient interface {
-	GetNewsletter(ctx context.Context, newsletterID string) (*Newsletter, error)
+	GetNewsletter(ctx context.Context, newsletterID uuid.UUID) (*Newsletter, error)
 }

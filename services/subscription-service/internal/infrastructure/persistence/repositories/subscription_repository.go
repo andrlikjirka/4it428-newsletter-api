@@ -2,6 +2,7 @@ package repositories
 
 import (
 	"4it428-newsletter-api/libs/logger"
+	dbmodel "4it428-newsletter-api/services/subscription-service/internal/infrastructure/persistence/model"
 	"4it428-newsletter-api/services/subscription-service/internal/service/model"
 	"cloud.google.com/go/firestore"
 	"context"
@@ -35,8 +36,13 @@ func (r *SubscriptionRepository) Delete(ctx context.Context, id uuid.UUID) error
 
 func (r *SubscriptionRepository) Add(ctx context.Context, subscription *model.Subscription) (*model.Subscription, error) {
 	logger.Info("Adding subscription to Firestore", "subscriptionID", subscription.ID, "email", subscription.Email, "newsletterID", subscription.NewsletterID)
+	entity := &dbmodel.SubscriptionEntity{
+		ID:           subscription.ID.String(),
+		Email:        subscription.Email,
+		NewsletterID: subscription.NewsletterID.String(),
+	}
 	docRef := r.client.Collection("subscriptions").NewDoc()
-	_, err := docRef.Set(ctx, subscription)
+	_, err := docRef.Set(ctx, entity)
 	if err != nil {
 		return nil, err
 	}
@@ -53,11 +59,16 @@ func (r *SubscriptionRepository) ListByNewsletterId(ctx context.Context, newslet
 		if err != nil {
 			break
 		}
-		var sub model.Subscription
-		if err := doc.DataTo(&sub); err != nil {
+		var entity dbmodel.SubscriptionEntity
+		if err := doc.DataTo(&entity); err != nil {
 			continue
 		}
-		subs = append(subs, &sub)
+		sub := &model.Subscription{
+			ID:           uuid.MustParse(entity.ID),
+			Email:        entity.Email,
+			NewsletterID: uuid.MustParse(entity.NewsletterID),
+		}
+		subs = append(subs, sub)
 	}
 	return subs, nil
 }

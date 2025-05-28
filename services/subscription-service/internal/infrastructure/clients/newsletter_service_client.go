@@ -6,6 +6,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"github.com/google/uuid"
 	"io"
 	"net/http"
 	"os"
@@ -17,7 +18,7 @@ func NewNewsletterServiceClient() *NewsletterServiceClient {
 	return &NewsletterServiceClient{}
 }
 
-func (c *NewsletterServiceClient) GetNewsletter(ctx context.Context, newsletterID string) (*services.Newsletter, error) {
+func (c *NewsletterServiceClient) GetNewsletter(ctx context.Context, newsletterID uuid.UUID) (*services.Newsletter, error) {
 	baseUrl := os.Getenv("NEWSLETTER_SERVICE_URL")
 	port := os.Getenv("NEWSLETTER_SERVICE_PORT")
 	url := fmt.Sprintf("%s:%s/api/v1/newsletters/%s", baseUrl, port, newsletterID)
