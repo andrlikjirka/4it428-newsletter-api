@@ -60,6 +60,8 @@ services:
     depends_on:
       - db
       - traefik
+    volumes:
+      - ./secrets/firebase-adminsdk.json:/app/secrets/firebase-adminsdk.json:ro
 
   user-service:
     build:
@@ -75,6 +77,8 @@ services:
     depends_on:
       - db
       - traefik
+    volumes:
+      - ./secrets/firebase-adminsdk.json:/app/secrets/firebase-adminsdk.json:ro
 
 networks:
   newsletter-api-net:
