@@ -8,29 +8,20 @@ import (
 	"4it428-newsletter-api/services/subscription-service/internal/transport/api/v1/handler"
 	"cloud.google.com/go/firestore"
 	"context"
-	firebase "firebase.google.com/go/v4"
 	"google.golang.org/api/option"
 	"log"
 	"os"
 )
 
 func SetupFirestore(ctx context.Context) (*firestore.Client, error) {
-	firebaseSecretPath := os.Getenv("FIREBASE_CREDENTIALS")
-	if firebaseSecretPath == "" {
-		firebaseSecretPath = "../../secrets/firebase-adminsdk.json"
-	}
-	opt := option.WithCredentialsFile(firebaseSecretPath)
-	app, err := firebase.NewApp(ctx, nil, opt)
+	credentials := os.Getenv("FIREBASE_CREDENTIALS")
+	projectID := os.Getenv("GOOGLE_PROJECT_ID")
+	client, err := firestore.NewClient(ctx, projectID, option.WithCredentialsFile(credentials))
+
 	if err != nil {
 		log.Fatalf("error initializing app with firebase admin sdk")
 		return nil, err
 	}
-
-	client, err := app.Firestore(ctx)
-	if err != nil {
-		log.Fatalln(err)
-	}
-	defer client.Close()
 
 	return client, nil
 }
