@@ -61,7 +61,7 @@ func (h *SubscriptionHandler) Subscribe(w http.ResponseWriter, r *http.Request) 
 }
 
 func (h *SubscriptionHandler) ListSubscriptions(w http.ResponseWriter, r *http.Request) {
-	newsletterID := r.URL.Query().Get("newsletter_id")
+	newsletterID := utils.GetNewsletterIdFromQueryParam(r)
 	if newsletterID == "" {
 		utils.WriteErrResponse(w, http.StatusBadRequest, errorsdef.ErrNoNewsletterId)
 		return
@@ -77,7 +77,7 @@ func (h *SubscriptionHandler) ListSubscriptions(w http.ResponseWriter, r *http.R
 }
 
 func (h *SubscriptionHandler) NotifySubscribers(w http.ResponseWriter, r *http.Request) {
-	newsletterID := r.URL.Query().Get("newsletter_id")
+	newsletterID := utils.GetNewsletterIdFromQueryParam(r)
 
 	if newsletterID == "" {
 		utils.WriteErrResponse(w, http.StatusBadRequest, errorsdef.ErrNoNewsletterId)
