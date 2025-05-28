@@ -6,6 +6,7 @@ services:
     restart: unless-stopped
     ports:
       - "80:80"
+      - "443:443"
       - "8080:8080"
     volumes:
       - ./traefik/traefik.yml:/etc/traefik/traefik.yml
@@ -34,8 +35,6 @@ services:
       dockerfile: services/newsletter-service/Dockerfile
       target: prod
     container_name: newsletter-service
-    ports:
-      - "8081:8081"
     restart: unless-stopped
     env_file:
       - .env
@@ -51,14 +50,10 @@ services:
       dockerfile: services/subscription-service/Dockerfile
       target: prod
     container_name: subscription-service
-    ports:
-      - "8082:8082"
     restart: unless-stopped
     env_file:
       - .env
     volumes:
-        - ./services/subscription-service:/app/services/subscription-service
-        - ./pkg:/app/pkg
         - ./secrets/firebase-adminsdk.json:/app/secrets/firebase-adminsdk.json:ro
     networks:
       - newsletter-api-net
@@ -70,18 +65,15 @@ services:
     build:
       context: .
       dockerfile: services/user-service/Dockerfile
-      target: dev
+      target: prod
     container_name: user-service
     restart: unless-stopped
     env_file:
       - .env
     volumes:
-      - ./services/user-service:/app/services/user-service
-      - ./pkg:/app/pkg
       - ./secrets/firebase-adminsdk.json:/app/secrets/firebase-adminsdk.json:ro
     networks:
       - newsletter-api-net
-    command: [ "air", "-c", "services/user-service/.air.toml" ]
     depends_on:
       - db
       - traefik
