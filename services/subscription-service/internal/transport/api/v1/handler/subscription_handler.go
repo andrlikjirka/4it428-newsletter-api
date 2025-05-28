@@ -66,9 +66,8 @@ func (h *SubscriptionHandler) ListSubscriptions(w http.ResponseWriter, r *http.R
 		utils.WriteErrResponse(w, http.StatusBadRequest, errorsdef.ErrNoNewsletterId)
 		return
 	}
-	userID := r.Header.Get("X-User-ID")
 
-	subscriptions, err := h.subscriptionService.ListSubscriptions(r.Context(), newsletterID, userID)
+	subscriptions, err := h.subscriptionService.ListSubscriptions(r.Context(), newsletterID, utils.GetXUserId(r))
 
 	if err != nil {
 		utils.WriteErrResponse(w, http.StatusBadRequest, err)

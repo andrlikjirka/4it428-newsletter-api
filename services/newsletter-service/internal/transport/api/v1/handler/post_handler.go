@@ -32,7 +32,6 @@ func (h *PostHandler) ListPosts(w http.ResponseWriter, r *http.Request) {
 
 func (h *PostHandler) CreatePost(w http.ResponseWriter, r *http.Request) {
 	newsletterID := chi.URLParam(r, "newsletterID")
-	userID := r.Header.Get("X-User-ID")
 
 	b, err := io.ReadAll(r.Body)
 	if err != nil {
@@ -49,7 +48,7 @@ func (h *PostHandler) CreatePost(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	p, err := h.postService.CreatePost(r.Context(), postRequest.ToPost(), newsletterID, userID)
+	p, err := h.postService.CreatePost(r.Context(), postRequest.ToPost(), newsletterID, utils.GetXUserId(r))
 	if err != nil {
 		utils.WriteErrResponse(w, http.StatusBadRequest, err)
 		return
@@ -93,8 +92,7 @@ func (h *PostHandler) UpdatePost(w http.ResponseWriter, r *http.Request) {
 
 	postID := chi.URLParam(r, "postID")
 	newsletterID := chi.URLParam(r, "newsletterID")
-	userID := r.Header.Get("X-User-ID")
-	updatedPost, err := h.postService.UpdatePost(r.Context(), postID, newsletterID, userID, request.ToPostUpdate())
+	updatedPost, err := h.postService.UpdatePost(r.Context(), postID, newsletterID, utils.GetXUserId(r), request.ToPostUpdate())
 	if err != nil {
 		if errors.Is(err, errorsdef.ErrPostNotFound) {
 			utils.WriteErrResponse(w, http.StatusNotFound, err)
@@ -109,8 +107,7 @@ func (h *PostHandler) UpdatePost(w http.ResponseWriter, r *http.Request) {
 func (h *PostHandler) DeletePost(w http.ResponseWriter, r *http.Request) {
 	postID := chi.URLParam(r, "postID")
 	newsletterID := chi.URLParam(r, "newsletterID")
-	userID := r.Header.Get("X-User-ID")
-	err := h.postService.DeletePost(r.Context(), postID, newsletterID, userID)
+	err := h.postService.DeletePost(r.Context(), postID, newsletterID, utils.GetXUserId(r))
 	if err != nil {
 		if errors.Is(err, errorsdef.ErrInvalidUUID) {
 			utils.WriteErrResponse(w, http.StatusBadRequest, err)
@@ -128,9 +125,8 @@ func (h *PostHandler) DeletePost(w http.ResponseWriter, r *http.Request) {
 func (h *PostHandler) PublishPost(w http.ResponseWriter, r *http.Request) {
 	postID := chi.URLParam(r, "postID")
 	newsletterID := chi.URLParam(r, "newsletterID")
-	userID := r.Header.Get("X-User-ID")
 
-	err := h.postService.PublishPost(r.Context(), postID, newsletterID, userID)
+	err := h.postService.PublishPost(r.Context(), postID, newsletterID, utils.GetXUserId(r))
 	if err != nil {
 		if errors.Is(err, errorsdef.ErrInvalidUUID) {
 			utils.WriteErrResponse(w, http.StatusBadRequest, err)

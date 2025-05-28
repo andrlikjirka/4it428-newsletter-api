@@ -43,9 +43,7 @@ func (h *NewsletterHandler) CreateNewsletter(w http.ResponseWriter, r *http.Requ
 		return
 	}
 
-	userID := r.Header.Get("X-User-ID")
-
-	n, err := h.newsletterService.CreateNewsletter(r.Context(), newsletterRequest.ToNewsletter(), userID)
+	n, err := h.newsletterService.CreateNewsletter(r.Context(), newsletterRequest.ToNewsletter(), utils.GetXUserId(r))
 	if err != nil {
 		utils.WriteErrResponse(w, http.StatusBadRequest, err)
 		return
@@ -96,8 +94,7 @@ func (h *NewsletterHandler) UpdateNewsletter(w http.ResponseWriter, r *http.Requ
 	}
 
 	id := chi.URLParam(r, "id")
-	userID := r.Header.Get("X-User-ID")
-	updatedNewsletter, err := h.newsletterService.UpdateNewsletter(r.Context(), id, userID, request.ToNewsletterUpdate())
+	updatedNewsletter, err := h.newsletterService.UpdateNewsletter(r.Context(), id, utils.GetXUserId(r), request.ToNewsletterUpdate())
 	if err != nil {
 		if errors.Is(err, errorsdef.ErrNotFound) {
 			utils.WriteErrResponse(w, http.StatusNotFound, err)
@@ -111,9 +108,8 @@ func (h *NewsletterHandler) UpdateNewsletter(w http.ResponseWriter, r *http.Requ
 
 func (h *NewsletterHandler) DeleteNewsletter(w http.ResponseWriter, r *http.Request) {
 	id := chi.URLParam(r, "id")
-	userID := r.Header.Get("X-User-ID")
 
-	err := h.newsletterService.DeleteNewsletter(r.Context(), id, userID)
+	err := h.newsletterService.DeleteNewsletter(r.Context(), id, utils.GetXUserId(r))
 	if err != nil {
 		if errors.Is(err, errorsdef.ErrInvalidUUID) {
 			utils.WriteErrResponse(w, http.StatusBadRequest, err)
