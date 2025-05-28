@@ -1,0 +1,103 @@
+http:
+  routers:
+    to-newsletter-service-public-get:
+      rule: "Method(`GET`) && PathRegexp(`^/api/v[0-9]+/newsletters(?:/[^/]+)?(?:/posts(?:/[^/]+)?)?$`)"
+      service: newsletter-service
+      entryPoints:
+        - web
+      middlewares:
+        - ratelimiter
+
+    to-newsletter-service-newsletter-private-post:
+      rule: "(Method(`POST`) || Method(`PUT`) || Method(`DELETE`)) && PathRegexp(`^/api/v[0-9]+/newsletters(?:/[^/]+)?$`)"
+      service: newsletter-service
+      entryPoints:
+        - web
+      middlewares:
+        - ratelimiter
+        - auth-forward
+
+    to-newsletter-service-post-private-post:
+      rule: "(Method(`POST`) || Method(`PUT`) || Method(`DELETE`)) && PathRegexp(`^/api/v[0-9]+/newsletters/[^/]+/posts(?:/[^/]+)?$`)"
+      service: newsletter-service
+      entryPoints:
+        - web
+      middlewares:
+        - ratelimiter
+        - auth-forward
+
+    to-newsletter-service-publish-private-get:
+        rule: "Method(`GET`) && PathRegexp(`^/api/v[0-9]+/newsletters/[^/]+/posts/[^/]+/_publish/?$`)"
+        service: newsletter-service
+        entryPoints:
+            - web
+        middlewares:
+            - ratelimiter
+            - auth-forward
+
+    to-subscription-service-private-list:
+      rule: "Method(`GET`) && PathRegexp(`^/api/v[0-9]+/subscriptions/?$`)"
+      service: subscription-service
+      entryPoints:
+        - web
+      middlewares:
+        - ratelimiter
+        - auth-forward
+
+    to-subscription-service-public:
+      rule: "(Method(`GET`) && PathRegexp(`^/api/v[0-9]+/subscriptions/[^/]+/_unsubscribe/?$`)) ||
+        (Method(`POST`) && PathRegexp(`^/api/v[0-9]+/subscriptions/?$`))"
+      service: subscription-service
+      entryPoints:
+        - web
+      middlewares:
+        - ratelimiter
+
+    to-user-service-users:
+      rule: "PathRegexp(`^/api/v[0-9]+/users`)"
+      service: user-service
+      entryPoints:
+        - web
+      middlewares:
+        - ratelimiter
+        - auth-forward
+
+    to-user-service-auth:
+      rule: "PathRegexp(`^/api/v[0-9]+/auth`)"
+      service: user-service
+      entryPoints:
+        - web
+      middlewares:
+        - ratelimiter
+
+  middlewares:
+    strip-api:
+      stripPrefix:
+        prefixes:
+          - "/api"
+    ratelimiter:
+      rateLimit:
+        average: 100
+        burst: 200
+    auth-forward:
+      forwardAuth:
+        address: http://user-service:8083/api/v1/auth/verify
+        trustForwardHeader: true
+        authResponseHeaders:
+          - "X-User-ID"
+          - "X-User-Email"
+          - "X-User-Email_Verified"
+
+  services:
+    newsletter-service:
+      loadBalancer:
+        servers:
+          - url: "http://newsletter-service:8081"
+    subscription-service:
+      loadBalancer:
+        servers:
+          - url: "http://subscription-service:8082"
+    user-service:
+      loadBalancer:
+        servers:
+          - url: "http://user-service:8083"

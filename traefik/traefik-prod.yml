@@ -16,6 +16,7 @@ providers:
 global:
   checkNewVersion: false
   sendAnonymousUsage: false
+
 log:
   level: DEBUG
 

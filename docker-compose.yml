@@ -9,8 +9,8 @@ services:
       - "443:443"
       - "8080:8080"
     volumes:
-      - ./traefik/traefik.yml:/etc/traefik/traefik.yml
-      - ./traefik/dynamic.yml:/etc/traefik/dynamic.yml
+      - ./traefik/traefik-prod.yml:/etc/traefik/traefik.yml
+      - ./traefik/dynamic-prod.yml:/etc/traefik/dynamic.yml
       - ./acme.json:/acme.json
     networks:
       - newsletter-api-net
