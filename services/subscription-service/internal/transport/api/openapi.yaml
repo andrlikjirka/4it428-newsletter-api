@@ -1,0 +1,143 @@
+openapi: 3.0.3
+info:
+  title: Subscription Service
+  description: Subscription service allowing to manage subscriptions of newsletters.
+  version: 1.0.0
+servers:
+  - url: http://localhost:80/v1
+    description: API Gateway route
+
+paths:
+  "/ping":
+    get:
+      description: Health check
+      operationId: Ping
+      summary: Check the healthiness of the service
+      responses:
+        "204":
+          description: It's ALIVE (a.k.a. service is up and running)
+        "400":
+          description: Invalid request
+  "/subscriptions":
+    get:
+      summary: List subscriptions
+      description: Vrátí seznam odběrů pro daný newsletter a uživatele.
+      parameters:
+        - in: query
+          name: newsletter_id
+          schema:
+            type: string
+            format: uuid
+          required: true
+          description: ID newsletteru
+      responses:
+        "200":
+          description: Seznam odběrů
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/SubscriptionResponse"
+        "400":
+          description: Chybný požadavek
+    post:
+      summary: Subscribe to newsletter
+      description: Přihlásí email k odběru newsletteru.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SubscriptionRequest"
+      responses:
+        "201":
+          description: Odběr vytvořen
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SubscriptionResponse"
+        "400":
+          description: Chybný požadavek
+
+  "/subscriptions/{subscriptionID}/_unsubscribe":
+    get:
+      summary: Unsubscribe
+      description: Odhlásí odběr podle ID.
+      parameters:
+        - in: path
+          name: subscriptionID
+          schema:
+            type: string
+            format: uuid
+          required: true
+          description: ID odběru
+      responses:
+        "204":
+          description: Odběr zrušen
+        "400":
+          description: Chybný požadavek
+
+  "/subscriptions/_notify":
+    post:
+      summary: Notify subscribers
+      description: Odeslat notifikaci všem odběratelům newsletteru.
+      parameters:
+        - in: query
+          name: newsletter_id
+          schema:
+            type: string
+            format: uuid
+          required: true
+          description: ID newsletteru
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/NotifySubscribersRequest"
+      responses:
+        "204":
+          description: Notifikace odeslána
+        "400":
+          description: Chybný požadavek
+
+components:
+  schemas:
+    SubscriptionRequest:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+        newsletter_id:
+          type: string
+          format: uuid
+      required:
+        - email
+        - newsletter_id
+    SubscriptionResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        email:
+          type: string
+          format: email
+        newsletter_id:
+          type: string
+          format: uuid
+    NotifySubscribersRequest:
+      type: object
+      properties:
+        title:
+          type: string
+        content:
+          type: string
+        html_content:
+          type: string
+      required:
+        - title
+        - content
+        - html_content

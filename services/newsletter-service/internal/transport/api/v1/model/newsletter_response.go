@@ -12,6 +12,7 @@ type NewsletterResponse struct {
 	Description string    `json:"description"`
 	CreatedAt   time.Time `json:"created_at"`
 	UpdatedAt   time.Time `json:"updated_at"`
+	UserID      uuid.UUID `json:"user_id"`
 }
 
 func FromNewsletter(u *model.Newsletter) *NewsletterResponse {
@@ -21,6 +22,7 @@ func FromNewsletter(u *model.Newsletter) *NewsletterResponse {
 		Description: u.Description,
 		CreatedAt:   u.CreatedAt,
 		UpdatedAt:   u.UpdatedAt,
+		UserID:      u.UserID,
 	}
 }
 

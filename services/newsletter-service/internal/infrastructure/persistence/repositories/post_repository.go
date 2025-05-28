@@ -69,25 +69,6 @@ func (r *PostRepository) GetById(ctx context.Context, postID uuid.UUID, newslett
 	}, nil
 }
 
-func (r *PostRepository) GetByIdAndUserId(ctx context.Context, postID uuid.UUID, newsletterID uuid.UUID, userID uuid.UUID) (*model.Post, error) {
-	var post dbmodel.PostEntity
-	err := pgxscan.Get(ctx, r.pool, &post, query.SelectPostByIdAndUserId, postID, newsletterID, userID)
-	if err != nil {
-		return nil, err
-	}
-
-	return &model.Post{
-		ID:           post.ID,
-		NewsletterID: post.NewsletterID,
-		Title:        post.Title,
-		Content:      post.Content,
-		HtmlContent:  post.HtmlContent,
-		Published:    post.Published,
-		CreatedAt:    post.CreatedAt.Time,
-		UpdatedAt:    post.UpdatedAt.Time,
-	}, nil
-}
-
 func (r *PostRepository) Update(ctx context.Context, post *model.Post) (*model.Post, error) {
 	_, err := r.pool.Exec(ctx, query.UpdatePost, post.Title, post.Content, post.HtmlContent, post.Published, post.ID)
 	if err != nil {

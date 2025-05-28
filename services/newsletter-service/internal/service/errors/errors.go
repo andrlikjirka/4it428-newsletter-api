@@ -7,4 +7,5 @@ var (
 	ErrNotFound         = errors.New("newsletter not found")
 	ErrPostNotFound     = errors.New("post not found")
 	ErrAlreadyPublished = errors.New("post already published")
+	ErrUserNotAuthor    = errors.New("user is not the author of the newsletter")
 )

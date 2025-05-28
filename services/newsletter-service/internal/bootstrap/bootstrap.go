@@ -48,9 +48,10 @@ type ServicesContainer struct {
 func NewServicesContainer(
 	newsletterRepository *repositories.NewsletterRepository,
 	postRepository *repositories.PostRepository,
+	subscriptionServiceClient services.ISubscriptionServiceClient,
 ) *ServicesContainer {
 	return &ServicesContainer{
 		NewsletterService: impl.NewNewsletterService(newsletterRepository),
-		PostService:       impl.NewPostService(postRepository, newsletterRepository),
+		PostService:       impl.NewPostService(postRepository, newsletterRepository, subscriptionServiceClient),
 	}
 }
