@@ -3,7 +3,6 @@ package impl
 import (
 	"4it428-newsletter-api/libs/logger"
 	"4it428-newsletter-api/libs/utils"
-	"4it428-newsletter-api/services/subscription-service/internal/infrastructure/aws"
 	errors2 "4it428-newsletter-api/services/subscription-service/internal/service/errors"
 	"4it428-newsletter-api/services/subscription-service/internal/service/model"
 	"4it428-newsletter-api/services/subscription-service/internal/service/repositories"
@@ -13,13 +12,13 @@ import (
 
 type subscriptionService struct {
 	repo                    repositories.ISubscriptionRepository
-	ses                     *aws.SESClient
+	ses                     services.EmailProvider
 	newsletterServiceClient services.INewsletterServiceClient
 }
 
 func NewSubscriptionService(
 	repo repositories.ISubscriptionRepository,
-	ses *aws.SESClient,
+	ses services.EmailProvider,
 	newsletterServiceClient services.INewsletterServiceClient,
 ) services.SubscriptionService {
 	return &subscriptionService{repo: repo, ses: ses, newsletterServiceClient: newsletterServiceClient}
