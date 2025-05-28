@@ -1,7 +1,7 @@
 package repositories
 
 import (
-	"4it428-newsletter-api/libs/logger"
+	"4it428-newsletter-api/pkg/logger"
 	dbmodel "4it428-newsletter-api/services/subscription-service/internal/infrastructure/persistence/model"
 	"4it428-newsletter-api/services/subscription-service/internal/service/model"
 	"cloud.google.com/go/firestore"

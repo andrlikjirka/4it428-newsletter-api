@@ -1,7 +1,7 @@
 package main
 
 import (
-	"4it428-newsletter-api/libs/logger"
+	"4it428-newsletter-api/pkg/logger"
 	"4it428-newsletter-api/services/subscription-service/internal/bootstrap"
 	"4it428-newsletter-api/services/subscription-service/internal/infrastructure/clients"
 	"4it428-newsletter-api/services/subscription-service/internal/infrastructure/persistence/repositories"

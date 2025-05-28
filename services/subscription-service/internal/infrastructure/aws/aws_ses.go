@@ -1,7 +1,7 @@
 package aws
 
 import (
-	"4it428-newsletter-api/libs/logger"
+	"4it428-newsletter-api/pkg/logger"
 	"context"
 	"fmt"
 	"github.com/aws/aws-sdk-go-v2/aws"

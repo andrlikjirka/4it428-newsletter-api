@@ -1,7 +1,7 @@
 package utils
 
 import (
-	"4it428-newsletter-api/libs/logger"
+	"4it428-newsletter-api/pkg/logger"
 	"encoding/json"
 	"net/http"
 )
