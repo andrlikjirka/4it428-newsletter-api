@@ -6,6 +6,7 @@ import (
 	"4it428-newsletter-api/services/subscription-service/internal/service/services"
 	"4it428-newsletter-api/services/subscription-service/internal/transport/api/v1/model"
 	"encoding/json"
+	"errors"
 	"github.com/go-chi/chi/v5"
 	"github.com/go-playground/validator/v10"
 	"io"
@@ -30,6 +31,10 @@ func (h *SubscriptionHandler) Unsubscribe(w http.ResponseWriter, r *http.Request
 	subscriptionID := chi.URLParam(r, "subscriptionID")
 	err := h.subscriptionService.Unsubscribe(r.Context(), subscriptionID)
 	if err != nil {
+		if errors.Is(err, errorsdef.ErrInvalidUUID) {
+			utils.WriteErrResponse(w, http.StatusBadRequest, err)
+			return
+		}
 		utils.WriteErrResponse(w, http.StatusInternalServerError, err)
 		return
 	}
@@ -54,6 +59,10 @@ func (h *SubscriptionHandler) Subscribe(w http.ResponseWriter, r *http.Request) 
 
 	subscription, err := h.subscriptionService.Subscribe(r.Context(), request.ToSubscription())
 	if err != nil {
+		if errors.Is(err, errorsdef.ErrNewsletterNotFound) {
+			utils.WriteErrResponse(w, http.StatusNotFound, err)
+			return
+		}
 		utils.WriteErrResponse(w, http.StatusBadRequest, err)
 		return
 	}
@@ -70,7 +79,17 @@ func (h *SubscriptionHandler) ListSubscriptions(w http.ResponseWriter, r *http.R
 	subscriptions, err := h.subscriptionService.ListSubscriptions(r.Context(), newsletterID, utils.GetXUserId(r))
 
 	if err != nil {
-		utils.WriteErrResponse(w, http.StatusBadRequest, err)
+		if errors.Is(err, errorsdef.ErrInvalidUUID) {
+			utils.WriteErrResponse(w, http.StatusBadRequest, err)
+			return
+		} else if errors.Is(err, errorsdef.ErrNewsletterNotFound) {
+			utils.WriteErrResponse(w, http.StatusNotFound, err)
+			return
+		} else if errors.Is(err, errorsdef.ErrUnauthorized) {
+			utils.WriteErrResponse(w, http.StatusForbidden, err)
+			return
+		}
+		utils.WriteErrResponse(w, http.StatusInternalServerError, err)
 		return
 	}
 	utils.WriteResponse(w, http.StatusOK, model.FromSubscriptionList(subscriptions))
@@ -100,6 +119,10 @@ func (h *SubscriptionHandler) NotifySubscribers(w http.ResponseWriter, r *http.R
 
 	err = h.subscriptionService.NotifySubscribers(r.Context(), newsletterID, request.ToNotification())
 	if err != nil {
+		if errors.Is(err, errorsdef.ErrInvalidUUID) {
+			utils.WriteErrResponse(w, http.StatusBadRequest, err)
+			return
+		}
 		utils.WriteErrResponse(w, http.StatusInternalServerError, err)
 		return
 	}

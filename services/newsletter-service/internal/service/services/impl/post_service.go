@@ -109,12 +109,12 @@ func (p postService) UpdatePost(ctx context.Context, postID string, newsletterID
 	parsedPostID, err := utils.ParseUUID(postID)
 	if err != nil {
 		logger.Error("Failed to parse UUID", "postID", postID, "error", err)
-		return nil, err
+		return nil, errors2.ErrInvalidUUID
 	}
 	parsedNewsletterID, err := utils.ParseUUID(newsletterID)
 	if err != nil {
 		logger.Error("Failed to parse UUID", "newsletterID", newsletterID, "error", err)
-		return nil, err
+		return nil, errors2.ErrInvalidUUID
 	}
 	parsedUserID, err := utils.ParseUUID(userID)
 	if err != nil {
