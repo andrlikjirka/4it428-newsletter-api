@@ -7,7 +7,7 @@ include_ext = ["go", "tpl", "tmpl", "html"]
 
 include_dir = [
     "services/subscription-service",
-    "libs"
+    "pkg"
 ]
 
 exclude_dir = [

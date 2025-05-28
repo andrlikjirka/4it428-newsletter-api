@@ -1,7 +1,7 @@
 package api
 
 import (
-	"4it428-newsletter-api/libs/logger"
+	"4it428-newsletter-api/pkg/logger"
 	"4it428-newsletter-api/services/subscription-service/internal/bootstrap"
 	v1 "4it428-newsletter-api/services/subscription-service/internal/transport/api/v1"
 	"github.com/go-chi/chi/v5"

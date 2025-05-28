@@ -1,7 +1,7 @@
 package firebase
 
 import (
-	"4it428-newsletter-api/libs/logger"
+	"4it428-newsletter-api/pkg/logger"
 	"4it428-newsletter-api/services/user-service/internal/service/auth"
 	"bytes"
 	"context"
