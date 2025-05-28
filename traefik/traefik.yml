@@ -1,13 +1,6 @@
 entryPoints:
   web:
     address: :80
-    http:
-      redirections:
-        entryPoint:
-          to: webSecure
-          scheme: https
-  webSecure:
-    address: :443
 
 api:
   insecure: true
@@ -23,11 +16,3 @@ global:
   sendAnonymousUsage: false
 log:
   level: DEBUG
-
-certificatesResolvers:
-  letsencrypt:
-    acme:
-      email: kovm24@vse.cz
-      storage: acme.json
-      httpChallenge:
-        entryPoint: web

@@ -6,13 +6,10 @@ services:
     restart: unless-stopped
     ports:
       - "80:80"
-      - "443:443"
       - "8080:8080"
     volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
       - ./traefik/traefik.yml:/etc/traefik/traefik.yml
       - ./traefik/dynamic.yml:/etc/traefik/dynamic.yml
-      - ./data/certs/:/var/traefik/certs/:rw
     networks:
       - newsletter-api-net
 
@@ -35,13 +32,17 @@ services:
     build:
       context: .
       dockerfile: services/newsletter-service/Dockerfile
-      target: prod
+      target: dev
     container_name: newsletter-service
     restart: unless-stopped
     env_file:
       - .env
+    volumes:
+      - ./services/newsletter-service:/app/services/newsletter-service
+      - ./pkg:/app/pkg
     networks:
       - newsletter-api-net
+    command: [ "air", "-c", "services/newsletter-service/.air.toml" ]
     depends_on:
       - db
       - traefik
@@ -50,35 +51,41 @@ services:
     build:
       context: .
       dockerfile: services/subscription-service/Dockerfile
-      target: prod
+      target: dev
     container_name: subscription-service
     restart: unless-stopped
     env_file:
       - .env
+    volumes:
+        - ./services/subscription-service:/app/services/subscription-service
+        - ./pkg:/app/pkg
+        - ./secrets/firebase-adminsdk.json:/app/secrets/firebase-adminsdk.json:ro
     networks:
       - newsletter-api-net
+    command: [ "air", "-c", "services/subscription-service/.air.toml" ]
     depends_on:
       - db
       - traefik
-    volumes:
-      - ./secrets/firebase-adminsdk.json:/app/secrets/firebase-adminsdk.json:ro
 
   user-service:
     build:
       context: .
       dockerfile: services/user-service/Dockerfile
-      target: prod
+      target: dev
     container_name: user-service
     restart: unless-stopped
     env_file:
       - .env
+    volumes:
+      - ./services/user-service:/app/services/user-service
+      - ./pkg:/app/pkg
+      - ./secrets/firebase-adminsdk.json:/app/secrets/firebase-adminsdk.json:ro
     networks:
       - newsletter-api-net
+    command: [ "air", "-c", "services/user-service/.air.toml" ]
     depends_on:
       - db
       - traefik
-    volumes:
-      - ./secrets/firebase-adminsdk.json:/app/secrets/firebase-adminsdk.json:ro
 
 networks:
   newsletter-api-net:
