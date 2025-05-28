@@ -11,6 +11,7 @@ services:
     volumes:
       - ./traefik/traefik.yml:/etc/traefik/traefik.yml
       - ./traefik/dynamic.yml:/etc/traefik/dynamic.yml
+      - ./acme.json:/acme.json
     networks:
       - newsletter-api-net
 
