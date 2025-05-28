@@ -56,7 +56,7 @@ func (f *FirebaseAuthProvider) SignUp(ctx context.Context, email string, passwor
 
 	var result auth.AuthProviderSignUpResponse
 	if err := json.Unmarshal(resBody, &result); err != nil {
-		return nil, fmt.Errorf("failed to unmarshal response: %w", err)
+		return nil, err
 	}
 	return &result, nil
 }

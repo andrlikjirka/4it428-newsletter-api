@@ -13,7 +13,7 @@ import (
 )
 
 func SetupFirestore(ctx context.Context) (*firestore.Client, error) {
-	credentials := os.Getenv("GOOGLE_APPLICATION_CREDENTIALS")
+	credentials := os.Getenv("FIREBASE_CREDENTIALS")
 	projectID := os.Getenv("GOOGLE_PROJECT_ID")
 	client, err := firestore.NewClient(ctx, projectID, option.WithCredentialsFile(credentials))
 	if err != nil {

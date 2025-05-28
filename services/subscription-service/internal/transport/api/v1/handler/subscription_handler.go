@@ -1,7 +1,6 @@
 package handler
 
 import (
-	"4it428-newsletter-api/libs/logger"
 	"4it428-newsletter-api/libs/utils"
 	errorsdef "4it428-newsletter-api/services/subscription-service/internal/service/errors"
 	"4it428-newsletter-api/services/subscription-service/internal/service/services"
@@ -80,7 +79,6 @@ func (h *SubscriptionHandler) ListSubscriptions(w http.ResponseWriter, r *http.R
 
 func (h *SubscriptionHandler) NotifySubscribers(w http.ResponseWriter, r *http.Request) {
 	newsletterID := r.URL.Query().Get("newsletter_id")
-	logger.Info("NotifySubscribers called", "newsletterID", newsletterID)
 
 	if newsletterID == "" {
 		utils.WriteErrResponse(w, http.StatusBadRequest, errorsdef.ErrNoNewsletterId)

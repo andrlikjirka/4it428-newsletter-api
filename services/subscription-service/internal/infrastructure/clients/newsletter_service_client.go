@@ -6,6 +6,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"io"
 	"net/http"
 	"os"
 )
@@ -32,12 +33,14 @@ func (c *NewsletterServiceClient) GetNewsletter(ctx context.Context, newsletterI
 	}
 	defer resp.Body.Close()
 
+	resBody, err := io.ReadAll(resp.Body)
+
 	if resp.StatusCode != http.StatusOK {
 		return nil, errors2.ErrNewsletterNotFound
 	}
 
 	var newsletter services.Newsletter
-	if err := json.NewDecoder(resp.Body).Decode(&newsletter); err != nil {
+	if err := json.Unmarshal(resBody, &newsletter); err != nil {
 		return nil, err
 	}
 	return &newsletter, nil
