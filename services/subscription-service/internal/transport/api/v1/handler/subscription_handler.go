@@ -1,7 +1,7 @@
 package handler
 
 import (
-	"4it428-newsletter-api/libs/utils"
+	"4it428-newsletter-api/pkg/utils"
 	errorsdef "4it428-newsletter-api/services/subscription-service/internal/service/errors"
 	"4it428-newsletter-api/services/subscription-service/internal/service/services"
 	"4it428-newsletter-api/services/subscription-service/internal/transport/api/v1/model"

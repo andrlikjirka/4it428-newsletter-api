@@ -1,8 +1,8 @@
 package impl
 
 import (
-	"4it428-newsletter-api/libs/logger"
-	"4it428-newsletter-api/libs/utils"
+	"4it428-newsletter-api/pkg/logger"
+	"4it428-newsletter-api/pkg/utils"
 	errors2 "4it428-newsletter-api/services/newsletter-service/internal/service/errors"
 	"4it428-newsletter-api/services/newsletter-service/internal/service/model"
 	"4it428-newsletter-api/services/newsletter-service/internal/service/repositories"
